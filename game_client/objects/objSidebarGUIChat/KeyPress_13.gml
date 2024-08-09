@@ -1,0 +1,1 @@
+chat_message = get_string_async("Enter chat message: ","")
