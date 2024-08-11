@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"map_get_tile",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"map_get_tile",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

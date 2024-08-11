@@ -20,7 +20,7 @@ for (n=0; n<instance_number(objMapTile); ++n;) {
 	var _tile = instance_find(objMapTile,n); 
 	var _x = _tile.x div 64;
 	var _y = _tile.y div 64;
-	array_push(struct.land_tiles,{x:_tile.x, y:_tile.y, index:_tile.image_index, metrics:_tile.metrics})
+	array_push(struct.land_tiles,{x:_tile.x, y:_tile.y, index:_tile.image_index, metrics:_tile.metrics, measures:[]})
 	struct.land_grid[_x,_y] = 1
 }
 
@@ -39,14 +39,14 @@ for (n=0; n<instance_number(objHospital); ++n;) {
 	var _hosp = instance_find(objHospital,n); 
 	var _x = _hosp.x div 16;
 	var _y = _hosp.y div 16;
-	array_push(struct.hospitals,{x:_hosp.x, y:_hosp.y})
+	array_push(struct.hospitals,{x:_hosp.x, y:_hosp.y, damaged:false})
 	struct.hospital_grid[_x,_y] = 1
 }
 for (n=0; n<instance_number(objAirport); ++n;) {
 	var _airp = instance_find(objAirport,n); 
 	var _x = _airp.x div 16;
 	var _y = _airp.y div 16;
-	array_push(struct.airports,{x:_airp.x, y:_airp.y})
+	array_push(struct.airports,{x:_airp.x, y:_airp.y, damaged:false})
 	struct.airport_grid[_x,_y] = 1
 }
 

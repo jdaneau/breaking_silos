@@ -14,3 +14,5 @@ v_align = fa_middle
 alpha=1
 font=fSidebar
 color=c_black
+
+update = noone

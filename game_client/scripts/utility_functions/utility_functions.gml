@@ -15,3 +15,21 @@ function array_init_2d(_rows,_cols,_default_value=0) {
 function coords_in(_x, _y, _x1, _y1, _x2, _y2){
 	return (_x >= _x1 and _x <= _x2 and _y >= _y1 and _y <= _y2 )
 }
+
+/// @function capitalize(str)
+/// @description capitalizes the first character in a string
+function capitalize(_str) {
+	if string_length(_str) > 1 {
+		return string_upper(string_copy(_str,1,1)) + string_copy(_str,2,string_length(_str)-1)
+	}
+	else return string_upper(_str)
+}
+
+/// @function array_index(array,val)
+/// @description returns the index of the first found instance of value 'val' the array, or -1 if none are found
+function array_index(_array,_val) {
+	for(var _i=0; _i<array_length(_array); _i++) {
+		if _array[_i] == _val { return _i }	
+	}
+	return -1
+}

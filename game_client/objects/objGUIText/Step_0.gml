@@ -1,0 +1,3 @@
+if update != noone {
+	update()
+}

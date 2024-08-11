@@ -58,3 +58,7 @@ grid_to_coords = function(_square,real_coords=true) {
 	var _j = real(string_char_at(_square,2)) - 1
 	if real_coords return [_i*64,_j*64] else return [_i,_j]
 }
+
+//placing mode
+placing = false
+selected_measure = noone

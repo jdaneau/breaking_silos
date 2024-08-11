@@ -119,6 +119,20 @@ if array_length(global.state.affected_tiles) > 0 {
 	}
 }
 
+//draw added measures (president)
+if placing {
+	for(i=0; i<array_length(global.map.land_tiles); i++) {
+		var _tile = global.map.land_tiles[i];
+		if array_length(_tile.measures) > 0 {
+			for(var j=0; j<array_length(_tile.measures); j++) {
+				var _x = _tile.x + (64 * (1/3)) * (j mod 3);
+				var _y = _tile.y + (64 * (1/3)) * (j div 3);
+				draw_sprite_ext(get_measure_sprite(_tile.measures[j]),0,_x,_y,1/3,1/3,0,c_white,1)
+			}
+		}
+	}
+}
+
 //draw markers
 if instance_number(objMarker) > 0 {
 	for(i=0; i<instance_number(objMarker); i++) {

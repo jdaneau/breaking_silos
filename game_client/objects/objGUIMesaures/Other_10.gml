@@ -1,0 +1,20 @@
+var _y = y+32;
+var _x;
+var _icon;
+var _measure;
+var _sep = 128;
+if array_length(measures) > 4 { _sep = 96 }
+for(var i=0; i<array_length(measures); i++) {
+	if i mod 2 == 0 { _x = x+(sprite_width/4)-32 } else { _x = x+(sprite_width*(3/4))-32 }
+	_icon = instance_create_depth(_x,_y,-1,objMeasureIcon)
+	_measure = ds_map_find_value(global.measures, measures[i])
+	_icon.name = _measure.name
+	_icon.text = _measure.description
+	_icon.cost = _measure.cost
+	_icon.time = _measure.time
+	_icon.unit = _measure.unit
+	_icon.sprite_index = get_measure_sprite(measures[i])
+	_icon.measure_id = measures[i]
+	if i mod 2 == 1 { _y += _sep }
+}
+with objMeasureIcon event_user(0)

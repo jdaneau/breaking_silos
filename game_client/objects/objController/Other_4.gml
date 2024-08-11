@@ -3,5 +3,5 @@ if room == rInit {
 }
 
 if room == rGUITest {
-	global.state.affected_tiles	= ["E6","F6","G6","F7","G7","H6","G8"]
+	global.state.current_phase = "discussion"	
 }

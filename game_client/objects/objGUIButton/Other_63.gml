@@ -5,7 +5,10 @@ if i_d == dialog {
 		if ds_map_find_value(async_load, "status")   {
 		    switch(dialog_status) {
 				case "end_discussion":
-					objSidebarGUIChat.chat_add("Discussion over!")
+					end_discussion() //end the discussion
+				break;
+				case "end_round":
+					//end_round()
 				break;
 			}
 		}

@@ -38,6 +38,30 @@ else if mouse_in_map and mouse_wheel_down() and map_zoom>1 {
 	map_camera_y = clamp(map_camera_y,0,global.map.height-map_camera_h)
 }
 
+//handle placing measures on the map
+if mouse_in_map and placing and selected_measure != noone {
+	var _mouse_i = clamp(mouse_map_x div 64,0,14);
+	var _mouse_j = clamp(mouse_map_y div 64,0,14);
+	if global.map.land_grid[_mouse_i,_mouse_j] == 1 {
+		var _tile = map_get_tile(_mouse_i,_mouse_j);
+		var _measure = ds_map_find_value(global.measures,selected_measure);
+		if mouse_check_button_pressed(mb_left) {
+			if (global.state.state_budget - _measure.cost) > 0 and !array_contains(_tile.measures, selected_measure) and array_length(_tile.measures)<9 {
+				array_push(_tile.measures, selected_measure)
+				global.state.state_budget -= _measure.cost
+			}
+		}
+		if mouse_check_button_pressed(mb_right) {
+			if array_contains(_tile.measures, selected_measure) {
+				var _index = array_index(_tile.measures,selected_measure)
+				array_delete(_tile.measures, _index, 1)
+				global.state.state_budget += _measure.cost
+			}
+		}
+	}
+	exit //don't allow scrolling/pinging when a measure is selected	
+}
+
 //handle map scrolling
 if mouse_last_x != -1 {
 	var _scale = global.map.width / map_w;
