@@ -158,7 +158,7 @@ ds_map_add(global.measures, MEASURE.EWS_CYCLONE, {
 	name:"EWS: Tropical Cyclone", 
 	cost:1000,
 	unit:"/cell",
-	min_cell: 1,
+	min_cell: 4,
 	time: "months",
 	icon: sprMeasure_ews_cyclone,
 	description: "The implementation of a tropical cyclone (TC) warning system requires the development of a system that is understood by all the different stakeholders, most importantly by the large number of illiterate people. It therefore requires careful training of local communities, which can be a time consuming process. Especially in places with a high illiteracy rate, radio broadcasts play an important role in raising community awareness of approaching TCs. Rather than provide communities with difficult to understand information about wind speeds, each Numerical Category (from 1-5) is related to the type of destruction likely to occur to locally made houses, common crops and trees. One of the main challenges is that a false warning can also lead to scepticism and reluctance of communities to follow up on the warnings."

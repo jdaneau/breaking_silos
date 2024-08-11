@@ -58,8 +58,8 @@ if mouse_in_map and placing and selected_measure != noone {
 				global.state.state_budget += _measure.cost
 			}
 		}
+		exit //don't allow scrolling/pinging when placing measures
 	}
-	exit //don't allow scrolling/pinging when a measure is selected	
 }
 
 //handle map scrolling
