@@ -1,1 +1,1 @@
-room_goto(rMapTest)
+room_goto(rMap01)

@@ -44,21 +44,6 @@ reset_info_layers = function() {
 	with objGUIButton if toggle { on=false }
 }
 
-coords_to_grid = function(_i,_j,real_coords=true) {
-	if real_coords {
-		_i = _i div 64;
-		_j = _j div 64;
-	}
-	var _alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	return (string_char_at(_alpha,_i+1) + string(_j+1))
-}
-grid_to_coords = function(_square,real_coords=true) {
-	var _alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	var _i = string_pos(string_char_at(_square,1),_alpha) - 1; //string indices in GM start at 1, not 0
-	var _j = real(string_char_at(_square,2)) - 1
-	if real_coords return [_i*64,_j*64] else return [_i,_j]
-}
-
 //placing mode
 placing = false
 selected_measure = noone

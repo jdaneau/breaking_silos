@@ -1,6 +1,4 @@
-/// @desc Function Description
-/// @param {any} _x Description
-/// @param {any} _y Description
+//returns a map tile object from a specified x and y coordiantes
 function map_get_tile(_x,_y){
 	var n = array_length(global.map.land_tiles);
 	for(var i=0; i<n; i++) {

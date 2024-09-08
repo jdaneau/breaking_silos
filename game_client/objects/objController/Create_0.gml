@@ -84,6 +84,7 @@ role_id_index = array_find_index(role_ids,function(_value,_index){return _value 
 global.measures = ds_map_create()
 ds_map_add(global.measures, MEASURE.HOSPITAL, {
 	name:"Reconstruct Hospital", 
+	key: MEASURE.HOSPITAL,
 	cost:3000,
 	unit:"/building",
 	min_cell: 1,
@@ -93,6 +94,7 @@ ds_map_add(global.measures, MEASURE.HOSPITAL, {
 })
 ds_map_add(global.measures, MEASURE.AIRPORT, {
 	name:"Reconstruct Airport", 
+	key: MEASURE.AIRPORT,
 	cost:4000,
 	unit:"/building",
 	min_cell: 1,
@@ -102,6 +104,7 @@ ds_map_add(global.measures, MEASURE.AIRPORT, {
 })
 ds_map_add(global.measures, MEASURE.BUILDINGS, {
 	name:"Reconstruct Buildings", 
+	key: MEASURE.BUILDINGS,
 	cost:600,
 	unit:"/cell",
 	min_cell: 1,
@@ -111,6 +114,7 @@ ds_map_add(global.measures, MEASURE.BUILDINGS, {
 })
 ds_map_add(global.measures, MEASURE.SEAWALL, {
 	name:"Build Seawall", 
+	key: MEASURE.SEAWALL,
 	cost:500,
 	unit:"/cell",
 	min_cell: 1,
@@ -120,6 +124,7 @@ ds_map_add(global.measures, MEASURE.SEAWALL, {
 })
 ds_map_add(global.measures, MEASURE.NBS, {
 	name:"Nature-based Solutions", 
+	key: MEASURE.NBS,
 	cost:200,
 	unit:"/cell",
 	min_cell: 1,
@@ -129,6 +134,7 @@ ds_map_add(global.measures, MEASURE.NBS, {
 })
 ds_map_add(global.measures, MEASURE.NORMAL_CROPS, {
 	name:"Plant Normal Crops", 
+	key: MEASURE.NORMAL_CROPS,
 	cost:300,
 	unit:"/cell",
 	min_cell: 1,
@@ -138,6 +144,7 @@ ds_map_add(global.measures, MEASURE.NORMAL_CROPS, {
 })
 ds_map_add(global.measures, MEASURE.RESISTANT_CROPS, {
 	name:"Plant Drought-resistant Crops", 
+	key: MEASURE.RESISTANT_CROPS,
 	cost:500,
 	unit:"/cell",
 	min_cell: 1,
@@ -147,6 +154,7 @@ ds_map_add(global.measures, MEASURE.RESISTANT_CROPS, {
 })
 ds_map_add(global.measures, MEASURE.EWS_FLOOD, {
 	name:"EWS: Flood", 
+	key: MEASURE.EWS_FLOOD,
 	cost:1000,
 	unit:"/cell",
 	min_cell: 4,
@@ -156,6 +164,7 @@ ds_map_add(global.measures, MEASURE.EWS_FLOOD, {
 })
 ds_map_add(global.measures, MEASURE.EWS_CYCLONE, {
 	name:"EWS: Tropical Cyclone", 
+	key: MEASURE.EWS_CYCLONE,
 	cost:1000,
 	unit:"/cell",
 	min_cell: 4,
@@ -165,6 +174,7 @@ ds_map_add(global.measures, MEASURE.EWS_CYCLONE, {
 })
 ds_map_add(global.measures, MEASURE.DIKE, {
 	name:"Build Dikes", 
+	key: MEASURE.DIKE,
 	cost:600,
 	unit:"/cell",
 	min_cell: 1,
@@ -174,6 +184,7 @@ ds_map_add(global.measures, MEASURE.DIKE, {
 })
 ds_map_add(global.measures, MEASURE.RELOCATION, {
 	name:"Relocation Incentive", 
+	key: MEASURE.RELOCATION,
 	cost:500,
 	unit:"/cell",
 	min_cell: 1,
@@ -183,6 +194,7 @@ ds_map_add(global.measures, MEASURE.RELOCATION, {
 })
 ds_map_add(global.measures, MEASURE.DAM, {
 	name:"Build Dam", 
+	key: MEASURE.DAM,
 	cost:10000,
 	unit:"/cell",
 	min_cell: 1,
@@ -192,6 +204,7 @@ ds_map_add(global.measures, MEASURE.DAM, {
 })
 ds_map_add(global.measures, MEASURE.EVACUATE, {
 	name:"Evacuate Impacted Population", 
+	key: MEASURE.EVACUATE,
 	cost:200,
 	unit:"/cell",
 	min_cell: 1,
