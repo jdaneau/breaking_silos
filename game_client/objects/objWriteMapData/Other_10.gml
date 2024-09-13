@@ -9,8 +9,11 @@ var struct = {
 	airports : [],
 	land_grid : array_init_2d(room_width/64,room_height/64,0),
 	river_grid : array_init_2d(room_width/64,room_height/64,0),
+	river_flow_grid : array_init_2d(room_width/64,room_height/64,""),
 	hospital_grid : array_init_2d(room_width/64,room_height/64,0),
-	airport_grid : array_init_2d(room_width/64,room_height/64,0)
+	airport_grid : array_init_2d(room_width/64,room_height/64,0),
+	buildings_grid : array_init_2d(room_width/64,room_height/64,0),
+	starting_population : 0
 };
 
 var n,i,j;
@@ -24,6 +27,8 @@ for (n=0; n<instance_number(objMapTile); ++n;) {
 		x:_tile.x, y:_tile.y, index:_tile.image_index, metrics:_tile.metrics, 
 		measures:[], long_term:[], medium_term:[], short_term:[], implemented:[]})
 	struct.land_grid[_x,_y] = 1
+	struct.buildings_grid[_x,_y] = 1
+	struct.starting_population += _tile.metrics.population
 }
 
 //account for river tiles
@@ -33,6 +38,29 @@ for (n=0; n<instance_number(objRiverH); ++n;) {
 	var _y = _river.y div 64;
 	array_push(struct.river_tiles,{x:_river.x, y:_river.y, obj:_river.object_index, spr:_river.sprite_index})
 	struct.river_grid[_x,_y] = 1
+}
+
+//account for river flow direction
+for (n=0; n<instance_number(objRiverFlow); n++) {
+	var _flow = instance_find(objRiverFlow,n);
+	var _x = _flow.x div 64;
+	var _y = _flow.y div 64;
+	var _dir = "";
+	switch(_flow.object_index) {
+		case objRiverFlow:
+			_dir = "down";
+			break;
+		case objRiverFlowUp:
+			_dir = "up";
+			break;
+		case objRiverFlowLeft:
+			_dir = "left";
+			break;
+		case objRiverFlowRight:
+			_dir = "right";
+			break;
+	}
+	struct.river_flow_grid[_x,_y] = _dir
 }
 
 

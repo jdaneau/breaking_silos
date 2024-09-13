@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"end_round",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"end_round",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -5,10 +5,10 @@ if i_d == dialog {
 		if ds_map_find_value(async_load, "status")   {
 		    switch(dialog_status) {
 				case "end_discussion":
-					end_discussion() //end the discussion
+					with objController { end_discussion() }
 				break;
 				case "end_round":
-					//end_round()
+					with objController { end_round() }
 				break;
 			}
 		}

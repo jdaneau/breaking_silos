@@ -1,17 +1,17 @@
 /// @function get_total_population(format)
 /// @description Returns the total population of all tiles in the global map
 /// @param {string} format Format to return the population in. "raw":integer number, "thousands":divide total by 1000, "millions":divide total by 1 million
-function get_total_population(_format="raw") {
+function get_total_population(format="raw") {
 	var _pop = 0;
 	for(i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];	
 		_pop += _tile.metrics.population
 	}
-	if _format == "raw"
+	if format == "raw"
 		return _pop * 1000
-	else if _format == "thousands"
+	else if format == "thousands"
 		return _pop
-	else if _format == "millions"
+	else if format == "millions"
 		return _pop / 1000
 }
 
@@ -39,12 +39,48 @@ function grid_to_coords(_square,real_coords=true) {
 	if real_coords return [_i*64,_j*64] else return [_i,_j]
 }
 
+/// @function tile_from_coords(_x,_y)
+/// @description Retrieves the tile struct with the given coordinates on the map
+function tile_from_coords(_x,_y) {
+	var n = array_length(global.map.land_tiles);
+	for(var i=0; i<n; i++) {
+		var _tile = global.map.land_tiles[i];
+		if _tile.x div 64 == _x && _tile.y div 64 == _y { return _tile }
+	}
+	return noone
+}
+/// @function tile_from_square(_square)
+/// @description Retrieves the tile struct with the given label on the map
+function tile_from_square(_square) {
+	var n = array_length(global.map.land_tiles);
+	for(var i=0; i<n; i++) {
+		var _tile = global.map.land_tiles[i];
+		var check_square = coords_to_grid(_tile.x, _tile.y);
+		if check_square == _square { return _tile }
+	}
+	return noone
+}
+
 /// @function is_coastal(_x,_y)
 /// @description Returns true if the provided coordinates map to a tile on the map that is coastal
 function is_coastal(_x,_y) {
-	if global.map.land_grid(_x-1,_y) == 0 { return true }
-	if global.map.land_grid(_x+1,_y) == 0 { return true }
-	if global.map.land_grid(_x,_y+1) == 0 { return true }
-	if global.map.land_grid(_x,_y-1) == 0 { return true }
+	if global.map.land_grid[_x-1,_y] == 0 { return true }
+	if global.map.land_grid[_x+1,_y] == 0 { return true }
+	if global.map.land_grid[_x,_y+1] == 0 { return true }
+	if global.map.land_grid[_x,_y-1] == 0 { return true }
 	return false
+}
+
+/// @function get_tiles_in_watershed(watershed_id)
+/// @description Returns an array containing all the tile structs that exist in a given watershed on the map
+/// @param watershed_id {int} numeric id of the watershed (starting from 1)
+function get_tiles_in_watershed(watershed_id) {
+	var _tiles = [];
+	for(i=0; i<array_length(global.map.land_tiles); i++) {
+		var _tile = global.map.land_tiles[i];
+		if _tile.metrics.watershed ==  watershed_id {
+			array_push(_tiles,_tile);	
+		}
+	}
+	return _tiles
 }

@@ -1,18 +1,18 @@
 {
   "$GMObject":"",
-  "%Name":"objMapCamera",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "%Name":"objRiverFlowLeft",
+  "eventList":[],
   "managed":true,
-  "name":"objMapCamera",
+  "name":"objRiverFlowLeft",
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
     "path":"folders/Objects.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"objRiverFlow",
+    "path":"objects/objRiverFlow/objRiverFlow.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -30,7 +30,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"sprRiverFlowLeft",
+    "path":"sprites/sprRiverFlowLeft/sprRiverFlowLeft.yy",
+  },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }
