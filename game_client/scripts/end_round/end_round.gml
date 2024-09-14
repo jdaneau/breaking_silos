@@ -30,11 +30,31 @@ function end_round(){
 	}
 }
 
+//used by some of the below functions
+function getMeasureLists() {
+	var struct = {};
+	var _measures = ds_map_values_to_array(global.measures);
+	for(var i=0; i<array_length(_measures); i++) {
+		var _measure = _measures[i];
+		struct[? _measure.alias] = [];
+	}
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tile = global.map.land_tiles[i];
+		for(var m=0; m<array_length(tile.measures); m++) {
+			var measure = tile.measures[m];
+			var alias = global.measures[? measure].alias;
+			array_push(struct[? alias], tile)
+		}
+	}
+	return struct
+}
+
 function updateBuildings() {
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];
 		var tx = _tile.x div 64;
 		var ty = _tile.y div 64;
+		//handle buildings being repaired on affected tiles
 		if array_contains(global.state.affected_tiles, coords_to_grid(_tile.x,_tile.y)) {
 			if array_contains(_tile.short_term, MEASURE.BUILDINGS) {
 				//repair buildings on same round - nothing happens
@@ -57,6 +77,7 @@ function updateBuildings() {
 				}
 			}
 		}
+		//handle buildings that are built on other tiles
 		else {
 			if array_contains(_tile.short_term, MEASURE.BUILDINGS)	{
 				//repairing buildings that were damaged before
@@ -81,7 +102,28 @@ function updateBuildings() {
 }
 
 function updatePopulation() {
-	//evacuate first
+	var measureLists = getMeasureLists()
+	
+	//return previously evacuated population
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tile = global.map.land_tiles[i];
+		while(array_length(tile.evacuated_population) > 0) {
+			var struct = array_pop(tile.evacuated_population);
+			var targetTile = tile_from_square(struct.origin);
+			targetTile.metrics.population += struct.population;
+		}
+	}
+	
+	//evacuate population from affected tiles
+	var evacuateList = measureLists.evacuate;
+	if typeof(evacuateList) == "array" { //need this or else the compiler complains to me
+		for(var i=0; i<array_length(evacuateList); i++) {
+			var tile = evacuateList[i];
+			//continue here :)
+		}
+	}
 	
 	//population loss on tiles
+	
+	//relocation incentive
 }

@@ -84,6 +84,7 @@ role_id_index = array_find_index(role_ids,function(_value,_index){return _value 
 global.measures = ds_map_create()
 ds_map_add(global.measures, MEASURE.HOSPITAL, {
 	name:"Reconstruct Hospital", 
+	alias:"hospital",
 	key: MEASURE.HOSPITAL,
 	cost:3000,
 	unit:"/building",
@@ -94,6 +95,7 @@ ds_map_add(global.measures, MEASURE.HOSPITAL, {
 })
 ds_map_add(global.measures, MEASURE.AIRPORT, {
 	name:"Reconstruct Airport", 
+	alias:"airport",
 	key: MEASURE.AIRPORT,
 	cost:4000,
 	unit:"/building",
@@ -104,6 +106,7 @@ ds_map_add(global.measures, MEASURE.AIRPORT, {
 })
 ds_map_add(global.measures, MEASURE.BUILDINGS, {
 	name:"Reconstruct Buildings", 
+	alias:"buildings",
 	key: MEASURE.BUILDINGS,
 	cost:600,
 	unit:"/cell",
@@ -113,7 +116,8 @@ ds_map_add(global.measures, MEASURE.BUILDINGS, {
 	description: "The buildings are of low quality and can therefore be reconstructed rapidly if money for materials is made available. Reconstruction takes place at the same location."
 })
 ds_map_add(global.measures, MEASURE.SEAWALL, {
-	name:"Build Seawall", 
+	name:"Build Seawall",
+	alias:"seawall",
 	key: MEASURE.SEAWALL,
 	cost:500,
 	unit:"/cell",
@@ -124,6 +128,7 @@ ds_map_add(global.measures, MEASURE.SEAWALL, {
 })
 ds_map_add(global.measures, MEASURE.NBS, {
 	name:"Nature-based Solutions", 
+	alias:"nbs",
 	key: MEASURE.NBS,
 	cost:200,
 	unit:"/cell",
@@ -134,6 +139,7 @@ ds_map_add(global.measures, MEASURE.NBS, {
 })
 ds_map_add(global.measures, MEASURE.NORMAL_CROPS, {
 	name:"Plant Normal Crops", 
+	alias:"normal_crops",
 	key: MEASURE.NORMAL_CROPS,
 	cost:300,
 	unit:"/cell",
@@ -144,6 +150,7 @@ ds_map_add(global.measures, MEASURE.NORMAL_CROPS, {
 })
 ds_map_add(global.measures, MEASURE.RESISTANT_CROPS, {
 	name:"Plant Drought-resistant Crops", 
+	alias:"resistant_crops",
 	key: MEASURE.RESISTANT_CROPS,
 	cost:500,
 	unit:"/cell",
@@ -154,6 +161,7 @@ ds_map_add(global.measures, MEASURE.RESISTANT_CROPS, {
 })
 ds_map_add(global.measures, MEASURE.EWS_FLOOD, {
 	name:"EWS: Flood", 
+	alias:"ews_flood",
 	key: MEASURE.EWS_FLOOD,
 	cost:1000,
 	unit:"/cell",
@@ -163,7 +171,8 @@ ds_map_add(global.measures, MEASURE.EWS_FLOOD, {
 	description: "Early warning systems for floods can be useful in slower-onset floods but are not effective against torrential rains such as those from tropical cyclones. The implementation of a flood early system requires the development of a system that is understood across the board, also by the large number of illiterate people. This involves the training of local communities, which can be a time consuming process. Especially in places with a high illiteracy rate, radio broadcasts play an important role in raising community awareness of approaching floods."
 })
 ds_map_add(global.measures, MEASURE.EWS_CYCLONE, {
-	name:"EWS: Tropical Cyclone", 
+	name:"EWS: Tropical Cyclone",
+	alias:"ews_cyclone",
 	key: MEASURE.EWS_CYCLONE,
 	cost:1000,
 	unit:"/cell",
@@ -174,6 +183,7 @@ ds_map_add(global.measures, MEASURE.EWS_CYCLONE, {
 })
 ds_map_add(global.measures, MEASURE.DIKE, {
 	name:"Build Dikes", 
+	alias:"dike",
 	key: MEASURE.DIKE,
 	cost:600,
 	unit:"/cell",
@@ -184,6 +194,7 @@ ds_map_add(global.measures, MEASURE.DIKE, {
 })
 ds_map_add(global.measures, MEASURE.RELOCATION, {
 	name:"Relocation Incentive", 
+	alias:"relocation",
 	key: MEASURE.RELOCATION,
 	cost:500,
 	unit:"/cell",
@@ -194,6 +205,7 @@ ds_map_add(global.measures, MEASURE.RELOCATION, {
 })
 ds_map_add(global.measures, MEASURE.DAM, {
 	name:"Build Dam", 
+	alias:"dam",
 	key: MEASURE.DAM,
 	cost:10000,
 	unit:"/cell",
@@ -204,6 +216,7 @@ ds_map_add(global.measures, MEASURE.DAM, {
 })
 ds_map_add(global.measures, MEASURE.EVACUATE, {
 	name:"Evacuate Impacted Population", 
+	alias:"evacuate",
 	key: MEASURE.EVACUATE,
 	cost:200,
 	unit:"/cell",

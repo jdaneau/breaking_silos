@@ -25,7 +25,7 @@ for (n=0; n<instance_number(objMapTile); ++n;) {
 	var _y = _tile.y div 64;
 	array_push(struct.land_tiles,{
 		x:_tile.x, y:_tile.y, index:_tile.image_index, metrics:_tile.metrics, 
-		measures:[], long_term:[], medium_term:[], short_term:[], implemented:[]})
+		measures:[], long_term:[], medium_term:[], short_term:[], implemented:[], evacuated_population:[]})
 	struct.land_grid[_x,_y] = 1
 	struct.buildings_grid[_x,_y] = 1
 	struct.starting_population += _tile.metrics.population
