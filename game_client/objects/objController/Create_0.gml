@@ -41,6 +41,7 @@ global.colors = {
 global.state = {
 	player_name : "Player1",
 	current_round : 1,
+	datetime : date_current_datetime(),
 	current_phase : "menu",
 	time_remaining : game_get_speed(gamespeed_fps) * 600, 
 	seconds_remaining : 600,
@@ -48,7 +49,8 @@ global.state = {
 	role: ROLE.AGRICULTURE,
 	disaster: "flood",
 	disaster_intensity: "high",
-	affected_tiles : ["E6","F6","G6","F7","G7","H6","G8"]
+	affected_tiles : ["E6","F6","G6","F7","G7","H6","G8"],
+	next_disaster : {}
 }
 
 //roles

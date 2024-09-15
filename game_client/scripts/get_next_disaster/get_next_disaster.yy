@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"get_next_disaster",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"get_next_disaster",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

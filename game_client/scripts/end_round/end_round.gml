@@ -24,11 +24,28 @@ function end_round(){
 			}
 		}
 		
+		//generate next disaster
+		var disaster = get_next_disaster();
+		var time_elapsed;
+		global.state.next_disaster = disaster
+		if disaster.days_since_last_disaster < 60 {
+			time_elapsed = "weeks"	
+		}
+		else if disaster.days_since_last_disaster < (365*2) {
+			time_elapsed = "months"	
+		}
+		else time_elapsed = "years"
+		
 		//update map changes
-		updateBuildings()
-		updatePopulation()
+		updateBuildings(time_elapsed)
+		updateMapMeasures(time_elapsed)
+		updatePopulation(time_elapsed)
 	}
 }
+
+function progressProjects(time_elapsed) {
+	//todo: do this
+}	
 
 //used by some of the below functions
 function getMeasureLists() {
@@ -49,7 +66,8 @@ function getMeasureLists() {
 	return struct
 }
 
-function updateBuildings() {
+//todo: rewrite these functions using progressProjects result instead of time_elapsed
+function updateBuildings(time_elapsed) {
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];
 		var tx = _tile.x div 64;
@@ -72,7 +90,11 @@ function updateBuildings() {
 					//repair airport on same round - nothing happens
 					var delete_index = array_index(_tile.short_term, MEASURE.AIRPORT);
 					array_delete(_tile.short_term,delete_index,1)	
-				} else {
+				} else if array_contains(_tile.medium_term, MEASURE.AIRPORT) and time_elapsed != "weeks" {
+					//repair airport on same round - nothing happens
+					var delete_index = array_index(_tile.short_term, MEASURE.AIRPORT);
+					array_delete(_tile.short_term,delete_index,1)	
+				}else {
 					global.map.airport_grid[tx,ty] = -1
 				}
 			}
@@ -101,6 +123,24 @@ function updateBuildings() {
 	}
 }
 
+function updateMapMeasures() {
+	var measureLists = getMeasureLists()
+	
+	//dike
+	
+	//seawall
+	
+	//dam
+	
+	//nbs
+	
+	//ews flood
+	
+	//ews cyclone
+	
+	//crops (normal/resistant)
+}
+
 function updatePopulation() {
 	var measureLists = getMeasureLists()
 	
@@ -115,11 +155,26 @@ function updatePopulation() {
 	}
 	
 	//evacuate population from affected tiles
-	var evacuateList = measureLists.evacuate;
+	var evacuateList = measureLists[? "evacuate"];
+	var tilesToEvacuate array_sort(global.state.affected_tiles, function(x1,x2) {
+		var p1 = x1.metrics.population;
+		var p2 = x2.metrics.population;
+		if p1 == p2 return 0
+		else if p1 > p2 return -1
+		else return 1
+	}); //sort based on population, prioritize tiles with greatest population
+	var curIndex = 0;
 	if typeof(evacuateList) == "array" { //need this or else the compiler complains to me
 		for(var i=0; i<array_length(evacuateList); i++) {
-			var tile = evacuateList[i];
-			//continue here :)
+			var toTile = evacuateList[i];
+			var fromTile = tile_from_square(tilesToEvacuate[curIndex]);
+			curIndex++;
+			var movePopulation = clamp(fromTile.metrics.population / 50, 0, 10);
+			array_push(toTile.evacuated_population, {
+				origin: coords_to_grid(fromTile.x,fromTile.y),
+				population: movePopulation
+			})
+			fromTile.metrics.population -= movePopulation
 		}
 	}
 	

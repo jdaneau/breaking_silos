@@ -5,7 +5,7 @@ function get_total_population(format="raw") {
 	var _pop = 0;
 	for(i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];	
-		_pop += _tile.metrics.population
+		_pop += get_population(_tile)
 	}
 	if format == "raw"
 		return _pop * 1000
@@ -13,6 +13,13 @@ function get_total_population(format="raw") {
 		return _pop
 	else if format == "millions"
 		return _pop / 1000
+}
+function get_population(_tile) {
+	var _pop = _tile.metrics.population;
+	for(var i=0; i<array_length(_tile.evacuated_population); i++) {
+		_pop += _tile.evacuated_population.population;	
+	}
+	return _pop
 }
 
 /// @function coords_to_grid(_i,_j,real_coords=true)
@@ -28,14 +35,14 @@ function coords_to_grid(_i,_j,real_coords=true) {
 	var _alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	return (string_char_at(_alpha,_i+1) + string(_j+1))
 }
-/// @function grid_to_coords(_square,real_coords=true)
+/// @function grid_to_coords(_cell,real_coords=true)
 /// @description Converts number-letter grid coordinates to numeric coordinates (e.g. B3 to [1,2]). Defaults to a 64x64 grid.
-/// @param _square {string} string representation of the grid coordinates to be converted
+/// @param _cell {string} string representation of the grid coordinates to be converted
 /// @param {bool} real_coords Whether input coordinates are absolute (true) or grid-based (false)
-function grid_to_coords(_square,real_coords=true) {
+function grid_to_coords(_cell,real_coords=true) {
 	var _alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	var _i = string_pos(string_char_at(_square,1),_alpha) - 1; //string indices in GM start at 1, not 0
-	var _j = real(string_char_at(_square,2)) - 1
+	var _i = string_pos(string_char_at(_cell,1),_alpha) - 1; //string indices in GM start at 1, not 0
+	var _j = real(string_char_at(_cell,2)) - 1
 	if real_coords return [_i*64,_j*64] else return [_i,_j]
 }
 

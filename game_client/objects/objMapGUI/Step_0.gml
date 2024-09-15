@@ -1,3 +1,9 @@
+if room != home_room {
+	surface_free(map_surface)
+	instance_destroy()
+	exit
+}
+
 //determine if the mouse is over the map
 if coords_in(mouse_x,mouse_y,map_x,map_y,map_x+map_w,map_y+map_h) {
 	mouse_map_x = map_camera_x + (mouse_x-map_x)*map_gui_scale*(1/map_zoom)

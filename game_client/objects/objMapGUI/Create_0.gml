@@ -1,3 +1,5 @@
+home_room = room
+
 map_x = x
 map_y = y
 map_w = sprite_width

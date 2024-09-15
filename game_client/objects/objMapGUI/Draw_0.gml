@@ -1,3 +1,5 @@
+if room != home_room { exit }
+
 var i;
 
 //draw map surface
@@ -29,10 +31,14 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	var _y1 = _tile.y;
 	var _x2 = _tile.x + 63;
 	var _y2 = _tile.y + 63;
-	if show_agriculture and _tile.metrics.agriculture {
+	if show_agriculture and _tile.metrics.agriculture > 0 {
 		draw_set_alpha(0.5)
-		var _dark_orange = make_color_hsv(color_get_hue(c_orange),255,200);
-		draw_color_rectangle(_x1,_y1,_x2,_y2,_dark_orange,false)
+		var _draw_color = c_white;
+		if _tile.metrics.agriculture == 1 //normal crops
+			_draw_color = c_yellow
+		else if _tile.metrics.agriculture == 2 //drought resistant crops
+			_draw_color = c_blue
+		draw_color_rectangle(_x1,_y1,_x2,_y2,_draw_color,false)
 		draw_set_alpha(1)
 	}
 	if show_flood_history and _tile.metrics.observed_flood {
@@ -88,7 +94,7 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 		draw_set_color(c_white)
 	}
 	if show_population {
-		var _pop = _tile.metrics.population;
+		var _pop = get_population(_tile)
 		var _sat = (_pop/1000)*255;
 		var _draw_color = make_color_hsv(color_get_hue(c_maroon),_sat,255);
 		draw_set_alpha(0.4)

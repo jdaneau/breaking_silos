@@ -7,8 +7,8 @@ function check_map_placement() {
 	//init errors
 	var errors = [];
 	var make_error = function(errors,_x,_y,_str) {
-		var _square = coords_to_grid(_x, _y, false);
-		array_push(errors, string("Error at square '{0}': {1}",_square,_str))
+		var _cell = coords_to_grid(_x, _y, false);
+		array_push(errors, string("Error at cell '{0}': {1}",_cell,_str))
 	};
 
 	//check all land tiles and their measures
@@ -26,15 +26,17 @@ function check_map_placement() {
 				if array_contains(_tile.long_term,measure_type) { completion = "years remaining" }
 				else if array_contains(_tile.medium_term,measure_type) { completion = "months remaining" }
 				else if array_contains(_tile.short_term,measure_type) { completion = "weeks remaining" }
-				if error { make_error(errors,tx,ty,string("Already implementing measure '{0}' on this square ({0}).",name,completion))	}
+				if error { make_error(errors,tx,ty,string("Already implementing measure '{0}' on this cell ({0}).",name,completion))	}
 				return 1;
 			}
 			else if array_contains(_tile.implemented,measure_type) {
-				if error { make_error(errors,tx,ty,string("Measure '{0}' is already implemented on this square.",name)) }
+				if error { make_error(errors,tx,ty,string("Measure '{0}' is already implemented on this cell.",name)) }
 				return 2;
 			}
 			return 0;
 		};
+		
+		var num_evacuated = 0;
 		
 		for(var j=0; j<array_length(measures); j++) {
 			var _measure = measures[j];
@@ -43,8 +45,12 @@ function check_map_placement() {
 					if global.map.hospital_grid[tx,ty] == 0 {
 						make_error(errors,tx,ty,"No hospital exists on this sqaure.")
 					}
-					else if !array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) and global.map.hospital_grid[tx,ty] == 1 {
-						make_error(errors,tx,ty,"Hospital does not need to be rebuilt.")	
+					else if global.map.hospital_grid[tx,ty] == 1 {
+						if !array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) 
+						or global.state.disaster == "drought" 
+						or (global.state.disaster == "cyclone" and global.state.disaster_intensity == "low") {
+							make_error(errors,tx,ty,"Hospital was not damaged by the current disaster.")	
+						}
 					}
 				break;
 				
@@ -52,8 +58,12 @@ function check_map_placement() {
 					if global.map.airport_grid[tx,ty] == 0 {
 						make_error(errors,tx,ty,"No airport exists on this sqaure.")
 					}
-					else if !array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) and global.map.airport_grid[tx,ty] == 1 {
-						make_error(errors,tx,ty,"Airport does not need to be rebuilt.")	
+					else if global.map.airport_grid[tx,ty] == 1 {
+						if !array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) 
+						or global.state.disaster == "drought" 
+						or (global.state.disaster == "cyclone" and global.state.disaster_intensity == "low") {
+							make_error(errors,tx,ty,"Airport was not damaged by the current disaster.")	
+						}
 					}
 				break;
 				
@@ -66,14 +76,14 @@ function check_map_placement() {
 				case MEASURE.NBS:
 					check_implementing(tile,MEASURE.NBS)
 					if tile.metrics.agriculture {
-						make_error(errors,tx,ty,"Cannot implement NBS on a square with agricultural crops.")	
+						make_error(errors,tx,ty,"Cannot implement NBS on a cell with agricultural crops.")	
 					}
 				break;
 				
 				case MEASURE.SEAWALL:
 					check_implementing(tile,MEASURE.SEAWALL)
 					if !is_coastal(tx,ty) {
-						make_error(errors,tx,ty,"Cannot build a seawall on a non-coastal square.")
+						make_error(errors,tx,ty,"Cannot build a seawall on a non-coastal cell.")
 					}
 				break;
 				
@@ -81,18 +91,31 @@ function check_map_placement() {
 				case MEASURE.RESISTANT_CROPS:
 					check_implementing(tile,MEASURE.NORMAL_CROPS)
 					check_implementing(tile,MEASURE.RESISTANT_CROPS)
-					if tile.metrics.agriculture {
-						make_error(errors,tx,ty,"Cannot plant crops on a square that already has planted crops on it.")	
+					if array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) {
+						if global.state.disaster == "flood" {
+							if tile.metrics.agriculture == 1 and global.state.disaster_intensity == "low" {
+								make_error(errors,tx,ty,"The normal crops in this cell were not affected by the low-intensity flood.")	
+							}
+						}
+						else if global.state.disaster == "drought" {
+							if tile.metrics.agriculture == 2 {
+								make_error(errors,tx,ty,"The drought-resistant crops in this cell were not affected by the drought.")	
+							}
+						}
 					}
+					else if tile.metrics.agriculture {
+						make_error(errors,tx,ty,"Cannot plant crops on a cell that already has planted crops on it.")	
+					}
+					
 					if tile.metrics.population >= 700 {
-						make_error(errors,tx,ty,"Cannot plant crops in densely populated squares.")
+						make_error(errors,tx,ty,"Cannot plant crops in densely populated cells.")
 					}
 				break;
 				
 				case MEASURE.DIKE:
 					check_implementing(tile,MEASURE.DIKE)
 					if !global.map.river_grid[tx,ty] {
-						make_error(errors,tx,ty,"Cannot build a dike on a square without a river.")	
+						make_error(errors,tx,ty,"Cannot build a dike on a cell without a river.")	
 					}
 				break;
 				
@@ -101,14 +124,18 @@ function check_map_placement() {
 				break;
 				
 				case MEASURE.EVACUATE:
+					num_evacuated++;
 					if array_contains(global.state.affected_tiles, coords_to_grid(tx,ty,false)) {
-						make_error(errors,tx,ty,"Cannot evacuate population to an affected square.")	
+						make_error(errors,tx,ty,"Cannot evacuate population to an affected cell.")	
+					}
+					if num_evacuated > array_length(global.state.affected_tiles) {
+						make_error(errors,tx,ty,"Cannot evacuate to more cells than were affected by the disaster.")	
 					}
 				break;
 				
 				case MEASURE.DAM:
 					if !global.map.river_grid[tx,ty] {
-						make_error(errors,tx,ty,"Cannot build a dam on a square without a river.")	
+						make_error(errors,tx,ty,"Cannot build a dam on a cell without a river.")	
 					}
 					var watershed_tiles = get_tiles_in_watershed(tile.metrics.watershed);
 					var implementing = false;
@@ -132,14 +159,14 @@ function check_map_placement() {
 				case MEASURE.EWS_CYCLONE:
 					check_implementing(tile,MEASURE.EWS_CYCLONE)
 					if count_cluster_size(tx, ty, MEASURE.EWS_CYCLONE) < 4 {
-						make_error(errors,tx,ty,"Early Warning Systems must be created in clusters of at least 4 squares.")	
+						make_error(errors,tx,ty,"Early Warning Systems must be created in clusters of at least 4 cells.")	
 					}
 				break;
 				
 				case MEASURE.EWS_FLOOD:
 					check_implementing(tile,MEASURE.EWS_FLOOD)
 					if count_cluster_size(tx, ty, MEASURE.EWS_FLOOD) < 4 {
-						make_error(errors,tx,ty,"Early Warning Systems must be created in clusters of at least 4 squares.")	
+						make_error(errors,tx,ty,"Early Warning Systems must be created in clusters of at least 4 cells.")	
 					}
 				break;
 			}

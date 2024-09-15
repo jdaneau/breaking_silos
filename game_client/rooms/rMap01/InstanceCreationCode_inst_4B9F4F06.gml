@@ -3,7 +3,7 @@ metrics = {
 	flood_hazard : 1,
 	cyclone_hazard: 1,
 	population : 300,
-	agriculture : false,
+	agriculture : 0,
 	observed_drought : true,
 	observed_flood : false,
 	watershed : 5
