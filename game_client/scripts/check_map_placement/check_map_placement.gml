@@ -21,12 +21,15 @@ function check_map_placement() {
 		
 		var check_implementing = function(_tile,measure_type,error=true) {
 			var name = global.measures[? measure_type].name;
-			if array_contains(_tile.long_term,measure_type) or array_contains(_tile.medium_term,measure_type) or array_contains(_tile.short_term,measure_type) {
-				var completion = "";
-				if array_contains(_tile.long_term,measure_type) { completion = "years remaining" }
-				else if array_contains(_tile.medium_term,measure_type) { completion = "months remaining" }
-				else if array_contains(_tile.short_term,measure_type) { completion = "weeks remaining" }
-				if error { make_error(errors,tx,ty,string("Already implementing measure '{0}' on this cell ({0}).",name,completion))	}
+			if is_implementing(_tile,measure_type) {
+				if error {
+					var completion = "";
+					var days = get_implementing(_tile,measure_type).days_remaining;
+					if days < 60 { completion = "weeks remaining" }
+					else if days < (365*2) { completion = "months remaining" }
+					else { completion = "years remaining" }
+					make_error(errors,tx,ty,string("Already implementing measure '{0}' on this cell ({0}).",name,completion))	
+				}
 				return 1;
 			}
 			else if array_contains(_tile.implemented,measure_type) {

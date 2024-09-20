@@ -104,7 +104,7 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 		draw_set_halign(fa_center)
 		draw_set_valign(fa_middle)
 		draw_set_color(c_dkgray)
-		draw_text(_x1+32,_y1+32,string(_pop))
+		draw_text(_x1+32,_y1+32,string(round(_pop)))
 		draw_set_color(c_white)
 	}
 	if show_watersheds {

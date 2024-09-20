@@ -50,6 +50,7 @@ global.state = {
 	disaster: "flood",
 	disaster_intensity: "high",
 	affected_tiles : ["E6","F6","G6","F7","G7","H6","G8"],
+	round_reports : [],
 	next_disaster : {}
 }
 

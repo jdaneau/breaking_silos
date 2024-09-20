@@ -22,6 +22,16 @@ function get_population(_tile) {
 	return _pop
 }
 
+/// @function is_coastal(_x,_y)
+/// @description Returns true if the provided coordinates map to a tile on the map that is coastal
+function is_coastal(_x,_y) {
+	if global.map.land_grid[_x-1,_y] == 0 { return true }
+	if global.map.land_grid[_x+1,_y] == 0 { return true }
+	if global.map.land_grid[_x,_y+1] == 0 { return true }
+	if global.map.land_grid[_x,_y-1] == 0 { return true }
+	return false
+}
+
 /// @function coords_to_grid(_i,_j,real_coords=true)
 /// @description Converts numeric coordinates to a number-letter grid system (e.g. [1, 2] to B3). Defaults to a 64x64 grid.
 /// @param _i {int} x-coordinate to convert to column number  
@@ -68,16 +78,6 @@ function tile_from_square(_square) {
 	return noone
 }
 
-/// @function is_coastal(_x,_y)
-/// @description Returns true if the provided coordinates map to a tile on the map that is coastal
-function is_coastal(_x,_y) {
-	if global.map.land_grid[_x-1,_y] == 0 { return true }
-	if global.map.land_grid[_x+1,_y] == 0 { return true }
-	if global.map.land_grid[_x,_y+1] == 0 { return true }
-	if global.map.land_grid[_x,_y-1] == 0 { return true }
-	return false
-}
-
 /// @function get_tiles_in_watershed(watershed_id)
 /// @description Returns an array containing all the tile structs that exist in a given watershed on the map
 /// @param watershed_id {int} numeric id of the watershed (starting from 1)
@@ -90,4 +90,116 @@ function get_tiles_in_watershed(watershed_id) {
 		}
 	}
 	return _tiles
+}
+
+/// @function is_implementing(tile,_measure)
+/// @description Returns true if a given measure is already in the procress of being implemented on the provided cell
+/// @param tile {struct} Struct representing the cell
+/// @param _measure {int} ID of the measure type to check
+function is_implementing(tile,_measure) {
+	for(var i=0; i<array_length(tile.in_progress); i++) {
+		if tile.in_progress[i].measure == _measure { return true }
+	}
+	return false
+}
+/// function get_implementing(tile,_measure)
+/// @description Same as is_implementing but returns the matching struct if one is found
+function get_implementing(tile,_measure) {
+	for(var i=0; i<array_length(tile.in_progress); i++) {
+		if tile.in_progress[i].measure == _measure { return tile.in_progress[i] }
+	}
+	return noone
+}
+
+function hospital_availability(tile) {
+	var distance_to_hospital = 0;
+	var found = false;
+	var check_next = [tile];
+	var check_next_2 = [];
+	var already_checked = [];
+	var check_neighbors = function(_tile) {
+		var tx = _tile.x div 64;
+		var ty = _tile.y div 64;
+		if global.map.hospital_grid[tx-1,ty] > 0 { return true }
+		if global.map.hospital_grid[tx+1,ty] > 0 { return true }
+		if global.map.hospital_grid[tx,ty-1] > 0 { return true }
+		if global.map.hospital_grid[tx,ty+1] > 0 { return true }
+	}
+	while !found {
+		while(array_length(check_next) > 0) {
+			var tile_to_check = array_pop(check_next);
+			array_push(already_checked,coords_to_grid(tile_to_check.x,tile_to_check.y))
+			if check_neighbors(tile_to_check) { 
+				found = true;
+				break; 
+			} else {
+				var tx = tile_to_check.x div 64;
+				var ty = tile_to_check.y div 64;
+				var left = tile_from_coords(tx-1, ty); var right = tile_from_coords(tx+1, ty);
+				var up = tile_from_coords(tx, ty-1);   var down = tile_from_coords(tx, ty+1);
+				if left != noone and not array_contains(already_checked,coords_to_grid(left.x,left.y)) { array_push(check_next_2,left) }
+				if right != noone and not array_contains(already_checked,coords_to_grid(right.x,right.y)) { array_push(check_next_2,right) }
+				if up != noone and not array_contains(already_checked,coords_to_grid(up.x,up.y)) { array_push(check_next_2,up) }
+				if down != noone and not array_contains(already_checked,coords_to_grid(down.x,down.y)) { array_push(check_next_2,down) }
+			}
+		}
+		if !found {
+			distance_to_hospital++
+			array_copy(check_next,0,check_next_2,0,array_length(check_next_2))
+			check_next_2 = []
+		}
+	}
+	return 1 - (distance_to_hospital/5)
+}
+
+function agricultural_availability(tile) {
+	var n_agriculture = 0;
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		if global.map.land_tiles[i].metrics.agriculture > 0 { n_agriculture++ }	
+	}
+	if n_agriculture == global.map.starting_agriculture { return 1 }
+	
+	var ratio = n_agriculture / global.map.starting_agriculture;
+	
+	var distance_to_agriculture = 0;
+	var found = false;
+	var check_next = [tile];
+	var check_next_2 = [];
+	var already_checked = [];
+	var check_neighbors = function(_tile) {
+		var tx = _tile.x div 64;
+		var ty = _tile.y div 64;
+		var left = tile_from_coords(tx-1, ty); var right = tile_from_coords(tx+1, ty);
+		var up = tile_from_coords(tx, ty-1);   var down = tile_from_coords(tx, ty+1);
+		if left != noone && left.metrics.agriculture > 0 { return true }
+		if right != noone && right.metrics.agriculture > 0 { return true }
+		if up != noone && up.metrics.agriculture > 0 { return true }
+		if down != noone && down.metrics.agriculture > 0 { return true }
+	}
+	while !found {
+		while(array_length(check_next) > 0) {
+			var tile_to_check = array_pop(check_next);
+			array_push(already_checked,coords_to_grid(tile_to_check.x,tile_to_check.y))
+			if check_neighbors(tile_to_check) { 
+				found = true;
+				break; 
+			} else {
+				var tx = tile_to_check.x div 64;
+				var ty = tile_to_check.y div 64;
+				var left = tile_from_coords(tx-1, ty); var right = tile_from_coords(tx+1, ty);
+				var up = tile_from_coords(tx, ty-1);   var down = tile_from_coords(tx, ty+1);
+				if left != noone and not array_contains(already_checked,coords_to_grid(left.x,left.y)) { array_push(check_next_2,left) }
+				if right != noone and not array_contains(already_checked,coords_to_grid(right.x,right.y)) { array_push(check_next_2,right) }
+				if up != noone and not array_contains(already_checked,coords_to_grid(up.x,up.y)) { array_push(check_next_2,up) }
+				if down != noone and not array_contains(already_checked,coords_to_grid(down.x,down.y)) { array_push(check_next_2,down) }
+			}
+		}
+		if !found {
+			distance_to_agriculture++
+			array_copy(check_next,0,check_next_2,0,array_length(check_next_2))
+			check_next_2 = []
+		}
+	}
+	if distance_to_agriculture == 0 { distance_to_agriculture = 0.9 } //avoid dividing by 0, give tiles with agriculture a slight boost
+	return ratio / distance_to_agriculture
 }

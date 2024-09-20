@@ -47,3 +47,9 @@ function copy_stuct(struct){
     }
     return newCopy;
 }
+
+/// @function euclidean_distance(x1,y1,x2,y2)
+/// @description calculates the euclidean distance between two points (x1,y1) and (x2,y2)
+function euclidean_distance(x1,y1,x2,y2) {
+	return sqrt( sqr(x2-x1) + sqr(y2-y1) )
+}

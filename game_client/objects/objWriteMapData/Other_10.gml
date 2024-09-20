@@ -13,7 +13,8 @@ var struct = {
 	hospital_grid : array_init_2d(room_width/64,room_height/64,0),
 	airport_grid : array_init_2d(room_width/64,room_height/64,0),
 	buildings_grid : array_init_2d(room_width/64,room_height/64,0),
-	starting_population : 0
+	starting_population : 0,
+	starting_agriculture : 0
 };
 
 var n,i,j;
@@ -25,10 +26,11 @@ for (n=0; n<instance_number(objMapTile); ++n;) {
 	var _y = _tile.y div 64;
 	array_push(struct.land_tiles,{
 		x:_tile.x, y:_tile.y, index:_tile.image_index, metrics:_tile.metrics, 
-		measures:[], long_term:[], medium_term:[], short_term:[], implemented:[], evacuated_population:[]})
+		measures:[], in_progress:[], implemented:[], evacuated_population:[], dammed:false})
 	struct.land_grid[_x,_y] = 1
 	struct.buildings_grid[_x,_y] = 1
 	struct.starting_population += _tile.metrics.population
+	if _tile.metrics.agriculture > 0 { struct.starting_agriculture += 1 }
 }
 
 //account for river tiles
