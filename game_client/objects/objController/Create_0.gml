@@ -55,7 +55,11 @@ global.state = {
 	affected_tiles : ["E6","F6","G6","F7","G7","H6","G8"],
 	round_reports : [],
 	measures_implemented: array_create(global.N_MEASURES, 0),
-	next_disaster : {},
+	next_disaster : {
+		disaster: "",
+		intensity: "",
+		days_since_last_disaster: 0
+	},
 	aid_objectives : {
 		buildings : false,
 		hospitals : false,
@@ -238,3 +242,10 @@ ds_map_add(global.measures, MEASURE.EVACUATE, {
 	icon: sprMeasure_evacuate,
 	description: "Rapid emergency evacuation to temporary shelters is very important to provide immediate relief for population affected by a disaster. These facilities provide a safe access to water, toilets, communal kitchens, medicine and basic shelter. This measure is not preventative and is not sufficient in the long term in cases where people need to be relocated out of high risk areas.\n\nTo implement this measure, place the icon in the cells where you want to move the impacted population to."
 })
+
+//used by the text objects in the roundresults screen
+global.n_tiles_damaged = 0
+global.n_hospitals_damaged = 0
+global.n_agriculture_lost = 0
+global.n_airports_damaged = 0
+global.n_projects_interrupted = 0

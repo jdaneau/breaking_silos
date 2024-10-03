@@ -43,6 +43,28 @@ function get_n_damaged_cells() {
 	}	
 	return n_damaged
 }
+/// @function get_n_damaged_hospitals()
+/// @description returns the total number of cells with damaged hospitals
+function get_n_damaged_hospitals() {
+	var n_damaged = 0;
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tx = global.map.land_tiles[i].x div 64;
+		var ty = global.map.land_tiles[i].y div 64;
+		if global.map.hospital_grid[tx,ty] == -1 { n_damaged++ }
+	}	
+	return n_damaged
+}
+/// @function get_n_damaged_airports()
+/// @description returns the total number of cells with damaged airports
+function get_n_damaged_airports() {
+	var n_damaged = 0;
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tx = global.map.land_tiles[i].x div 64;
+		var ty = global.map.land_tiles[i].y div 64;
+		if global.map.airport_grid[tx,ty] == -1 { n_damaged++ }
+	}	
+	return n_damaged
+}
 
 /// @function aid_conditions_met()
 /// @ description Returns true if the global aid conditions for the last round were met

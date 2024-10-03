@@ -3,7 +3,6 @@ function progress_round(){
 	//generate next disaster
 	global.state.next_disaster = get_next_disaster();
 	var days = real(global.state.next_disaster.days_since_last_disaster);
-	global.state.disaster = global.state.next_disaster.disaster
 		
 	//progress all projects and get a list of finished ones
 	finished_projects = progress_projects(days);
@@ -13,14 +12,34 @@ function progress_round(){
 	update_map_measures(finished_projects)
 	relocate_and_grow_population(finished_projects)
 	increase_global_time(days);
+	
+	global.state.disaster = global.state.next_disaster.disaster
+	global.state.disaster_intensity = global.state.next_disaster.intensity
+	set_new_affected_area()
+	
+	//update round number
+	global.state.current_round ++
 }
 
 //todo: make this more realistic (i.e. based on the map and current climate scenario)
 function get_next_disaster(){
+	var n_days = choose(7,30,365);
+	var mult;
+	switch(n_days) {
+		case 7:
+			mult = random_range(2,8)
+			break;
+		case 30:
+			mult = random_range(2,24)
+			break;
+		case 365:
+			mult = random_range(1,3)
+			break;
+	}
 	return {
 		disaster : choose("flood","drought","cyclone"),
 		intensity : choose("low","medium","high"),
-		days_since_last_disaster : choose(7,30,365) * irandom_range(2,4)
+		days_since_last_disaster : round(n_days * mult)
 	}
 }
 
@@ -83,9 +102,134 @@ function relocate_and_grow_population(finished_projects) {
 	
 	//natural population growth
 	var years_passed = global.state.next_disaster.days_since_last_disaster / 365;
+	show_debug_message("time passed: "+string(years_passed));
+	var old_pop = get_total_population();
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];
-		//assuming random growth between 1-2% per year
-		_tile.metrics.population *= ( 1 + (random_range(0.01,0.02) * years_passed) )
+		//assuming random growth between 0.1-0.5% per year
+		var growth_factor = 1 + (random_range(0.001,0.005) * years_passed);
+		_tile.metrics.population = round(_tile.metrics.population * growth_factor)
 	}
+	var new_pop = get_total_population();
+	show_debug_message(string("population grew by {0}",new_pop-old_pop))
+}
+
+function set_new_affected_area() {
+	var center = get_disaster_center();
+	define_blob_patterns()
+	var blob_array;
+	var candidate_spots;
+	switch(global.state.disaster_intensity) {
+		case "low":
+			blob_array = global.blob_patterns.low;
+			candidate_spots = [[0,1],[1,0],[1,1],[1,2],[2,1]]
+		break;
+		case "medium":
+			blob_array = global.blob_patterns.medium;
+			candidate_spots = [[1,1],[1,2],[2,1],[2,2]]
+		break;
+		case "high":
+			blob_array = global.blob_patterns.high;
+			candidate_spots = [[1,2],[2,1],[2,2],[2,3],[3,2]]
+		break;
+	}
+	var map_key = "";
+	switch(global.state.disaster) {
+		case "cyclone":
+			map_key = "cyclone_hazard"
+		break;
+		case "flood":
+			map_key = "flood_hazard"
+		break;
+		case "drought":
+			map_key = "drought_hazard"
+		break;
+	}
+	var blob = blob_array[irandom(4)];
+	var blob_size = array_length(blob);
+	repeat(irandom(3)) { blob = rotate_blob(blob) } //start from random rotation as not to prioritize any orientation
+	var best_blob;
+	var best_spot;
+	var best_score = 0;
+	
+	//find the spot that maximizes hazard by rotating the chosen blob around and overlaying it on the map at different points
+	for(var i=0; i<4; i++) {
+		for(var j=0; j<array_length(candidate_spots); j++) {
+			var _score = 0;
+			var spot = candidate_spots[j];
+			var spot_x = spot[1];
+			var spot_y = spot[0];
+			for(var _i=0; _i<blob_size; _i++) {
+				var row = blob[_i];
+				for(var _j=0; _j<blob_size; _j++) {
+					if string_char_at(row,_j+1) == "x" {
+						var tx = center[0] - spot_x + _j;
+						var ty = center[1] - spot_y + _i;
+						var tile = tile_from_coords(tx,ty);
+						if tile != noone {
+							_score += tile.metrics[$ map_key]
+						}
+					}
+				}
+			}
+			if _score > best_score {
+				best_blob = blob
+				best_spot = candidate_spots[j]
+				best_score = _score
+			}
+		}
+		blob = rotate_blob(blob)
+	}
+	
+	//add affected tiles
+	global.state.affected_tiles = []
+	for(var i=0; i<blob_size; i++) {
+		var row = best_blob[i];
+		for(var j=0; j<blob_size; j++) {
+			if string_char_at(row,j+1) == "x" {
+				var tx = center[0] - best_spot[1] + j;
+				var ty = center[1] - best_spot[0] + i;
+				if global.map.land_grid[tx,ty] {
+					array_push(global.state.affected_tiles, coords_to_grid(tx,ty,false))
+				}
+			}
+		}
+	}	
+}
+
+function get_disaster_center() {
+	var map_key = "";
+	switch(global.state.disaster) {
+		case "cyclone":
+			map_key = "cyclone_hazard"
+		break;
+		case "flood":
+			map_key = "flood_hazard"
+		break;
+		case "drought":
+			map_key = "drought_hazard"
+		break;
+	}
+	var candidate_tiles = [];
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tile = global.map.land_tiles[i];
+		// insert n copies of the tile into candidate array, where n is the tile's hazard value for the given disaster
+		repeat tile.metrics[$ map_key] {
+			array_push(candidate_tiles,tile);	
+		}
+	}
+	var chosen_tile = candidate_tiles[irandom(array_length(candidate_tiles)-1)];
+	return [chosen_tile.x div 64, chosen_tile.y div 64]
+}
+
+function rotate_blob(blob) {
+	var n = array_length(blob);
+	var new_blob = array_create(n, "");
+	
+	for(var i=0; i<n; i++) {
+		for(var j=0; j<n; j++) {
+			new_blob[j] = string_char_at(blob[n-1-i],j+1) + new_blob[j]
+		}
+	}
+	return new_blob
 }

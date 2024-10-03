@@ -1,7 +1,7 @@
 font = fSidebar
 color = c_white
 
-text = "Measures implemented:\n"
+text = "Measures implemented:\n\n"
 implemented_something = false;
 for(var i=0; i<global.N_MEASURES; i++) {
 	if global.state.measures_implemented[i] > 0 {

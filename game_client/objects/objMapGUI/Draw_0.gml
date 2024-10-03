@@ -122,7 +122,7 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 }
 
 //draw affected tiles
-if array_length(global.state.affected_tiles) > 0 && room != rRoundResults {
+if array_length(global.state.affected_tiles) > 0 {
 	for(i=0; i<array_length(global.state.affected_tiles); i++) {
 		var _square = global.state.affected_tiles[i];
 		var _coords = grid_to_coords(_square);

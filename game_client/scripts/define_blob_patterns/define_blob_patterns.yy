@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"define_blob_patterns",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"define_blob_patterns",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

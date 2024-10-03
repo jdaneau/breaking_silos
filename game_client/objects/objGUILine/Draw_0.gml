@@ -1,0 +1,1 @@
+draw_gui_line(x+(sprite_width/2),y,x+(sprite_width/2),y+sprite_height)
