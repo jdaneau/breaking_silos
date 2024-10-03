@@ -1,0 +1,1 @@
+image_index = global.state.aid_objectives.hospitals ? 0 : 1

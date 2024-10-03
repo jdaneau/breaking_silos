@@ -1,0 +1,1 @@
+image_index = global.state.aid_objectives.agriculture ? 0 : 1

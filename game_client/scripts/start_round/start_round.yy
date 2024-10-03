@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"get_next_disaster",
+  "%Name":"start_round",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"get_next_disaster",
+  "name":"start_round",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

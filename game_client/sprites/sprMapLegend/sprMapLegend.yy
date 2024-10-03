@@ -2,7 +2,7 @@
   "$GMSprite":"",
   "%Name":"sprMapLegend",
   "bboxMode":0,
-  "bbox_bottom":127,
+  "bbox_bottom":191,
   "bbox_left":0,
   "bbox_right":255,
   "bbox_top":0,
@@ -16,7 +16,7 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":128,
+  "height":192,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"aef24bbb-6f4e-4b81-abad-644a29b603a9","blendMode":0,"displayName":"default","isLocked":false,"name":"aef24bbb-6f4e-4b81-abad-644a29b603a9","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},

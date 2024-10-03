@@ -46,7 +46,7 @@ for(i=0; i<ds_map_size(global.measures); i++) {
 	draw_line_color(0,row_y+row_height,calc_width,row_y+row_height,c_black,c_black)
 	measure = ds_map_find_value(global.measures,i)
 	subtotal = measure.cost * selected[i]
-	row_content = [measure.name, measure.cost, measure.unit, measure.min_cell, selected[i], subtotal, measure.time]
+	row_content = [measure.name, measure.cost, "/"+measure.unit, measure.min_cell, selected[i], subtotal, measure.time]
 	_x = 0
 	for(var j=0; j<array_length(column_headers); j++) {
 		if j == 0 { // draw measure titles in bold, all others non-bolded

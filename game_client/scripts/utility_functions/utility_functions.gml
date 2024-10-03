@@ -53,3 +53,9 @@ function copy_stuct(struct){
 function euclidean_distance(x1,y1,x2,y2) {
 	return sqrt( sqr(x2-x1) + sqr(y2-y1) )
 }
+
+/// @function create(_x, _y, obj)
+/// @description shorthand for instance_create_depth
+function create(_x, _y, _obj, _depth=0) {
+	instance_create_depth(_x, _y, _depth, _obj)	
+}

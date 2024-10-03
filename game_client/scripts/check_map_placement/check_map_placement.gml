@@ -49,11 +49,7 @@ function check_map_placement() {
 						make_error(errors,tx,ty,"No hospital exists on this sqaure.")
 					}
 					else if global.map.hospital_grid[tx,ty] == 1 {
-						if !array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) 
-						or global.state.disaster == "drought" 
-						or (global.state.disaster == "cyclone" and global.state.disaster_intensity == "low") {
-							make_error(errors,tx,ty,"Hospital was not damaged by the current disaster.")	
-						}
+						make_error(errors,tx,ty,"Hospital is not damaged.")	
 					}
 				break;
 				
@@ -62,16 +58,12 @@ function check_map_placement() {
 						make_error(errors,tx,ty,"No airport exists on this sqaure.")
 					}
 					else if global.map.airport_grid[tx,ty] == 1 {
-						if !array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) 
-						or global.state.disaster == "drought" 
-						or (global.state.disaster == "cyclone" and global.state.disaster_intensity == "low") {
-							make_error(errors,tx,ty,"Airport was not damaged by the current disaster.")	
-						}
+						make_error(errors,tx,ty,"Airport is not damaged.")	
 					}
 				break;
 				
 				case MEASURE.BUILDINGS:
-					if !array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) and global.map.buildings_grid[tx,ty] == 1 {
+					if global.map.buildings_grid[tx,ty] == 1 {
 						make_error(errors,tx,ty,"The buildings in this sqaure are not damaged.")	
 					}
 				break;
@@ -94,22 +86,9 @@ function check_map_placement() {
 				case MEASURE.RESISTANT_CROPS:
 					check_implementing(tile,MEASURE.NORMAL_CROPS)
 					check_implementing(tile,MEASURE.RESISTANT_CROPS)
-					if array_contains(global.state.affected_tiles,coords_to_grid(tx,ty,false)) {
-						if global.state.disaster == "flood" {
-							if tile.metrics.agriculture == 1 and global.state.disaster_intensity == "low" {
-								make_error(errors,tx,ty,"The normal crops in this cell were not affected by the low-intensity flood.")	
-							}
-						}
-						else if global.state.disaster == "drought" {
-							if tile.metrics.agriculture == 2 {
-								make_error(errors,tx,ty,"The drought-resistant crops in this cell were not affected by the drought.")	
-							}
-						}
-					}
-					else if tile.metrics.agriculture {
+					if tile.metrics.agriculture > 0 {
 						make_error(errors,tx,ty,"Cannot plant crops on a cell that already has planted crops on it.")	
 					}
-					
 					if tile.metrics.population >= 700 {
 						make_error(errors,tx,ty,"Cannot plant crops in densely populated cells.")
 					}

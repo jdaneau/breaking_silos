@@ -3,5 +3,5 @@ if room == rInit {
 }
 
 if room == rGUITest {
-	global.state.current_phase = "discussion"	
+	start_round()
 }

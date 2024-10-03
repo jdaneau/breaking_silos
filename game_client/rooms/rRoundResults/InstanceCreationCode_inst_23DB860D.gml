@@ -1,0 +1,1 @@
+image_index = global.state.aid_objectives.airport ? 0 : 1

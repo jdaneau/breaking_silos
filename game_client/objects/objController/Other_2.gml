@@ -1,3 +1,5 @@
+randomize()
+
 //initialize maps
 if file_exists("map.json") {
 	var _f = file_text_open_read("map.json");

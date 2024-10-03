@@ -9,7 +9,8 @@ draw_rectangle(0,0,global.map.width,global.map.height,false)
 draw_set_color(c_white)
 for(i=0; i<array_length(global.map.land_tiles); i++) {
 	var _tile = global.map.land_tiles[i];
-	draw_sprite(sprMapTile,_tile.index,_tile.x,_tile.y)
+	var _sprite = is_damaged(_tile, global.map.buildings_grid) ? sprMapTileDamaged : sprMapTile;
+	draw_sprite(_sprite,_tile.index,_tile.x,_tile.y)
 }
 for(i=0; i<array_length(global.map.river_tiles); i++) {
 	var _river = global.map.river_tiles[i];
@@ -17,11 +18,13 @@ for(i=0; i<array_length(global.map.river_tiles); i++) {
 }
 for(i=0; i<array_length(global.map.hospitals); i++) {
 	var _hosp = global.map.hospitals[i];
-	draw_sprite(sprHospital,0,_hosp.x,_hosp.y)
+	var _draw_index = is_damaged(_hosp,global.map.hospital_grid) ? 1 : 0;
+	draw_sprite(sprHospital,_draw_index,_hosp.x,_hosp.y)
 }
 for(i=0; i<array_length(global.map.airports); i++) {
 	var _airp = global.map.airports[i];
-	draw_sprite(sprAirport,0,_airp.x,_airp.y)
+	var _draw_index = is_damaged(_airp,global.map.airport_grid) ? 1 : 0;
+	draw_sprite(sprAirport,_draw_index,_airp.x,_airp.y)
 }
 
 //draw extra information layers
@@ -31,13 +34,15 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	var _y1 = _tile.y;
 	var _x2 = _tile.x + 63;
 	var _y2 = _tile.y + 63;
-	if show_agriculture and _tile.metrics.agriculture > 0 {
-		draw_set_alpha(0.5)
+	if show_agriculture and _tile.metrics.agriculture != 0 {
+		draw_set_alpha(0.4)
 		var _draw_color = c_white;
 		if _tile.metrics.agriculture == 1 //normal crops
 			_draw_color = c_yellow
 		else if _tile.metrics.agriculture == 2 //drought resistant crops
 			_draw_color = c_blue
+		else if _tile.metrics.agriculture == -1 //destroyed crops
+			_draw_color = c_red
 		draw_color_rectangle(_x1,_y1,_x2,_y2,_draw_color,false)
 		draw_set_alpha(1)
 	}
@@ -117,11 +122,19 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 }
 
 //draw affected tiles
-if array_length(global.state.affected_tiles) > 0 {
+if array_length(global.state.affected_tiles) > 0 && room != rRoundResults {
 	for(i=0; i<array_length(global.state.affected_tiles); i++) {
 		var _square = global.state.affected_tiles[i];
 		var _coords = grid_to_coords(_square);
 		draw_sprite_ext(sprX,0,_coords[0],_coords[1],1,1,0,c_white,150/255)
+	}
+}
+
+//draw in-progress works
+for(i=0; i<array_length(global.map.land_tiles); i++) {
+	var tile = global.map.land_tiles[i];
+	if array_length(tile.in_progress) > 0 {
+		draw_sprite(sprInProgress,0,tile.x+48,tile.y+48)
 	}
 }
 
@@ -155,6 +168,10 @@ if mouse_map_x != -1{
 	if global.map.land_grid[_mouse_i,_mouse_j] == 1 {
 		draw_sprite_ext(sprWhiteTile,0,_mouse_i*64,_mouse_j*64,1,1,0,c_white,1)
 		tooltip = coords_to_grid(mouse_map_x,mouse_map_y)
+		var projects = tile_projects[$ tooltip];
+		for(var p=0; p<array_length(projects); p++) {
+			tooltip += "\n" + projects[p];
+		}
 	}
 }
 
@@ -184,6 +201,6 @@ if layer_caption != "" {
 if tooltip != "" {
 	draw_set_font(fTooltip)
 	draw_set_halign(fa_center)
-	draw_set_valign(fa_middle)
-	draw_text_outline(mouse_x,mouse_y-16,tooltip,c_white,c_black)
+	draw_set_valign(fa_bottom)
+	draw_text_outline(mouse_x,mouse_y-8,tooltip,c_white,c_black)
 }

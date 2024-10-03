@@ -17,9 +17,50 @@ function get_total_population(format="raw") {
 function get_population(_tile) {
 	var _pop = _tile.metrics.population;
 	for(var i=0; i<array_length(_tile.evacuated_population); i++) {
-		_pop += _tile.evacuated_population.population;	
+		_pop += _tile.evacuated_population[i].population;
 	}
 	return _pop
+}
+
+/// @function get_total_agriculture()
+/// @description returns the total number of agricultural cells on the map
+function get_total_agriculture() {
+	var n_agriculture = 0;
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		if global.map.land_tiles[i].metrics.agriculture > 0 { n_agriculture++ }	
+	}	
+	return n_agriculture
+}
+
+/// @function get_n_damaged_cells()
+/// @description returns the total number of cells with damaged buildings
+function get_n_damaged_cells() {
+	var n_damaged = 0;
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tx = global.map.land_tiles[i].x div 64;
+		var ty = global.map.land_tiles[i].y div 64;
+		if global.map.buildings_grid[tx,ty] == -1 { n_damaged++ }
+	}	
+	return n_damaged
+}
+
+/// @function aid_conditions_met()
+/// @ description Returns true if the global aid conditions for the last round were met
+function aid_conditions_met() {
+	return (global.state.aid_objectives.agriculture 
+		 && global.state.aid_objectives.airport
+		 && global.state.aid_objectives.buildings
+		 && global.state.aid_objectives.hospitals)
+}
+
+/// @function is_damaged(refStruct, refGrid)
+/// @description Returns true if the provided struct is set to damaged in the reference grid array
+/// @param {struct} refStruct Tile/hospital/airport struct to check
+/// @param {array} refGrid Lookup grid of tiles/hospitals/airports to check for damages
+function is_damaged(refStruct, refGrid) {
+	var _x = refStruct.x div 64;
+	var _y = refStruct.y div 64;
+	return (refGrid[_x,_y] == -1)
 }
 
 /// @function is_coastal(_x,_y)
@@ -52,7 +93,11 @@ function coords_to_grid(_i,_j,real_coords=true) {
 function grid_to_coords(_cell,real_coords=true) {
 	var _alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	var _i = string_pos(string_char_at(_cell,1),_alpha) - 1; //string indices in GM start at 1, not 0
-	var _j = real(string_char_at(_cell,2)) - 1
+	var _j;
+	if string_length(_cell) == 2 
+		_j = real(string_char_at(_cell,2)) - 1;
+	else 
+		_j = real(string_char_at(_cell,2))*10 + real(string_char_at(_cell,3)) - 1;
 	if real_coords return [_i*64,_j*64] else return [_i,_j]
 }
 
@@ -102,7 +147,7 @@ function is_implementing(tile,_measure) {
 	}
 	return false
 }
-/// function get_implementing(tile,_measure)
+/// @function get_implementing(tile,_measure)
 /// @description Same as is_implementing but returns the matching struct if one is found
 function get_implementing(tile,_measure) {
 	for(var i=0; i<array_length(tile.in_progress); i++) {
@@ -111,6 +156,8 @@ function get_implementing(tile,_measure) {
 	return noone
 }
 
+/// @function hospital_availability(tile)
+/// @description Calculates the availability of hospitals on a given tile based on its distance to the nearest hospital.
 function hospital_availability(tile) {
 	var distance_to_hospital = 0;
 	var found = false;
@@ -152,12 +199,11 @@ function hospital_availability(tile) {
 	return 1 - (distance_to_hospital/5)
 }
 
+/// @function agricultural_availability(tile)
+/// @description Calculates the "agriculture availability" for a tile, based on the global agriculture supply and distance to the nearest agricultural tile.
 function agricultural_availability(tile) {
-	var n_agriculture = 0;
-	for(var i=0; i<array_length(global.map.land_tiles); i++) {
-		if global.map.land_tiles[i].metrics.agriculture > 0 { n_agriculture++ }	
-	}
-	if n_agriculture == global.map.starting_agriculture { return 1 }
+	var n_agriculture = get_total_agriculture();
+	if n_agriculture >= global.map.starting_agriculture { return 1 }
 	
 	var ratio = n_agriculture / global.map.starting_agriculture;
 	

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"progress_round",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"progress_round",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

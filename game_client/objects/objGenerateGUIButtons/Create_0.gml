@@ -45,7 +45,7 @@ btn_show_agricultural_areas = {
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_agriculture = true; layer_caption="Yellow: Normal crops, Blue: Drought-resistant crops" }
+					with objMapGUI { show_agriculture = true; layer_caption="Yellow: Normal crops, Blue: Drought-resistant crops\nRed: Crops destroyed by current disaster" }
 				} else with objMapGUI { show_agriculture = false; layer_caption="" }
 			}	
 		}

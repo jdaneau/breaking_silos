@@ -49,3 +49,31 @@ reset_info_layers = function() {
 //placing mode
 placing = false
 selected_measure = noone
+
+//list of projects for every tile (for tooltip)
+tile_projects = {}
+for(var i=0; i<array_length(global.map.land_tiles); i++) {
+	var tile = global.map.land_tiles[i];
+	var tx = tile.x div 64;
+	var ty = tile.y div 64;
+	var projects = [];
+	for(var n=0; n<array_length(tile.in_progress); n++) {
+		var struct = tile.in_progress[n];
+		var name = global.measures[? struct.measure].name;
+		var time = struct.days_remaining;
+		var amount = "";
+		if time > 730 { 
+			time = time / 365
+			time = string_format(time, 1, 2)
+			amount = "years"
+		} else if time > 60 {
+			time = time / 30
+			time = string_format(time, 1, 2)
+			amount = "months"
+		} else {
+			amount = "days"
+		}
+		array_push(projects, string("{0}: {1} {2} remaining",name,time,amount))
+	}
+	tile_projects [$ coords_to_grid(tx,ty,false)] = projects
+}
