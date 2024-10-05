@@ -100,16 +100,26 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	}
 	if show_population {
 		var _pop = get_population(_tile)
+		var _evacuated_pop = 0;
+		for(var _i=0; _i<array_length(_tile.evacuated_population); _i++) {
+			_evacuated_pop += _tile.evacuated_population.population
+		}
 		var _sat = (_pop/1000)*255;
 		var _draw_color = make_color_hsv(color_get_hue(c_maroon),_sat,255);
 		draw_set_alpha(0.4)
 		draw_color_rectangle(_x1,_y1,_x2,_y2,_draw_color,false)
 		draw_set_alpha(1)
-		draw_set_font(fSidebar)
+		draw_set_font(fSidebarBold)
 		draw_set_halign(fa_center)
 		draw_set_valign(fa_middle)
 		draw_set_color(c_dkgray)
-		draw_text(_x1+32,_y1+32,string(round(_pop)))
+		if _evacuated_pop == 0 {
+			draw_text(_x1+32,_y1+32,string(round(_pop)))
+		} else {
+			draw_text(_x1+32,_y1+16,string(round(_pop)))
+			draw_set_color(c_fuchsia)
+			draw_text(_x1+32,_y1+48,string(round(_evacuated_pop)))
+		}
 		draw_set_color(c_white)
 	}
 	if show_watersheds {

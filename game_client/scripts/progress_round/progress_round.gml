@@ -49,13 +49,49 @@ function increase_global_time(days) {
 	//tax revenue
 	var new_years = date_get_year(new_datetime) - date_get_year(global.state.datetime);
 	if new_years > 0 {
-		var tax_amount = new_years * global.state.base_tax * (get_total_population("thousands") / global.map.starting_population);
+		var tax_amount = round(new_years * global.state.base_tax * (get_total_population("thousands",false) / global.map.starting_population));
 		global.state.state_budget += tax_amount;
 		add_report(string("{0} new year{1} {2} passed, providing a tax income of {3} coins!",new_years,new_years > 1 ? "s" : "", new_years > 1 ? "have" : "has", tax_amount))
 	}
 }
 
+function move_appeal(origTile,destTile) {
+	var origX = origTile.x div 64; var origY = origTile.y div 64;
+	var destX = destTile.x div 64; var destY = destTile.y div 64;
+	var distance = euclidean_distance(origX,origY,destX,destY);
+	var appeal = 1/(distance / 3);
+	if global.map.hospital_grid[destX,destY] > 0 { appeal *= 1.5 }
+	if global.map.hospital_grid[destX,destY] < 0 { appeal *= 0.75 }
+	if global.map.airport_grid[destX,destY] > 0 { appeal *= 1.5 }
+	if global.map.airport_grid[destX,destY] < 0 { appeal *= 0.75 }
+	if global.map.buildings_grid[destX,destY] < 0 { appeal *= 0.5 }
+	appeal *= agricultural_availability(destTile)
+	return appeal
+}
+
 function relocate_and_grow_population(finished_projects) {
+	
+	var years_passed = global.state.next_disaster.days_since_last_disaster / 365;
+	
+	//return previously evacuated population
+	var base_return_amount = clamp(years_passed,0,1) //assumed that evacuated population moves back within a year, unless their origin tile is still damaged
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tile = global.map.land_tiles[i];
+		while(array_length(tile.evacuated_population) > 0) {
+			var struct = array_pop(tile.evacuated_population);
+			var targetTile = tile_from_square(struct.origin);
+			var return_amount = struct.population * base_return_amount;
+			return_amount = clamp(return_amount * move_appeal(tile,targetTile),0,struct.population)
+			if return_amount == struct.population {
+				targetTile.metrics.population += struct.population;
+			} else {
+				struct.population -= return_amount
+				array_push(tile.evacuated_population, struct)
+				targetTile.metrics.population += return_amount
+			}
+		}
+	}
+	
 	//relocation incentive
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var tile = global.map.land_tiles[i];
@@ -67,19 +103,9 @@ function relocate_and_grow_population(finished_projects) {
 				if array_contains(global.state.affected_tiles, coords_to_grid(_candidate.x,_candidate.y)) { continue }
 				array_push(candidate_tiles,_candidate)
 			}
-			var moveAppeal = function(origTile,destTile) {
-				var origX = origTile.x div 64; var origY = origTile.y div 64;
-				var destX = destTile.x div 64; var destY = destTile.y div 64;
-				var distance = euclidean_distance(origX,origY,destX,destY);
-				var appeal = 1/(distance / 3);
-				if global.map.hospital_grid[destX,destY] > 0 { appeal *= 1.5 }
-				if global.map.airport_grid[destX,destY] > 0 { appeal *= 1.5 }
-				appeal *= agricultural_availability(destTile)
-				return appeal
-			};
 			var candidates_and_appeal = [];
 			for(var j=0; j<array_length(candidate_tiles); j++) {
-				array_push(candidates_and_appeal, {tile:candidate_tiles[j], appeal:moveAppeal(tile,candidate_tiles[j])} )
+				array_push(candidates_and_appeal, {tile:candidate_tiles[j], appeal:move_appeal(tile,candidate_tiles[j])} )
 			}
 			candidates_and_appeal = array_sort(candidates_and_appeal, function(elm1,elm2) {
 				if elm1.appeal == elm2.appeal return 0
@@ -101,7 +127,6 @@ function relocate_and_grow_population(finished_projects) {
 	}
 	
 	//natural population growth
-	var years_passed = global.state.next_disaster.days_since_last_disaster / 365;
 	show_debug_message("time passed: "+string(years_passed));
 	var old_pop = get_total_population();
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
@@ -111,7 +136,6 @@ function relocate_and_grow_population(finished_projects) {
 		_tile.metrics.population = round(_tile.metrics.population * growth_factor)
 	}
 	var new_pop = get_total_population();
-	show_debug_message(string("population grew by {0}",new_pop-old_pop))
 }
 
 function set_new_affected_area() {

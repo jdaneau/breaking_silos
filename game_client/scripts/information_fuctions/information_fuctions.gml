@@ -1,11 +1,11 @@
 /// @function get_total_population(format)
 /// @description Returns the total population of all tiles in the global map
 /// @param {string} format Format to return the population in. "raw":integer number, "thousands":divide total by 1000, "millions":divide total by 1 million
-function get_total_population(format="raw") {
+function get_total_population(format="raw",include_evacuated=true) {
 	var _pop = 0;
 	for(i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];	
-		_pop += get_population(_tile)
+		_pop += get_population(_tile,include_evacuated)
 	}
 	if format == "raw"
 		return _pop * 1000
@@ -14,10 +14,12 @@ function get_total_population(format="raw") {
 	else if format == "millions"
 		return _pop / 1000
 }
-function get_population(_tile) {
+function get_population(_tile,include_evacuated=true) {
 	var _pop = _tile.metrics.population;
-	for(var i=0; i<array_length(_tile.evacuated_population); i++) {
-		_pop += _tile.evacuated_population[i].population;
+	if (include_evacuated) {
+		for(var i=0; i<array_length(_tile.evacuated_population); i++) {
+			_pop += _tile.evacuated_population[i].population;
+		}
 	}
 	return _pop
 }
@@ -157,6 +159,62 @@ function get_tiles_in_watershed(watershed_id) {
 		}
 	}
 	return _tiles
+}
+
+/// @function get_downstream_tile(_tile)
+/// @description given a cell on the map with a river, return the tile the river flows into (if there is one)
+function get_downstream_tile(_tile) {
+	var tx = _tile.x div 64; 
+	var ty = _tile.y div 64;
+	switch (global.map.river_flow_grid[tx,ty]) {
+		case "up":
+			if global.map.river_flow_grid[tx,ty-1] != "" { return tile_from_coords(tx,ty-1) }
+			break;
+		case "down":
+			if global.map.river_flow_grid[tx,ty+1] != "" { return tile_from_coords(tx,ty+1) }
+			break;
+		case "left":
+			if global.map.river_flow_grid[tx-1,ty] != "" { return tile_from_coords(tx-1,ty) }
+			break;
+		case "right":
+			if global.map.river_flow_grid[tx+1,ty] != "" { return tile_from_coords(tx+1,ty) }
+			break;
+		default:
+			return noone;
+	}
+	return noone;
+}
+/// @function get_upstream_tiles(_tile)
+/// @description given a cell on the map with a river, return all the tiles that are upstream from it (if applicable)
+function get_upstream_tiles(_tile) {
+	var tiles_to_check = [_tile];
+	var upstream_tiles = [];
+	while array_length(tiles_to_check) > 0 {
+		var check_tile = array_pop(tiles_to_check);
+		var tx = check_tile.x div 64;
+		var ty = check_tile.y div 64;
+		var up_neighbor = tile_from_coords(tx,ty-1);
+		var down_neighbor = tile_from_coords(tx,ty+1);
+		var left_neighbor = tile_from_coords(tx-1,ty);
+		var right_neighbor = tile_from_coords(tx+1,ty);
+		if up_neighbor != noone and get_downstream_tile(up_neighbor) == check_tile {
+			array_push(upstream_tiles, up_neighbor)
+			array_push(tiles_to_check, up_neighbor)
+		}
+		if down_neighbor != noone and get_downstream_tile(down_neighbor) == check_tile {
+			array_push(upstream_tiles, down_neighbor)
+			array_push(tiles_to_check, down_neighbor)
+		}
+		if left_neighbor != noone and get_downstream_tile(left_neighbor) == check_tile {
+			array_push(upstream_tiles, left_neighbor)
+			array_push(tiles_to_check, left_neighbor)
+		}
+		if right_neighbor != noone and get_downstream_tile(right_neighbor) == check_tile {
+			array_push(upstream_tiles, right_neighbor)
+			array_push(tiles_to_check, right_neighbor)
+		}
+	}
+	return upstream_tiles
 }
 
 /// @function is_implementing(tile,_measure)

@@ -1,5 +1,7 @@
 chat = []
 
+
+
 var qualifier;
 var opening_line;
 if global.state.disaster_intensity == "low" qualifier = "minor"

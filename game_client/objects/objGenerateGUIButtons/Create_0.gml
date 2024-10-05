@@ -35,7 +35,15 @@ btn_show_population_map = {
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_population = true; layer_caption=string("In thousands (total = {0} million)",get_total_population("millions")) }
+					with objMapGUI { 
+						show_population = true; 
+						var total_pop = get_total_population("millions");
+						layer_caption=string("In thousands (total = {0} million)",total_pop) 
+						var pop_diff = total_pop - get_total_population("millions",false)
+						if pop_diff != 0 {
+							layer_caption += "\nPink values = Evacuated population"	
+						}
+					}
 				} else with objMapGUI { show_population = false; layer_caption="" }
 			}	
 		}

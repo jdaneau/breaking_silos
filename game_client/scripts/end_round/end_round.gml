@@ -95,6 +95,11 @@ function end_round(){
 		
 		//go to the results screen
 		global.state.current_phase = "results"
+		
+		if instance_exists(objOnline) {
+			send_struct(MESSAGE.STATE, global.state) // update other players' state
+		}
+		
 		room_goto(rRoundResults)
 	}
 }
@@ -193,35 +198,24 @@ function update_map_measures(finished_projects) {
 		}
 	
 		//dam
-		var get_downstream_tile = function(_tile) {
-			var tx = _tile.x div 64; 
-			var ty = _tile.y div 64;
-			switch (global.map.river_flow_grid[tx,ty]) {
-				case "up":
-					if river_flow_grid[tx,ty-1] != "" { return tile_from_coords(tx,ty-1) }
-					break;
-				case "down":
-					if river_flow_grid[tx,ty+1] != "" { return tile_from_coords(tx,ty+1) }
-					break;
-				case "left":
-					if river_flow_grid[tx-1,ty] != "" { return tile_from_coords(tx-1,ty) }
-					break;
-				case "right":
-					if river_flow_grid[tx+1,ty] != "" { return tile_from_coords(tx+1,ty) }
-					break;
-				default:
-					return noone;
-			}
-			return noone;
-		}
 		if just_completed(tile,MEASURE.DAM,finished_projects) {
 			array_push(tile.implemented, MEASURE.DAM)	
 			add_report(string("A dam has completed construction on tile {0}.",coords_to_grid(tile.x,tile.y)))
 			tile.dammed = true
 			var cur_tile = tile;
-			while(get_downstream_tile(cur_tile) != noone) {
+			var n_dammed = 0;
+			//decrease flood risk on downstream tiles (max of 3)
+			while(get_downstream_tile(cur_tile) != noone and n_dammed < 3) {
 				cur_tile.dammed = true
+				cur_tile.metrics.flood_hazard = clamp(cur_tile.metrics.flood_hazard-1, 0,3)
 				cur_tile = get_downstream_tile(cur_tile)
+				n_dammed++
+			}
+			//increase flood risk on upstream tiles
+			var upstream_tiles = get_upstream_tiles(tile);
+			for(var t=0; t<array_length(upstream_tiles); t++) {
+				var up_tile = upstream_tiles[t];
+				up_tile.metrics.flood_hazard = clamp(up_tile.metrics.flood_hazard+1, 0,5)
 			}
 		}
 	
@@ -258,18 +252,8 @@ function update_map_measures(finished_projects) {
 	}
 }
 
-//matters related to population gain/loss
+//matters related to population loss
 function update_population_loss(finished_projects) {
-	//return previously evacuated population
-	for(var i=0; i<array_length(global.map.land_tiles); i++) {
-		var tile = global.map.land_tiles[i];
-		while(array_length(tile.evacuated_population) > 0) {
-			var struct = array_pop(tile.evacuated_population);
-			var targetTile = tile_from_square(struct.origin);
-			targetTile.metrics.population += struct.population;
-		}
-	}
-	
 	//evacuate population from affected tiles
 	var evacuateList = [];
 	var evacuatedPopulation = 0;
@@ -293,7 +277,23 @@ function update_population_loss(finished_projects) {
 		var toTile = evacuateList[i];
 		var fromTile = tile_from_square(global.state.affected_tiles[curIndex]);
 		curIndex++;
-		var movePopulation = fromTile.metrics.population * random_range(0.1, 0.8);
+		var disaster_multiplier = 1;
+		if global.state.disaster == "drought" {
+			if global.state.disaster_intensity == "low" disaster_multiplier = 0.02
+			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.1
+			if global.state.disaster_intensity == "high" disaster_multiplier = 0.2
+		}
+		if global.state.disaster == "flood" {
+			if global.state.disaster_intensity == "low" disaster_multiplier = 0.1
+			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.5
+			if global.state.disaster_intensity == "high" disaster_multiplier = 0.8
+		}
+		if global.state.disaster == "cyclone" {
+			if global.state.disaster_intensity == "low" disaster_multiplier = 0.1
+			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.6
+			if global.state.disaster_intensity == "high" disaster_multiplier = 1
+		}
+		var movePopulation = round(fromTile.metrics.population * disaster_multiplier * random_range(0.4, 0.8));
 		movePopulation = clamp(movePopulation, 0, 200);
 		evacuatedPopulation += movePopulation
 		array_push(toTile.evacuated_population, {
@@ -355,9 +355,9 @@ function update_population_loss(finished_projects) {
 				break;
 				
 			case "drought":
-				if global.state.disaster_intensity == "low" { loss_rate = random_range(0.001,0.002) }
-				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.002,0.01) }
-				else { loss_rate = random_range(0.01,0.02) }
+				if global.state.disaster_intensity == "low" { loss_rate = random_range(0,0.0005) }
+				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.001,0.0025) }
+				else { loss_rate = random_range(0.005,0.01) }
 				
 				high_agriculture_multiplier = 1.1;
 				less_agriculture_multiplier = 1.4;

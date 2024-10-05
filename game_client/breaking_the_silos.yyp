@@ -33,7 +33,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.8.1.171",
+    "IDEVersion":"2024.8.0.169",
   },
   "name":"breaking_the_silos",
   "resources":[
@@ -66,6 +66,7 @@
     {"id":{"name":"objMeasureIcon","path":"objects/objMeasureIcon/objMeasureIcon.yy",},},
     {"id":{"name":"objMoveCameraDown","path":"objects/objMoveCameraDown/objMoveCameraDown.yy",},},
     {"id":{"name":"objMyriadLogo","path":"objects/objMyriadLogo/objMyriadLogo.yy",},},
+    {"id":{"name":"objOnline","path":"objects/objOnline/objOnline.yy",},},
     {"id":{"name":"objRiverDL","path":"objects/objRiverDL/objRiverDL.yy",},},
     {"id":{"name":"objRiverDR","path":"objects/objRiverDR/objRiverDR.yy",},},
     {"id":{"name":"objRiverFlow","path":"objects/objRiverFlow/objRiverFlow.yy",},},
@@ -93,6 +94,7 @@
     {"id":{"name":"get_measure_sprite","path":"scripts/get_measure_sprite/get_measure_sprite.yy",},},
     {"id":{"name":"information_fuctions","path":"scripts/information_fuctions/information_fuctions.yy",},},
     {"id":{"name":"map_get_tile","path":"scripts/map_get_tile/map_get_tile.yy",},},
+    {"id":{"name":"networking_functions","path":"scripts/networking_functions/networking_functions.yy",},},
     {"id":{"name":"progress_round","path":"scripts/progress_round/progress_round.yy",},},
     {"id":{"name":"start_round","path":"scripts/start_round/start_round.yy",},},
     {"id":{"name":"utility_functions","path":"scripts/utility_functions/utility_functions.yy",},},

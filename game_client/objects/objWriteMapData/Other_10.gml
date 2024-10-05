@@ -82,7 +82,7 @@ for (n=0; n<instance_number(objAirport); ++n;) {
 	struct.airport_grid[_x,_y] = 1
 }
 
-var _json_data = json_stringify(struct);
+var _json_data = json_stringify(struct,true);
 var _f = file_text_open_write("map.json");
 file_text_write_string(_f,_json_data)
 file_text_close(_f)

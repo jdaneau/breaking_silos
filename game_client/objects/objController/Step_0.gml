@@ -4,7 +4,9 @@ if (global.state.current_phase == "discussion" or global.state.current_phase == 
 		var seconds = global.state.time_remaining div game_get_speed(gamespeed_fps);
 		if seconds < global.state.seconds_remaining {
 			global.state.seconds_remaining = seconds
-			//TODO: send networking message to other clients to update time
+			if instance_exists(objOnline) {
+				send_int(MESSAGE.TIME, seconds)
+			}
 		}
 	} else {
 		if global.state.current_phase == "discussion" {

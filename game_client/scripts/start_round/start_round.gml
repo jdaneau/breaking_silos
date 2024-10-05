@@ -1,4 +1,13 @@
 function start_round() {
+	// first round 
+	if global.state.current_round == 1 { 
+		var first_disaster = get_next_disaster();
+		global.state.disaster = first_disaster.disaster;
+		global.state.disaster_intensity = first_disaster.intensity;
+		set_new_affected_area()
+		do_map_damages()
+	}
+	
 	global.state.round_reports = []
 	global.state.measures_implemented = array_create(global.N_MEASURES, 0)
 	global.state.money_spent = 0

@@ -1,0 +1,1 @@
+is_server_msg = show_question_async("Do you want to start as a server?")

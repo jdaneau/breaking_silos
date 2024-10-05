@@ -6,7 +6,9 @@ function end_discussion(){
 	global.state.seconds_remaining = 300
 	
 	if global.state.role == ROLE.PRESIDENT {
-		// TODO: send networking message to end discussion for other players
+		if instance_exists(objOnline) {
+			send(MESSAGE.END_DISCUSSION)
+		}
 		with objGUIButton {
 			text = "Finalize Decision"
 			on_click = function(on) {
@@ -23,5 +25,7 @@ function end_discussion(){
 			placing = true
 			layer_caption = "Click on the measures to place them on the map.\nLeft click = add, Right click = remove"
 		}
+	} else {
+		// other players	
 	}
 }
