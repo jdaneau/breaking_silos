@@ -1,1 +1,1 @@
-mouse_on = true
+if global.mouse_depth >= depth mouse_on = true

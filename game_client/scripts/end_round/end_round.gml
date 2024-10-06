@@ -277,6 +277,7 @@ function update_population_loss(finished_projects) {
 		var toTile = evacuateList[i];
 		var fromTile = tile_from_square(global.state.affected_tiles[curIndex]);
 		curIndex++;
+		if curIndex >= array_length(global.state.affected_tiles) curIndex = 0
 		var disaster_multiplier = 1;
 		if global.state.disaster == "drought" {
 			if global.state.disaster_intensity == "low" disaster_multiplier = 0.02

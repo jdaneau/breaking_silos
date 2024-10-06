@@ -25,3 +25,6 @@ column_widths_relative = [0.225, 0.125, 0.125, 0.1, 0.15, 0.125, 0.15]
 for(var i=0; i<array_length(column_widths_relative); i++) {
 	column_widths[i] = 	column_widths_relative[i] * calc_width
 }
+
+old_depth = global.mouse_depth
+global.mouse_depth = depth

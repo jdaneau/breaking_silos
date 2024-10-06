@@ -78,6 +78,7 @@ btn_open_calculator = {
 					instance_create_depth(0,0,-100,objGUICalculator)
 				} else if !objGUICalculator.open {
 					objGUICalculator.open = true
+					global.mouse_depth = objGUICalculator.depth
 				}
 			}	
 		}

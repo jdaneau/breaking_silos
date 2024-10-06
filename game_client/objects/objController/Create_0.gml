@@ -1,5 +1,7 @@
-//global constants and enums
+//init globals
+global.mouse_depth = 10
 
+//global constants and enums
 enum ROLE {
 	PRESIDENT,
 	FINANCE,

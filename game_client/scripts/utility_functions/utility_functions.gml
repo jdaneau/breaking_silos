@@ -59,3 +59,23 @@ function euclidean_distance(x1,y1,x2,y2) {
 function create(_x, _y, _obj, _depth=0) {
 	instance_create_depth(_x, _y, _depth, _obj)	
 }
+
+//mouse functions (with layers)
+function mouse_check(button) {
+	if mouse_check_button(button) {
+		if depth <= global.mouse_depth return true	
+	} 
+	return false
+}
+function mouse_check_pressed(button) {
+	if mouse_check_button_pressed(button) {
+		if depth <= global.mouse_depth return true	
+	} 
+	return false
+}
+function mouse_check_released(button) {
+	if mouse_check_button_released(button) {
+		if depth <= global.mouse_depth return true	
+	} 
+	return false
+}

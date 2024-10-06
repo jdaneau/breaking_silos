@@ -8,10 +8,11 @@ if open {
 	}
 
 	//calculator buttons
-	if mouse_check_button_pressed(mb_left) {
+	if mouse_check_pressed(mb_left) {
 		//check for x button
 		if coords_in(mouse_calc_x,mouse_calc_y,calc_width-row_height,0,calc_width,row_height) {
 			open = false
+			global.mouse_depth = old_depth
 		}
 	
 		//check for add/subtract buttons
