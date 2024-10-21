@@ -7,29 +7,29 @@ function get_dialog_depth() {
 	return dep
 }
 
-function open_dialog(msg,accept_function){
+function open_dialog(msg,confirm_function){
 	var dialog = instance_create_depth(0,0,get_dialog_depth(),objDialogWindow);
 	dialog.prompt = msg
-	dialog.accept = accept_function
+	dialog.confirm = confirm_function
 }
 
-function open_dialog_info(msg,accept_function){
+function open_dialog_info(msg,confirm_function){
 	var dialog = instance_create_depth(0,0,get_dialog_depth(),objDialogWindow);
 	dialog.prompt = msg
 	dialog.options = ["OK"]
-	dialog.accept = accept_function
+	dialog.confirm = confirm_function
 }
 
-function open_dialog_option(prompt,options,accept_function){
+function open_dialog_option(msg,options,confirm_function){
 	var dialog = instance_create_depth(0,0,get_dialog_depth(),objDialogWindow);
 	dialog.prompt = msg
 	dialog.options = options
-	dialog.accept = accept_function
+	dialog.confirm = confirm_function
 }
 
-function open_dialog_question(prompt,accept_function){
+function open_dialog_question(msg,confirm_function){
 	var dialog = instance_create_depth(0,0,get_dialog_depth(),objDialogWindow);
 	dialog.prompt = msg
 	dialog.question = true
-	dialog.accept = accept_function
+	dialog.confirm = confirm_function
 }

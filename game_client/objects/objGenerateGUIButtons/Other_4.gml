@@ -2,7 +2,7 @@ var buttons = [];
 
 switch(global.state.role) {
 	case ROLE.PRESIDENT:
-		 array_push(buttons, btn_end_discussion)
+		 array_push(buttons, btn_show_population_map, btn_end_discussion)
 	break;
 	case ROLE.FINANCE:
 		array_push(buttons, btn_open_calculator)

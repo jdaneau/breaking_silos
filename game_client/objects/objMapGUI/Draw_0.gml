@@ -172,7 +172,7 @@ if instance_number(objMarker) > 0 {
 
 //get tooltip
 tooltip = "";
-if mouse_map_x != -1{
+if global.mouse_depth >= depth and mouse_map_x != -1{
 	var _mouse_i = clamp(mouse_map_x div 64,0,14);
 	var _mouse_j = clamp(mouse_map_y div 64,0,14);
 	if global.map.land_grid[_mouse_i,_mouse_j] == 1 {

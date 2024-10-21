@@ -1,2 +1,2 @@
 color=c_white
-text="Disaster type:"
+text="Hazard type:"

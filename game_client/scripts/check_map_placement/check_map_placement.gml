@@ -21,6 +21,8 @@ function check_map_placement() {
 		
 		var check_implementing = function(_tile,measure_type,error=true) {
 			var name = global.measures[? measure_type].name;
+			var tx = _tile.x div 64;
+			var ty = _tile.y div 64;
 			if is_implementing(_tile,measure_type) {
 				if error {
 					var completion = "";

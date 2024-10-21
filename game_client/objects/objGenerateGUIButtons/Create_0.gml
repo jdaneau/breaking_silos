@@ -63,9 +63,11 @@ btn_end_discussion = {
 			toggle : false,
 			on_click : function(on) {
 				with objGUIButton if text=="End Discussion" {
-					dialog_mode = "question"
-					dialog_status = "end_discussion"
-					dialog = show_question_async("Are you sure you want to end the discussion?\nThis will move the game to the next phase.")
+					open_dialog("Are you sure you want to end the discussion?\nThis will move the game to the next phase.",
+						function(option) {
+							if option == "Yes" { with objController end_discussion() }
+						}
+					)
 				}
 			}	
 		}

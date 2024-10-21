@@ -3,6 +3,7 @@ function progress_round(){
 	//generate next disaster
 	global.state.next_disaster = get_next_disaster();
 	var days = real(global.state.next_disaster.days_since_last_disaster);
+	global.state.datetime = date_inc_day(global.state.datetime, days)
 		
 	//progress all projects and get a list of finished ones
 	finished_projects = progress_projects(days);
@@ -107,7 +108,7 @@ function relocate_and_grow_population(finished_projects) {
 			for(var j=0; j<array_length(candidate_tiles); j++) {
 				array_push(candidates_and_appeal, {tile:candidate_tiles[j], appeal:move_appeal(tile,candidate_tiles[j])} )
 			}
-			candidates_and_appeal = array_sort(candidates_and_appeal, function(elm1,elm2) {
+			array_sort(candidates_and_appeal, function(elm1,elm2) {
 				if elm1.appeal == elm2.appeal return 0
 				else if elm1.appeal > elm2.appeal return -1
 				else return 1

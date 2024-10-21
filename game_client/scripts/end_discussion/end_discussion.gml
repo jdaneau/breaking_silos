@@ -9,12 +9,14 @@ function end_discussion(){
 		if instance_exists(objOnline) {
 			send(MESSAGE.END_DISCUSSION)
 		}
-		with objGUIButton {
+		with objGUIButton if text == "End Discussion" {
 			text = "Finalize Decision"
 			on_click = function(on) {
-				dialog_mode = "question"
-				dialog_status = "end_round"
-				dialog = show_question_async("Are you sure you want to finalize your decision?\nThis will end the current round.")
+				open_dialog("Are you sure you want to finalize your decision?\nThis will end the current round.",
+					function(option) {
+						if option == "Yes" { with objController end_round() }
+					}
+				)
 			}
 		}
 		with objGUIMesaures {

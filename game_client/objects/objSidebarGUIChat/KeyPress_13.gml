@@ -1,1 +1,3 @@
-chat_message = get_string_async("Enter chat message: ","")
+if !instance_exists(objDialogWindow) {
+	open_dialog_question("Chat Message: ", function(msg) { chat_add(msg) })
+}

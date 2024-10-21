@@ -5,6 +5,4 @@ with objAirport move_snap(16,16)
 
 with objMapTile event_user(0)
 
-event_user(0) // parse map into json
-
-game_restart()
+event_user(0) // init map

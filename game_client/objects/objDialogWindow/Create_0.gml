@@ -13,3 +13,9 @@ options = ["Yes","No"]
 confirm = function(answer) {
 	show_debug_message("Dialog box closed with answer: " + answer)	
 }
+
+x = (room_width/2) - (sprite_width/2)
+y = (room_height/2) - (sprite_height/2)
+
+can_exit = false
+alarm[0] = 1
