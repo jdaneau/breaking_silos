@@ -16,7 +16,7 @@ if open {
 		}
 	
 		//check for add/subtract buttons
-		var _select_col_x = column_widths[0]+column_widths[1]+column_widths[2]+column_widths[3];
+		var _select_col_x = column_widths[0]+column_widths[1]+column_widths[2];
 		var _select_row_y;
 		for(var i=0; i<ds_map_size(global.measures); i++) {
 			_select_row_y = row_height*(2+i)
@@ -28,7 +28,7 @@ if open {
 				}
 			}
 			// add button
-			if coords_in(mouse_calc_x,mouse_calc_y,_select_col_x+column_widths[4]-32,_select_row_y,_select_col_x+column_widths[4],_select_row_y+row_height) {
+			if coords_in(mouse_calc_x,mouse_calc_y,_select_col_x+column_widths[3]-32,_select_row_y,_select_col_x+column_widths[3],_select_row_y+row_height) {
 				var _cost = ds_map_find_value(global.measures,i).cost;
 				if total+_cost <= global.state.state_budget {
 					selected[i] += 1

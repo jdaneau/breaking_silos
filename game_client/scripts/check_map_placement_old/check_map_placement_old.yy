@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"check_map_placement_old",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"check_map_placement_old",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

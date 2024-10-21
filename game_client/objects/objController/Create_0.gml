@@ -40,14 +40,19 @@ global.colors = {
 	//main colors: light blue, purple, magenta
 }
 
+global.time_limits = {
+	discussion: 600, //seconds
+	decision: 300
+}
+
 //state of the game
 global.state = {
 	player_name : "Player1",
 	current_round : 1,
 	datetime : date_current_datetime(),
 	current_phase : "menu",
-	time_remaining : game_get_speed(gamespeed_fps) * 600, 
-	seconds_remaining : 600,
+	seconds_remaining : global.time_limits.discussion,
+	time_remaining : game_get_speed(gamespeed_fps) * global.time_limits.discussion, 
 	state_budget : 30000,
 	base_tax : 10000,
 	money_spent : 0,
@@ -107,7 +112,6 @@ ds_map_add(global.measures, MEASURE.HOSPITAL, {
 	key: MEASURE.HOSPITAL,
 	cost:3000,
 	unit:"building",
-	min_cell: 1,
 	time: "months",
 	icon: sprMeasure_hospital,
 	description: "As there is only a limited number of hospitals, their reconstruction is a priority. The reconstruction itself is quite time consuming as it requires advanced building techniques and materials."
@@ -118,7 +122,6 @@ ds_map_add(global.measures, MEASURE.AIRPORT, {
 	key: MEASURE.AIRPORT,
 	cost:4000,
 	unit:"building",
-	min_cell: 1,
 	time: "weeks",
 	icon: sprMeasure_airport,
 	description: "The reconstruction of the airport does not take a long time. However, it is expensive. Airports are very important to let international aid deliver resources needed after a disaster."
@@ -129,7 +132,6 @@ ds_map_add(global.measures, MEASURE.BUILDINGS, {
 	key: MEASURE.BUILDINGS,
 	cost:600,
 	unit:"cell",
-	min_cell: 1,
 	time: "weeks",
 	icon: sprMeasure_buildings,
 	description: "The buildings are of low quality and can therefore be reconstructed rapidly if money for materials is made available. Reconstruction takes place at the same location."
@@ -140,7 +142,6 @@ ds_map_add(global.measures, MEASURE.SEAWALL, {
 	key: MEASURE.SEAWALL,
 	cost:500,
 	unit:"cell",
-	min_cell: 1,
 	time: "weeks",
 	icon: sprMeasure_seawall,
 	description: "Seawalls are hard engineered structures with a primary function to prevent further erosion of the shoreline. They are built parallel to the shore to aim to hold or prevent sliding of the soil, while providing protection from wave action. Although their primary function is erosion reduction, they have a secondary function as coastal storm surge defences. There are a variety of construction  methods that can be used to create sea wall protection for a coastal city. They are generally expensive to construct."
@@ -151,7 +152,6 @@ ds_map_add(global.measures, MEASURE.NBS, {
 	key: MEASURE.NBS,
 	cost:200,
 	unit:"cell",
-	min_cell: 1,
 	time: "years",
 	icon: sprMeasure_nbs,
 	description: "For protection from tropical cyclones, mangroves are especially effective in rural areas where populations are widely spread out, and the construction of long seawalls would not be economically feasible. In contrast, for densely populated coastal areas, mangroves alone will not fully protect all the buildings and people at risk since the reduction of surge height from mangroves may be limited. Moreover, the reduction in flow velocity of the storm surge protects embankments from damages.\n\nFor floods, natural overflor areas can be created to make room for the river, thereby decreasing flood risk."
@@ -162,7 +162,6 @@ ds_map_add(global.measures, MEASURE.NORMAL_CROPS, {
 	key: MEASURE.NORMAL_CROPS,
 	cost:300,
 	unit:"cell",
-	min_cell: 1,
 	time: "months",
 	icon: sprMeasure_normalcrops,
 	description: "The regular crop thrives under your country's normal climatic conditions.\n\nYou cannot have normal crops and drought-resistant crops in the same cell."
@@ -173,7 +172,6 @@ ds_map_add(global.measures, MEASURE.RESISTANT_CROPS, {
 	key: MEASURE.RESISTANT_CROPS,
 	cost:500,
 	unit:"cell",
-	min_cell: 1,
 	time: "months",
 	icon: sprMeasure_resistantcrops,
 	description: "When warned about a particularly dry season, farmers can be encouraged to adjust their crops, switching from high to low water-requiring crops. These crops are more sensitive to floods.\n\nYou cannot have normal crops and drought-resistant crops in the same cell."
@@ -184,7 +182,6 @@ ds_map_add(global.measures, MEASURE.EWS_FLOOD, {
 	key: MEASURE.EWS_FLOOD,
 	cost:1000,
 	unit:"cell",
-	min_cell: 4,
 	time: "months",
 	icon: sprMeasure_ews_flood,
 	description: "Early warning systems for floods can be useful in slower-onset floods but are not effective against torrential rains such as those from tropical cyclones. The implementation of a flood early system requires the development of a system that is understood across the board, also by the large number of illiterate people. This involves the training of local communities, which can be a time consuming process. Especially in places with a high illiteracy rate, radio broadcasts play an important role in raising community awareness of approaching floods."
@@ -195,7 +192,6 @@ ds_map_add(global.measures, MEASURE.EWS_CYCLONE, {
 	key: MEASURE.EWS_CYCLONE,
 	cost:1000,
 	unit:"cell",
-	min_cell: 4,
 	time: "months",
 	icon: sprMeasure_ews_cyclone,
 	description: "The implementation of a tropical cyclone (TC) warning system requires the development of a system that is understood by all the different stakeholders, most importantly by the large number of illiterate people. It therefore requires careful training of local communities, which can be a time consuming process. Especially in places with a high illiteracy rate, radio broadcasts play an important role in raising community awareness of approaching TCs. Rather than provide communities with difficult to understand information about wind speeds, each Numerical Category (from 1-5) is related to the type of destruction likely to occur to locally made houses, common crops and trees. One of the main challenges is that a false warning can also lead to scepticism and reluctance of communities to follow up on the warnings."
@@ -206,7 +202,6 @@ ds_map_add(global.measures, MEASURE.DIKE, {
 	key: MEASURE.DIKE,
 	cost:600,
 	unit:"cell",
-	min_cell: 1,
 	time: "months",
 	icon: sprMeasure_dike,
 	description: "Dikes are a common flood control measure and can be implemented at a small scale, for part of a river. However, they do take quite some time to build and are relatively expensive."
@@ -217,7 +212,6 @@ ds_map_add(global.measures, MEASURE.RELOCATION, {
 	key: MEASURE.RELOCATION,
 	cost:500,
 	unit:"cell",
-	min_cell: 1,
 	time: "years",
 	icon: sprMeasure_relocation,
 	description: "The World Bank defines planned population relocation as \"a process whereby a community's housing, assets and public infrastructure are rebuilt in another location.\" This disaster risk reduction measure provides financial incentives to move the targeted community to a new, lower-risk location.\n\nTo implement this measure, put the symbol on the cells from which you wish to move the population from. This will create incentives to move 30% of the population from these cells to the rest of the country."
@@ -228,7 +222,6 @@ ds_map_add(global.measures, MEASURE.DAM, {
 	key: MEASURE.DAM,
 	cost:10000,
 	unit:"cell",
-	min_cell: 1,
 	time: "years",
 	icon: sprMeasure_dam,
 	description: "Dams can be very useful in mitigating flood impacts and can be used as a reservoir during drought periods. They can, however, also lead to lower water availability downstream and therefore increase drought impacts."
@@ -239,7 +232,6 @@ ds_map_add(global.measures, MEASURE.EVACUATE, {
 	key: MEASURE.EVACUATE,
 	cost:200,
 	unit:"cell",
-	min_cell: 1,
 	time: "weeks",
 	icon: sprMeasure_evacuate,
 	description: "Rapid emergency evacuation to temporary shelters is very important to provide immediate relief for population affected by a disaster. These facilities provide a safe access to water, toilets, communal kitchens, medicine and basic shelter. This measure is not preventative and is not sufficient in the long term in cases where people need to be relocated out of high risk areas.\n\nTo implement this measure, place the icon in the cells where you want to move the impacted population to."

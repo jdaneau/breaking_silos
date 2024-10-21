@@ -20,8 +20,8 @@ mouse_calc_y = -1
 // 5 rows for extra stuff, rest reserved for measures
 row_height = calc_height / (ds_map_size(global.measures) + 5)
 // column details for drawing calculator
-column_headers = ["Measure","Cost","Unit","Min. #","# Selected","Subtotal","Timespan"]
-column_widths_relative = [0.225, 0.125, 0.125, 0.1, 0.15, 0.125, 0.15]
+column_headers = ["Measure","Cost","Unit","# Selected","Subtotal","Timespan"]
+column_widths_relative = [0.25, 0.15, 0.125, 0.15, 0.125, 0.15]
 for(var i=0; i<array_length(column_widths_relative); i++) {
 	column_widths[i] = 	column_widths_relative[i] * calc_width
 }

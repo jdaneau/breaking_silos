@@ -88,6 +88,7 @@
     {"id":{"name":"rMap01","path":"rooms/rMap01/rMap01.yy",},},
     {"id":{"name":"rRoundResults","path":"rooms/rRoundResults/rRoundResults.yy",},},
     {"id":{"name":"rTitle","path":"rooms/rTitle/rTitle.yy",},},
+    {"id":{"name":"check_map_placement_old","path":"scripts/check_map_placement_old/check_map_placement_old.yy",},},
     {"id":{"name":"check_map_placement","path":"scripts/check_map_placement/check_map_placement.yy",},},
     {"id":{"name":"define_blob_patterns","path":"scripts/define_blob_patterns/define_blob_patterns.yy",},},
     {"id":{"name":"draw_functions","path":"scripts/draw_functions/draw_functions.yy",},},

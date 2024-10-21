@@ -39,7 +39,7 @@ if question {
 	var buttonX = x+(sprite_width/2)-64;
 	var buttonY = y+sprite_height-48;
 	var hover = coords_in(mouse_x,mouse_y,buttonX,buttonY,buttonX+128,buttonY+32);
-	if hover {
+	if can_exit and hover {
 		draw_color_rectangle(buttonX,buttonY,buttonX+128,buttonY+32,c_ltgray,false)
 		if mouse_check_pressed(mb_left) {
 			confirm(keyboard_string)
@@ -63,7 +63,7 @@ if question {
 		var drawX = x+16 + (i * button_width) + (i * sep_width);
 		var drawY = y+sprite_height-64;
 		var hover = coords_in(mouse_x,mouse_y,drawX,drawY,drawX+button_width,drawY+48);
-		if hover {
+		if can_exit and hover {
 			draw_color_rectangle(drawX,drawY,drawX+button_width,drawY+48,c_ltgray,false)
 			if mouse_check_pressed(mb_left) {
 				confirm(options[i])

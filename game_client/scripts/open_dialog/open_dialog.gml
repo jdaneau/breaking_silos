@@ -13,11 +13,10 @@ function open_dialog(msg,confirm_function){
 	dialog.confirm = confirm_function
 }
 
-function open_dialog_info(msg,confirm_function){
+function open_dialog_info(msg){
 	var dialog = instance_create_depth(0,0,get_dialog_depth(),objDialogWindow);
 	dialog.prompt = msg
 	dialog.options = ["OK"]
-	dialog.confirm = confirm_function
 }
 
 function open_dialog_option(msg,options,confirm_function){

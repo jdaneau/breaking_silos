@@ -2,7 +2,7 @@ function end_discussion(){
 	with objSidebarGUIChat chat_add("Discussion over! The president will now decide which measures to implement.")
 	 
 	global.state.current_phase = "decision"
-	global.state.time_remaining = game_get_speed(gamespeed_fps) * 300
+	global.state.time_remaining = game_get_speed(gamespeed_fps) * global.time_limits.decision
 	global.state.seconds_remaining = 300
 	
 	if global.state.role == ROLE.PRESIDENT {

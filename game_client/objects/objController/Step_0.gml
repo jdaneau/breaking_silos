@@ -8,11 +8,16 @@ if (global.state.current_phase == "discussion" or global.state.current_phase == 
 				send_int(MESSAGE.TIME, seconds)
 			}
 		}
+		show_debug_message(global.state.time_remaining)
 	} else {
 		if global.state.current_phase == "discussion" {
 			end_discussion()	
 		} else if global.state.current_phase == "decision" {
-			//end_round()	
+			with objMapGUI { selected_measure = noone }
+			with objMeasureIcon {
+				selected = false
+				locked = true
+			}
 		}
 	}
 }

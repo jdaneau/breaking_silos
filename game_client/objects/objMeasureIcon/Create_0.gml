@@ -18,3 +18,4 @@ surf = noone
 
 //for decision phase
 selected = false
+locked = false

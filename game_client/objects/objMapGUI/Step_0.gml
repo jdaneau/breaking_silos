@@ -57,6 +57,12 @@ if mouse_in_map and placing and selected_measure != noone {
 			if (global.state.state_budget - _measure.cost) > 0 and !array_contains(_tile.measures, selected_measure) and array_length(_tile.measures)<9 {
 				array_push(_tile.measures, selected_measure)
 				global.state.state_budget -= _measure.cost
+				var error_status = check_map_placement(selected_measure, _tile);
+				if error_status != "OK" {
+					array_pop(_tile.measures)
+					global.state.state_budget += _measure.cost
+					open_dialog_info(string("Error placing measure on tile {0}:\n{1}",coords_to_grid(_mouse_i,_mouse_j,false),error_status))
+				}
 			}
 		}
 		if mouse_check_pressed(mb_right) {

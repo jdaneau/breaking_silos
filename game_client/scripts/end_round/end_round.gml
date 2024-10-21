@@ -1,107 +1,100 @@
 function end_round(){
-	var errors = check_map_placement()
-	if array_length(errors) > 0 {
-		for(var i=0; i<array_length(errors); i++) {
-			with objSidebarGUIChat chat_add(errors[i])
-		}
-	} else {
-		//reset aid objectives
-		global.state.aid_objectives.buildings = true;
-		global.state.aid_objectives.hospitals = true;
-		global.state.aid_objectives.airport = true;
-		global.state.aid_objectives.agriculture = true;
-		var airport_pop = 0;
-		var n_evacuate = 0;
-		var n_buildings = 0;
-		var n_agriculture = 0;
-		var n_remaining_agriculture = 0;
+	//reset aid objectives
+	global.state.aid_objectives.buildings = true;
+	global.state.aid_objectives.hospitals = true;
+	global.state.aid_objectives.airport = true;
+	global.state.aid_objectives.agriculture = true;
+	var airport_pop = 0;
+	var n_evacuate = 0;
+	var n_buildings = 0;
+	var n_agriculture = 0;
+	var n_remaining_agriculture = 0;
 		
-		//move measures into the in_progress array for each tile (and count measures for the aid objectives)
-		for(var i=0; i<array_length(global.map.land_tiles); i++) {
-			var _tile = global.map.land_tiles[i];
-			if _tile.metrics.agriculture > 0 { n_remaining_agriculture++ }
-			while array_length(_tile.measures) > 0 {
-				var _measure = array_pop(_tile.measures);
-				global.state.measures_implemented[_measure] += 1
-				if _measure == MEASURE.AIRPORT {
-					var pop = _tile.metrics.population;
-					if pop > airport_pop { airport_pop = pop }
-				}
-				if _measure == MEASURE.EVACUATE { n_evacuate++ }
-				if _measure == MEASURE.BUILDINGS { n_buildings++ }
-				if _measure == MEASURE.NORMAL_CROPS || _measure == MEASURE.RESISTANT_CROPS { n_agriculture++ }
-				var measure_struct = global.measures[? _measure];
-				global.state.money_spent += measure_struct.cost
-				var new_struct = {
-					measure: _measure	
-				};
-				switch(measure_struct.time) {
-					case "years":
-						new_struct.days_remaining = round(365 * random_range(2,3)) // 3 years max? revisit this to make it project-dependent
-						break;
-					case "months":
-						new_struct.days_remaining = round(30 * random_range(2,23)) // arbitrary
-						break;
-					case "weeks":
-						new_struct.days_remaining = 1 // should always complete by next round
-						break;
-				}
-				array_push(_tile.in_progress, new_struct)
+	//move measures into the in_progress array for each tile (and count measures for the aid objectives)
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var _tile = global.map.land_tiles[i];
+		if _tile.metrics.agriculture > 0 { n_remaining_agriculture++ }
+		while array_length(_tile.measures) > 0 {
+			var _measure = array_pop(_tile.measures);
+			global.state.measures_implemented[_measure] += 1
+			if _measure == MEASURE.AIRPORT {
+				var pop = _tile.metrics.population;
+				if pop > airport_pop { airport_pop = pop }
 			}
-		}
-		
-		//determine if the aid objectives were met
-		var obj_airport_pop = 0;
-		var n_affected_hospitals = 0;
-		for(var i=0; i<array_length(global.state.affected_tiles); i++) {
-			var _tile = tile_from_square(global.state.affected_tiles[i]);
-			var tx = _tile.x div 64;
-			var ty = _tile.y div 64;
-			if global.map.hospital_grid[tx, ty] == -1 {
-				if !is_in_progress(_tile, MEASURE.HOSPITAL) {
-					global.state.aid_objectives.hospitals = false	
-				}
+			if _measure == MEASURE.EVACUATE { n_evacuate++ }
+			if _measure == MEASURE.BUILDINGS { n_buildings++ }
+			if _measure == MEASURE.NORMAL_CROPS || _measure == MEASURE.RESISTANT_CROPS { n_agriculture++ }
+			var measure_struct = global.measures[? _measure];
+			global.state.money_spent += measure_struct.cost
+			var new_struct = {
+				measure: _measure	
+			};
+			switch(measure_struct.time) {
+				case "years":
+					new_struct.days_remaining = round(365 * random_range(2,3)) // 3 years max? revisit this to make it project-dependent
+					break;
+				case "months":
+					new_struct.days_remaining = round(30 * random_range(2,23)) // arbitrary
+					break;
+				case "weeks":
+					new_struct.days_remaining = 1 // should always complete by next round
+					break;
 			}
-			if global.map.airport_grid[tx, ty] == -1 {
-				if _tile.metrics.population > obj_airport_pop {
-					obj_airport_pop = _tile.metrics.population
-				}
-			}
+			array_push(_tile.in_progress, new_struct)
 		}
-		if airport_pop != obj_airport_pop { 
-			global.state.aid_objectives.airport = false 
-		}
-		if n_evacuate + n_buildings < array_length(global.state.affected_tiles) {
-			global.state.aid_objectives.buildings = false	
-		}
-		if n_agriculture + n_remaining_agriculture < global.map.starting_agriculture {
-			global.state.aid_objectives.agriculture = false	
-		}
-		
-		if global.state.aid_objectives.airport
-		and global.state.aid_objectives.buildings
-		and global.state.aid_objectives.hospitals
-		and global.state.aid_objectives.agriculture {
-			global.state.state_budget += 5000 // reward for meeting all aid objectives 
-		}
-		
-		//automatically finish all short-term projects 
-		var finished_projects = progress_projects(1);
-		
-		//update map changes
-		update_buildings(finished_projects)
-		update_map_measures(finished_projects)
-		update_population_loss(finished_projects)
-		
-		//go to the results screen
-		global.state.current_phase = "results"
-		
-		if instance_exists(objOnline) {
-			send_struct(MESSAGE.STATE, global.state) // update other players' state
-		}
-		
-		room_goto(rRoundResults)
 	}
+		
+	//determine if the aid objectives were met
+	var obj_airport_pop = 0;
+	var n_affected_hospitals = 0;
+	for(var i=0; i<array_length(global.state.affected_tiles); i++) {
+		var _tile = tile_from_square(global.state.affected_tiles[i]);
+		var tx = _tile.x div 64;
+		var ty = _tile.y div 64;
+		if global.map.hospital_grid[tx, ty] == -1 {
+			if !is_implementing(_tile, MEASURE.HOSPITAL) {
+				global.state.aid_objectives.hospitals = false	
+			}
+		}
+		if global.map.airport_grid[tx, ty] == -1 {
+			if _tile.metrics.population > obj_airport_pop {
+				obj_airport_pop = _tile.metrics.population
+			}
+		}
+	}
+	if airport_pop != obj_airport_pop { 
+		global.state.aid_objectives.airport = false 
+	}
+	if n_evacuate + n_buildings < array_length(global.state.affected_tiles) {
+		global.state.aid_objectives.buildings = false	
+	}
+	if n_agriculture + n_remaining_agriculture < global.map.starting_agriculture {
+		global.state.aid_objectives.agriculture = false	
+	}
+		
+	if global.state.aid_objectives.airport
+	and global.state.aid_objectives.buildings
+	and global.state.aid_objectives.hospitals
+	and global.state.aid_objectives.agriculture {
+		global.state.state_budget += 5000 // reward for meeting all aid objectives 
+	}
+		
+	//automatically finish all short-term projects 
+	var finished_projects = progress_projects(1);
+		
+	//update map changes
+	update_buildings(finished_projects)
+	update_map_measures(finished_projects)
+	update_population_loss(finished_projects)
+		
+	//go to the results screen
+	global.state.current_phase = "results"
+		
+	if instance_exists(objOnline) {
+		send_struct(MESSAGE.STATE, global.state) // update other players' state
+	}
+		
+	room_goto(rRoundResults)
 }
 
 // adds a report to the list of messages to show at the end of the round
@@ -147,12 +140,6 @@ function just_completed(tile,measure,finished_projects) {
 }
 function has_implemented(tile,measure,finished_projects) {
 	return array_contains(tile.implemented, measure) or just_completed(tile,measure,finished_projects)
-}
-function is_in_progress(tile,_measure) {
-	for(var i=0; i<array_length(tile.in_progress); i++) {
-		if tile.in_progress[i].measure == _measure { return true }
-	}
-	return false
 }
 
 // update buildings, hospitals, airports

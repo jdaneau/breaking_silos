@@ -46,20 +46,20 @@ for(i=0; i<ds_map_size(global.measures); i++) {
 	draw_line_color(0,row_y+row_height,calc_width,row_y+row_height,c_black,c_black)
 	measure = ds_map_find_value(global.measures,i)
 	subtotal = measure.cost * selected[i]
-	row_content = [measure.name, measure.cost, "/"+measure.unit, measure.min_cell, selected[i], subtotal, measure.time]
+	row_content = [measure.name, measure.cost, "/"+measure.unit, selected[i], subtotal, measure.time]
 	_x = 0
 	for(var j=0; j<array_length(column_headers); j++) {
 		if j == 0 { // draw measure titles in bold, all others non-bolded
 			draw_set_font(fTooltipBold)
 		} else draw_set_font(fTooltip)
-		if j == 3 or j == 4 { // draw single digits in the center instead of left-justified
+		if j == 3 { // draw single digits in the center instead of left-justified
 			draw_set_halign(fa_center) 
 			text_x = _x+(column_widths[j]/2)
 		} else { 
 			draw_set_halign(fa_left) 
 			text_x = _x+8
 		}
-		if j == 4 { // draw selection buttons
+		if j == 3 { // draw selection buttons
 			draw_line_color(_x+32,row_y,_x+32,row_y+row_height,c_black,c_black)
 			draw_text(_x+16,row_y+(row_height/2),"-")
 			draw_line_color(_x+column_widths[j]-32,row_y,_x+column_widths[j]-32,row_y+row_height,c_black,c_black)
