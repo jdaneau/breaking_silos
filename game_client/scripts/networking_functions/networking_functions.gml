@@ -37,3 +37,30 @@ function send_struct(message_id,struct) {
 	buffer_write(buffer,buffer_string,text)
 	network_send_packet(objOnline.socket,buffer,buffer_tell(buffer))
 }
+
+/// @param {int} message_id : numeric ID of the message to send
+/// @param {array} data : array containing structs representing the different messages to send. 
+function send_compound(message_id,data) {
+	var buffer = objOnline.client_buffer;
+	buffer_seek(buffer,buffer_seek_start,0)
+	buffer_write(buffer,buffer_u8,message_id)
+	for(var i=0; i<array_length(data); i++) {
+		var type = data[i].type;
+		switch type {
+			case "string":
+				buffer_write(buffer,buffer_string,data[i].content)
+				break;
+			case "int":
+				buffer_write(buffer,buffer_u32,data[i].content)
+				break;
+			case "float":
+				buffer_write(buffer,buffer_f32,data[i].content)
+				break;
+			case "struct":
+				var text = json_stringify(data[i].content);
+				buffer_write(buffer,buffer_string,text)
+				break;
+		}
+	}
+	network_send_packet(objOnline.socket,buffer,buffer_tell(buffer))
+}

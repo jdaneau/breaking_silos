@@ -1,3 +1,14 @@
+var network_type = async_load[? "type"];
+
+if network_type == network_type_non_blocking_connect {
+	if async_load[? "succeeded"] == 0 {
+		show_message("Connection to server failed. Retrying...")
+		game_restart()
+	} else {
+		connected = true	
+	}
+}
+
 if async_load[? "type"] != network_type_data {
 	show_debug_message(	async_load[? "type"])
 	exit;
@@ -13,11 +24,6 @@ switch(message_type) {
 	case MESSAGE.ANNOUNCEMENT: //server announcement
 		_msg = buffer_read(packet,buffer_string);
 		chat_add(string("Server announcement: {0}",_msg))
-	break;
-	
-	case MESSAGE.CONNECT: //user connects
-		_name = buffer_read(packet,buffer_string);
-		chat_add(string("{0} has connected.",_name))
 	break;
 	
 	case MESSAGE.DISCONNECT: //user disconnects
@@ -56,5 +62,15 @@ switch(message_type) {
 	
 	case MESSAGE.END_DISCUSSION:
 		with objController end_discussion()
+	break;
+	
+	case MESSAGE.CREATE_GAME:
+		//room_goto(rLobby)
+		lobby_id = buffer_read(packet,buffer_string)
+		show_debug_message(lobby_id)
+	break;
+	
+	default:
+		show_debug_message(string("unknown message ID: {0}",message_type))
 	break;
 }

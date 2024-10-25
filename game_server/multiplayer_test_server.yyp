@@ -34,11 +34,10 @@
   },
   "name":"multiplayer_test_server",
   "resources":[
-    {"id":{"name":"objClient","path":"objects/objClient/objClient.yy",},},
-    {"id":{"name":"objInit","path":"objects/objInit/objInit.yy",},},
     {"id":{"name":"objServer","path":"objects/objServer/objServer.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"id":{"name":"networking_functions","path":"scripts/networking_functions/networking_functions.yy",},},
+    {"id":{"name":"utility_functions","path":"scripts/utility_functions/utility_functions.yy",},},
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",

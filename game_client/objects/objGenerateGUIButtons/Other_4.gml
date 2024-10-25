@@ -8,16 +8,16 @@ switch(global.state.role) {
 		array_push(buttons, btn_open_calculator)
 	break;
 	case ROLE.AGRICULTURE:
-		array_push(buttons, btn_show_population_map, btn_show_agricultural_areas, btn_show_drought_hazard)
+		array_push(buttons, btn_show_population_map, btn_show_agricultural_areas, btn_show_drought_risk)
 	break;
 	case ROLE.CITIZEN:
 		array_push(buttons, btn_show_drought_history, btn_show_flood_history)
 	break;
 	case ROLE.ENGINEER:
-		array_push(buttons, btn_show_flood_hazard, btn_show_cyclone_hazard, btn_show_watersheds)	
+		array_push(buttons, btn_show_flood_risk, btn_show_cyclone_risk, btn_show_watersheds)	
 	break;
 	case ROLE.FLOOD:
-		array_push(buttons, btn_show_flood_hazard, btn_show_drought_hazard)
+		array_push(buttons, btn_show_flood_risk, btn_show_drought_risk)
 	break;
 	case ROLE.HOUSING:
 		array_push(buttons, btn_show_population_map)

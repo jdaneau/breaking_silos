@@ -1,7 +1,7 @@
 metrics = {
-	drought_hazard : 3,
-	flood_hazard : 2,
-	cyclone_hazard: 1,
+	drought_risk : 3,
+	flood_risk : 2,
+	cyclone_risk: 1,
 	population : 350,
 	agriculture : 0,
 	observed_drought : true,

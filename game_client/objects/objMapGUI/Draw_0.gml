@@ -56,8 +56,8 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 		draw_color_rectangle(_x1,_y1,_x2,_y2,c_red,false)
 		draw_set_alpha(1)
 	}
-	if show_drought_hazard {
-		var _hazard = _tile.metrics.drought_hazard;
+	if show_drought_risk {
+		var _hazard = _tile.metrics.drought_risk;
 		if _hazard == 1 { draw_set_alpha(0.2) }
 		else if _hazard == 2 { draw_set_alpha(0.35) }
 		else if _hazard == 3 { draw_set_alpha(0.5) }
@@ -70,8 +70,8 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 		draw_text(_x1+32,_y1+32,string(_hazard))
 		draw_set_color(c_white)
 	}
-	if show_flood_hazard {
-		var _hazard = _tile.metrics.flood_hazard;
+	if show_flood_risk {
+		var _hazard = _tile.metrics.flood_risk;
 		if _hazard == 1 { draw_set_alpha(0.2) }
 		else if _hazard == 2 { draw_set_alpha(0.35) }
 		else if _hazard == 3 { draw_set_alpha(0.5) }
@@ -84,8 +84,8 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 		draw_text(_x1+32,_y1+32,string(_hazard))
 		draw_set_color(c_white)
 	}
-	if show_cyclone_hazard {
-		var _hazard = _tile.metrics.cyclone_hazard;
+	if show_cyclone_risk {
+		var _hazard = _tile.metrics.cyclone_risk;
 		if _hazard == 1 { draw_set_alpha(0.2) }
 		else if _hazard == 2 { draw_set_alpha(0.35) }
 		else if _hazard == 3 { draw_set_alpha(0.5) }

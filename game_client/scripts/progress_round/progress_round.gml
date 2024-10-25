@@ -128,15 +128,12 @@ function relocate_and_grow_population(finished_projects) {
 	}
 	
 	//natural population growth
-	show_debug_message("time passed: "+string(years_passed));
-	var old_pop = get_total_population();
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];
 		//assuming random growth between 0.1-0.5% per year
 		var growth_factor = 1 + (random_range(0.001,0.005) * years_passed);
 		_tile.metrics.population = round(_tile.metrics.population * growth_factor)
 	}
-	var new_pop = get_total_population();
 }
 
 function set_new_affected_area() {
@@ -161,13 +158,13 @@ function set_new_affected_area() {
 	var map_key = "";
 	switch(global.state.disaster) {
 		case "cyclone":
-			map_key = "cyclone_hazard"
+			map_key = "cyclone_risk"
 		break;
 		case "flood":
-			map_key = "flood_hazard"
+			map_key = "flood_risk"
 		break;
 		case "drought":
-			map_key = "drought_hazard"
+			map_key = "drought_risk"
 		break;
 	}
 	var blob = blob_array[irandom(4)];
@@ -177,7 +174,7 @@ function set_new_affected_area() {
 	var best_spot;
 	var best_score = 0;
 	
-	//find the spot that maximizes hazard by rotating the chosen blob around and overlaying it on the map at different points
+	//find the spot that maximizes risk by rotating the chosen blob around and overlaying it on the map at different points
 	for(var i=0; i<4; i++) {
 		for(var j=0; j<array_length(candidate_spots); j++) {
 			var _score = 0;
@@ -226,19 +223,19 @@ function get_disaster_center() {
 	var map_key = "";
 	switch(global.state.disaster) {
 		case "cyclone":
-			map_key = "cyclone_hazard"
+			map_key = "cyclone_risk"
 		break;
 		case "flood":
-			map_key = "flood_hazard"
+			map_key = "flood_risk"
 		break;
 		case "drought":
-			map_key = "drought_hazard"
+			map_key = "drought_risk"
 		break;
 	}
 	var candidate_tiles = [];
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var tile = global.map.land_tiles[i];
-		// insert n copies of the tile into candidate array, where n is the tile's hazard value for the given disaster
+		// insert n copies of the tile into candidate array, where n is the tile's risk value for the given disaster
 		repeat tile.metrics[$ map_key] {
 			array_push(candidate_tiles,tile);	
 		}

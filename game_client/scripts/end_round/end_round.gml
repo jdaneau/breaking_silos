@@ -194,7 +194,7 @@ function update_map_measures(finished_projects) {
 			//decrease flood risk on downstream tiles (max of 3)
 			while(get_downstream_tile(cur_tile) != noone and n_dammed < 3) {
 				cur_tile.dammed = true
-				cur_tile.metrics.flood_hazard = clamp(cur_tile.metrics.flood_hazard-1, 0,3)
+				cur_tile.metrics.flood_risk = clamp(cur_tile.metrics.flood_risk-1, 0,3)
 				cur_tile = get_downstream_tile(cur_tile)
 				n_dammed++
 			}
@@ -202,7 +202,7 @@ function update_map_measures(finished_projects) {
 			var upstream_tiles = get_upstream_tiles(tile);
 			for(var t=0; t<array_length(upstream_tiles); t++) {
 				var up_tile = upstream_tiles[t];
-				up_tile.metrics.flood_hazard = clamp(up_tile.metrics.flood_hazard+1, 0,5)
+				up_tile.metrics.flood_risk = clamp(up_tile.metrics.flood_risk+1, 0,5)
 			}
 		}
 	
@@ -382,6 +382,11 @@ function update_population_loss(finished_projects) {
 				}
 				
 				break;
+		}
+		
+		//losses from unrepaired buildings
+		if global.map.buildings_grid[tile.x div 64, tile.y div 64] == -1 {
+			loss_rate *= 2	
 		}
 		
 		//losses from hospital access

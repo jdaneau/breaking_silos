@@ -22,9 +22,9 @@ tooltip = ""
 map_surface = surface_create(global.map.width,global.map.height)
 
 //information layers
-show_drought_hazard = false
-show_flood_hazard = false
-show_cyclone_hazard = false
+show_drought_risk = false
+show_flood_risk = false
+show_cyclone_risk = false
 show_watersheds = false
 show_agriculture = false
 show_population = false
@@ -33,9 +33,9 @@ show_drought_history = false
 layer_caption = ""
 
 reset_info_layers = function() { 
-	show_drought_hazard = false
-	show_flood_hazard = false
-	show_cyclone_hazard = false
+	show_drought_risk = false
+	show_flood_risk = false
+	show_cyclone_risk = false
 	show_watersheds = false
 	show_agriculture = false
 	show_population = false

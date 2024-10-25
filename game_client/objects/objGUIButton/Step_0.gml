@@ -1,0 +1,1 @@
+if !objOnline.connected or global.mouse_depth < depth hover = false

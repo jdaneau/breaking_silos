@@ -16,4 +16,3 @@ enum LAND_TILE {
 }
 
 image_speed=0
-mouse_on = false

@@ -1,13 +1,19 @@
 enum MESSAGE {
-	ANNOUNCEMENT = 1,
-	QUERY = 3,
-	CONNECT = 4,
-	DISCONNECT = 5,
-	CHAT = 6,
-	TIME = 10,
-	MAP = 11,
-	STATE = 12,
-	END_DISCUSSION = 21,
+	CONNECT = 1,
+	DISCONNECT = 2,
+	CREATE_GAME = 3,
+	JOIN_GAME = 4,
+	LEAVE_GAME = 5,
+	ANNOUNCEMENT = 6,
+	SET_NAME = 7,
+	GET_NAME = 8,
+	GET_LOBBIES = 9,
+	GET_PLAYERS = 10,
+	CHAT = 21,
+	TIME = 22,
+	MAP = 23,
+	STATE = 24,
+	END_DISCUSSION = 31,
 }
 
 var socket_type = network_socket_ws;
@@ -25,4 +31,5 @@ socket = network_create_socket(socket_type)
 network_connect_async(socket,server_ip,port)
 client_buffer = buffer_create(1024,buffer_fixed,1)
 
-name_msg = get_string_async("Name?","")
+connected = false
+lobby_id = ""

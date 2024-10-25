@@ -1,32 +1,32 @@
 ///define buttons
 
-btn_show_drought_hazard = {
+btn_show_drought_risk = {
 			text : "Show Drought Hazard",
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_drought_hazard = true }
-				} else with objMapGUI show_drought_hazard = false
+					with objMapGUI { show_drought_risk = true }
+				} else with objMapGUI show_drought_risk = false
 			}	
 		}
 		
-btn_show_flood_hazard = {
+btn_show_flood_risk = {
 			text : "Show Flood Hazard",
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_flood_hazard = true }
-				} else with objMapGUI show_flood_hazard = false
+					with objMapGUI { show_flood_risk = true }
+				} else with objMapGUI show_flood_risk = false
 			}	
 		}
 		
-btn_show_cyclone_hazard = {
+btn_show_cyclone_risk = {
 			text : "Show Cyclone Hazard",
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_cyclone_hazard = true }
-				} else with objMapGUI show_cyclone_hazard = false
+					with objMapGUI { show_cyclone_risk = true }
+				} else with objMapGUI show_cyclone_risk = false
 			}	
 		}
 		
