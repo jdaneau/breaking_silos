@@ -1,6 +1,6 @@
 /// @function get_total_population(format)
 /// @description Returns the total population of all tiles in the global map
-/// @param {string} format Format to return the population in. "raw":integer number, "thousands":divide total by 1000, "millions":divide total by 1 million
+/// @param {string} format : Format to return the population in. "raw":integer number, "thousands":divide total by 1000, "millions":divide total by 1 million
 function get_total_population(format="raw",include_evacuated=true) {
 	var _pop = 0;
 	for(i=0; i<array_length(global.map.land_tiles); i++) {
@@ -69,7 +69,7 @@ function get_n_damaged_airports() {
 }
 
 /// @function aid_conditions_met()
-/// @ description Returns true if the global aid conditions for the last round were met
+/// @description Returns true if the global aid conditions for the last round were met
 function aid_conditions_met() {
 	return (global.state.aid_objectives.agriculture 
 		 && global.state.aid_objectives.airport
@@ -99,9 +99,9 @@ function is_coastal(_x,_y) {
 
 /// @function coords_to_grid(_i,_j,real_coords=true)
 /// @description Converts numeric coordinates to a number-letter grid system (e.g. [1, 2] to B3). Defaults to a 64x64 grid.
-/// @param _i {int} x-coordinate to convert to column number  
-/// @param _j {int} y-coordinate to convert to row number
-/// @param {bool} real_coords Whether input coordinates are absolute (true) or grid-based (false)
+/// @param {real} _i : x-coordinate to convert to column number  
+/// @param {real} _j : y-coordinate to convert to row number
+/// @param {bool} real_coords : Whether input coordinates are absolute (true) or grid-based (false)
 function coords_to_grid(_i,_j,real_coords=true) {
 	if real_coords {
 		_i = _i div 64;
@@ -112,8 +112,8 @@ function coords_to_grid(_i,_j,real_coords=true) {
 }
 /// @function grid_to_coords(_cell,real_coords=true)
 /// @description Converts number-letter grid coordinates to numeric coordinates (e.g. B3 to [1,2]). Defaults to a 64x64 grid.
-/// @param _cell {string} string representation of the grid coordinates to be converted
-/// @param {bool} real_coords Whether input coordinates are absolute (true) or grid-based (false)
+/// @param {string} _cell : string representation of the grid coordinates to be converted
+/// @param {bool} real_coords : Whether input coordinates are absolute (true) or grid-based (false)
 function grid_to_coords(_cell,real_coords=true) {
 	var _alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	var _i = string_pos(string_char_at(_cell,1),_alpha) - 1; //string indices in GM start at 1, not 0
@@ -149,7 +149,7 @@ function tile_from_square(_square) {
 
 /// @function get_tiles_in_watershed(watershed_id)
 /// @description Returns an array containing all the tile structs that exist in a given watershed on the map
-/// @param watershed_id {int} numeric id of the watershed (starting from 1)
+/// @param {real} watershed_id : numeric id of the watershed (starting from 1)
 function get_tiles_in_watershed(watershed_id) {
 	var _tiles = [];
 	for(i=0; i<array_length(global.map.land_tiles); i++) {
@@ -219,8 +219,8 @@ function get_upstream_tiles(_tile) {
 
 /// @function is_implementing(tile,_measure)
 /// @description Returns true if a given measure is already in the procress of being implemented on the provided cell
-/// @param tile {struct} Struct representing the cell
-/// @param _measure {int} ID of the measure type to check
+/// @param {struct} tile : Struct representing the cell
+/// @param {real} _measure : ID of the measure type to check
 function is_implementing(tile,_measure) {
 	for(var i=0; i<array_length(tile.in_progress); i++) {
 		if tile.in_progress[i].measure == _measure { return true }

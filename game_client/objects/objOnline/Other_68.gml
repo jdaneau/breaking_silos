@@ -7,9 +7,14 @@ if network_type == network_type_non_blocking_connect {
 	} else {
 		connected = true	
 	}
+	exit;
 }
-
-if async_load[? "type"] != network_type_data {
+else if network_type == network_type_disconnect {
+	show_message("Disconnected from server.")
+	game_restart()
+	exit;
+}
+else if network_type != network_type_data {
 	show_debug_message(	async_load[? "type"])
 	exit;
 }
@@ -67,7 +72,20 @@ switch(message_type) {
 	case MESSAGE.CREATE_GAME:
 		//room_goto(rLobby)
 		lobby_id = buffer_read(packet,buffer_string)
-		show_debug_message(lobby_id)
+	break;
+	
+	case MESSAGE.GET_LOBBIES:
+		if room == rJoinGame {
+			if instance_exists(objLobbyMenu) {
+				var n = buffer_read(packet,buffer_u8);
+				objLobbyMenu.lobbies = [];
+				for(var i=0; i<n; i++) {
+					array_push(objLobbyMenu.lobbies, receive_struct(packet))
+				}
+				objLobbyMenu.scroll = 0
+			}
+			else send(MESSAGE.GET_LOBBIES)
+		}
 	break;
 	
 	default:

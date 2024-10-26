@@ -51,7 +51,8 @@ switch(type_event){
 				ds_map_add(lobbies,lobby_id,{
 					name : name,
 					settings : data,
-					players : ds_map_create()
+					players : ds_map_create(),
+					state : "lobby"
 				})
 				sockets[? socket] = lobby_id
 				ds_map_add(lobbies[? lobby_id].players, socket, "player1")
@@ -104,7 +105,19 @@ switch(type_event){
 			break;
 			
 			case MESSAGE.GET_LOBBIES:
-				var lobby_list = ds_map_values_to_array(lobbies);
+				var lobby_list = [];
+				var keys = ds_map_keys_to_array(lobbies);
+				for(var i=0; i<ds_map_size(lobbies); i++) {
+					var key = keys[i];
+					var _lobby = lobbies[? key];
+					var lobby_struct = {
+						name : _lobby.name,
+						settings : _lobby.settings,
+						players : ds_map_values_to_array(_lobby.players),
+						open : (_lobby.state == "lobby")
+					};
+					array_push(lobby_list, lobby_struct)
+				}
 				send_array(socket,MESSAGE.GET_LOBBIES,"struct",lobby_list)
 			break;
 			

@@ -38,7 +38,7 @@ function send_struct(message_id,struct) {
 	network_send_packet(objOnline.socket,buffer,buffer_tell(buffer))
 }
 
-/// @param {int} message_id : numeric ID of the message to send
+/// @param {real} message_id : numeric ID of the message to send
 /// @param {array} data : array containing structs representing the different messages to send. 
 function send_compound(message_id,data) {
 	var buffer = objOnline.client_buffer;
@@ -63,4 +63,9 @@ function send_compound(message_id,data) {
 		}
 	}
 	network_send_packet(objOnline.socket,buffer,buffer_tell(buffer))
+}
+
+function receive_struct(buffer) {
+	var _json = buffer_read(buffer, buffer_string);
+	return json_parse(_json)
 }
