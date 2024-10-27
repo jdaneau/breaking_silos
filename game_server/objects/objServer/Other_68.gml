@@ -1,6 +1,8 @@
 var type_event = async_load[? "type"];
 var socket, sock, cid, did, buffer, message_id, findsocket, name, data, value, lobby_id, playernames;
 
+try {
+
 switch(type_event){
 	case network_type_connect:
 		socket = async_load[? "socket"]
@@ -9,13 +11,18 @@ switch(type_event){
 	
 	case network_type_disconnect:
 		socket = async_load[? "socket"]
-		lobby_id = sockets[? socket];
-		if lobby_id != "" {
-			name = ds_map_find_value(lobbies[? lobby_id].players,socket)
-			send_to_others(socket,MESSAGE.DISCONNECT,buffer_string,name)
-			ds_map_delete(lobbies[? lobby_id].players, socket)
-			if ds_map_size(lobbies[? lobby_id].players) == 0 {
-				ds_map_delete(lobbies, lobby_id)	
+		var lobby_ids = ds_map_keys_to_array(lobbies);
+		for(var i=0; i<array_length(lobby_ids); i++) {
+			var lobby = lobbies[? lobby_ids[i]];
+			if ds_map_exists(lobby.players, socket) {
+				name = ds_map_find_value(lobby.players,socket)
+				sockets[? socket] = lobby_ids[i]
+				send_to_others(socket,MESSAGE.DISCONNECT,buffer_string,name)
+				ds_map_delete(lobby.players, socket)
+				if ds_map_size(lobby.players) == 0 {
+					ds_map_destroy(lobby.players)
+					ds_map_delete(lobbies, lobby_ids[i])	
+				}
 			}
 		}
 		ds_map_delete(sockets, socket)
@@ -45,8 +52,6 @@ switch(type_event){
 			case MESSAGE.CREATE_GAME:
 				name = buffer_read(buffer,buffer_string)
 				data = receive_struct(buffer)
-				show_debug_message(name)
-				show_debug_message(data)
 				do lobby_id = random_id() until !ds_map_exists(lobbies,lobby_id)
 				ds_map_add(lobbies,lobby_id,{
 					name : name,
@@ -132,4 +137,13 @@ switch(type_event){
 			break;
 		}
 	break;
+}
+
+}
+catch( _exception)
+{
+    show_debug_message(_exception.message);
+    show_debug_message(_exception.longMessage);
+    show_debug_message(_exception.script);
+    show_debug_message(_exception.stacktrace);
 }

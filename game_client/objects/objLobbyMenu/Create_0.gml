@@ -1,8 +1,21 @@
 lobbies = []
 
-w = sprite_width - 64
-h = sprite_height
+w = sprite_width - 72
+h = sprite_height - 32
 surf_h = round(sprite_height / 3 * 10)
 surf = surface_create(w,surf_h)
 
 scroll = 0
+max_scroll = 0
+
+row_w = w-8
+row_h = round((h-64) / 3)
+row_sep = 16
+
+scroll_click = false
+scroll_mouse_y = 0
+
+mouse_surf_x = 0
+mouse_surf_y = 0
+
+button_click = []

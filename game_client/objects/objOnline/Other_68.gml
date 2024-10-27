@@ -23,6 +23,8 @@ var packet = async_load[? "buffer"];
 var _name, _msg;
 buffer_seek(packet,buffer_seek_start,0)
 
+try {
+
 var message_type = buffer_read(packet,buffer_u8);
 
 switch(message_type) {
@@ -91,4 +93,13 @@ switch(message_type) {
 	default:
 		show_debug_message(string("unknown message ID: {0}",message_type))
 	break;
+}
+
+}
+catch( _exception)
+{
+    show_debug_message(_exception.message);
+    show_debug_message(_exception.longMessage);
+    show_debug_message(_exception.script);
+    show_debug_message(_exception.stacktrace);
 }

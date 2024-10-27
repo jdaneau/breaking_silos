@@ -7,6 +7,11 @@ if active {
 		}
 		keyboard_string = ""
 	}
+	if keyboard_check_pressed(vk_backspace) {
+		if string_length(text) > 1 {
+			text = string_copy(text,1,string_length(text)-1)
+		} else text = ""
+	}
 }
 
 draw_set_alpha(0.5)
