@@ -82,7 +82,7 @@ for(var i=0; i<n; i++) {
 		}
 		if mouse_check_released(mb_left) and button_click[i] {
 			if lobby.open {
-				//join lobby	
+				send_string(MESSAGE.JOIN_GAME, lobby.lobby_id)
 			}
 		}
 	} else hover = false

@@ -9,6 +9,7 @@ enum MESSAGE {
 	GET_NAME = 8,
 	GET_LOBBIES = 9,
 	GET_PLAYERS = 10,
+	START_GAME = 11,
 	CHAT = 21,
 	TIME = 22,
 	MAP = 23,

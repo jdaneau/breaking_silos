@@ -19,3 +19,12 @@ function get_lobby_sockets(socket,inclusive=true) {
 function num_players(lobby_id) {
 	return ds_map_size(objServer.lobbies[? lobby_id].players)	
 }
+
+function player_names(lobby) {
+	var names = [];
+	var structs = ds_map_values_to_array(lobby.players);
+	for(var i=0; i<array_length(structs); i++) {
+		array_push(names,structs[i].name)	
+	}
+	return names
+}

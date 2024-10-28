@@ -95,6 +95,7 @@
     {"id":{"name":"rInGame","path":"rooms/rInGame/rInGame.yy",},},
     {"id":{"name":"rInit","path":"rooms/rInit/rInit.yy",},},
     {"id":{"name":"rJoinGame","path":"rooms/rJoinGame/rJoinGame.yy",},},
+    {"id":{"name":"rLobby","path":"rooms/rLobby/rLobby.yy",},},
     {"id":{"name":"rMap01","path":"rooms/rMap01/rMap01.yy",},},
     {"id":{"name":"rMap02","path":"rooms/rMap02/rMap02.yy",},},
     {"id":{"name":"rRoundResults","path":"rooms/rRoundResults/rRoundResults.yy",},},
@@ -183,6 +184,7 @@
     {"roomId":{"name":"rMap02","path":"rooms/rMap02/rMap02.yy",},},
     {"roomId":{"name":"rCreateGame","path":"rooms/rCreateGame/rCreateGame.yy",},},
     {"roomId":{"name":"rJoinGame","path":"rooms/rJoinGame/rJoinGame.yy",},},
+    {"roomId":{"name":"rLobby","path":"rooms/rLobby/rLobby.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

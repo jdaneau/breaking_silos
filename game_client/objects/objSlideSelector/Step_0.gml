@@ -1,4 +1,4 @@
-if mouse_check(mb_left) and global.mouse_depth >= depth {
+if mouse_check(mb_left) {
 	if coords_in(mouse_x,mouse_y,x,y,x+sprite_width,y+sprite_height) {
 		if mouse_check_pressed(mb_left) mouse_on = true	
 		

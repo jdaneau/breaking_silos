@@ -1,5 +1,5 @@
 var type_event = async_load[? "type"];
-var socket, sock, cid, did, buffer, message_id, findsocket, name, data, value, lobby_id, playernames;
+var socket, sock, cid, did, buffer, message_id, findsocket, name, data, value, lobby_id, playernames, role;
 
 try {
 
@@ -15,7 +15,7 @@ switch(type_event){
 		for(var i=0; i<array_length(lobby_ids); i++) {
 			var lobby = lobbies[? lobby_ids[i]];
 			if ds_map_exists(lobby.players, socket) {
-				name = ds_map_find_value(lobby.players,socket)
+				name = ds_map_find_value(lobby.players,socket).name
 				sockets[? socket] = lobby_ids[i]
 				send_to_others(socket,MESSAGE.DISCONNECT,buffer_string,name)
 				ds_map_delete(lobby.players, socket)
@@ -60,7 +60,7 @@ switch(type_event){
 					state : "lobby"
 				})
 				sockets[? socket] = lobby_id
-				ds_map_add(lobbies[? lobby_id].players, socket, "player1")
+				ds_map_add(lobbies[? lobby_id].players, socket, {name:"player1",role:""})
 				send(socket,MESSAGE.CREATE_GAME,buffer_string,lobby_id)
 			break;
 			
@@ -70,8 +70,8 @@ switch(type_event){
 				if ds_map_exists(lobbies, lobby_id) and n_players < max_per_lobby {
 					name = string("player{0}",n_players+1)
 					sockets[? socket] = lobby_id
-					ds_map_add(lobbies[? lobby_id].players, socket, name)
-					var playerlist = ds_map_values_to_array(lobbies[? lobby_id].players);
+					ds_map_add(lobbies[? lobby_id].players, socket, {name:name,role:""})
+					var playerlist = player_names(lobbies[? lobby_id]);
 					send_array(socket,MESSAGE.JOIN_GAME,"string",playerlist)
 					send_to_others(socket,MESSAGE.JOIN_GAME,buffer_string,name)
 				}
@@ -81,7 +81,7 @@ switch(type_event){
 			case MESSAGE.LEAVE_GAME:
 				lobby_id = sockets[? socket];
 				if lobby_id != "" {
-					name = ds_map_find_value(lobbies[? lobby_id].players,socket)
+					name = ds_map_find_value(lobbies[? lobby_id].players,socket).name
 					send_to_others(socket,MESSAGE.LEAVE_GAME,buffer_string,name)
 					ds_map_delete(lobbies[? lobby_id].players, socket)
 					if ds_map_size(lobbies[? lobby_id].players) == 0 {
@@ -93,19 +93,20 @@ switch(type_event){
 			case MESSAGE.SET_NAME:
 				name = buffer_read(buffer,buffer_string)
 				lobby_id = sockets[? socket]
-				if ds_map_exists(lobies[? lobby_id].players,name) {
+				if array_contains(player_names(lobbies[? lobby_id]),name) {
 					send(socket,MESSAGE.SET_NAME,buffer_bool,false) //error, name already exists
 					break;
 				}
-				ds_map_replace(lobbies[? lobby_id].players,socket,name)
-				playernames = ds_map_values_to_array(lobbies[? lobby_id].players)
+				role = lobbies[? lobby_id].players.role
+				ds_map_replace(lobbies[? lobby_id].players,socket,{name:name,role:role})
+				playernames = player_names(lobbies[? lobby_id])
 				send(socket,MESSAGE.SET_NAME,buffer_bool,true)
 				send_array(socket,MESSAGE.GET_PLAYERS,"string",playernames,true,true)
 			break;
 			
 			case MESSAGE.GET_NAME:
 				lobby_id = sockets[? socket]
-				name = ds_map_find_value(lobbies[? lobby_id].players,socket)
+				name = ds_map_find_value(lobbies[? lobby_id].players,socket).name
 				send(socket, MESSAGE.GET_NAME, buffer_string, name)
 			break;
 			
@@ -117,6 +118,7 @@ switch(type_event){
 					var _lobby = lobbies[? key];
 					var lobby_struct = {
 						name : _lobby.name,
+						lobby_id : key,
 						settings : _lobby.settings,
 						players : ds_map_values_to_array(_lobby.players),
 						open : (_lobby.state == "lobby")
@@ -128,8 +130,18 @@ switch(type_event){
 			
 			case MESSAGE.GET_PLAYERS:
 				lobby_id = sockets[? socket]
-				playernames = ds_map_values_to_array(lobbies[? lobby_id].players)
+				playernames = player_names(lobbies[? lobby_id])
 				send_array(socket,MESSAGE.GET_PLAYERS,"string",playernames)
+			break;
+			
+			case MESSAGE.START_GAME:
+				lobby_id = sockets[? socket];
+				var lobby_players = ds_map_values_to_array(lobbies[? lobby_id].players);
+				var found_president = array_find_index(lobby_players,function(p){ return p.role == "President" });
+				if found_president >= 0 {
+					send_to_all(socket,MESSAGE.START_GAME,buffer_bool,true)
+					lobbies[? lobby_id].state = "ingame"
+				} else send(socket,MESSAGE.START_GAME,buffer_bool,false) //no president, don't start game
 			break;
 			
 			default:

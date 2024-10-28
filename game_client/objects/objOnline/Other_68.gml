@@ -90,6 +90,43 @@ switch(message_type) {
 		}
 	break;
 	
+	case MESSAGE.GET_PLAYERS:
+		var n_players = buffer_read(packet,buffer_u8);
+		players = []
+		for(var i=0; i<n_players; i++) {
+			array_push(players,buffer_read(packet,buffer_string))
+		}
+	break;
+	
+	case MESSAGE.JOIN_GAME:
+		//joining a lobby
+		if room == rJoinGame {
+			var n_players = buffer_read(packet,buffer_u8);
+			if n_players > 0 {
+				players = []
+				for (var i=0; i<n_players; i++) {
+					array_push(players, buffer_read(packet,buffer_string))	
+				}
+				connected = true
+				//room_goto(rLobby)
+			}
+			else open_dialog_info("Unable to join lobby. Refresh and try again!")
+		}
+		//other player joins 
+		else if room == rInGame  {
+			var player_name = buffer_read(packet,buffer_string);
+			chat_add(string("{0} has joined the game.",player_name))
+			array_push(players, player_name)
+		}
+	break;
+	
+	case MESSAGE.LEAVE_GAME:
+		var player_name = buffer_read(packet,buffer_string);
+		var ind = array_get_index(players, player_name);
+		if (ind >= 0 ) array_delete(players,ind,1)
+		chat_add(string("{0} has left the game.",player_name))
+	break;
+	
 	default:
 		show_debug_message(string("unknown message ID: {0}",message_type))
 	break;

@@ -82,7 +82,7 @@ sep = 32
 chat_scroll = 0
 mouse_on = false
 
-chat_add = function(msg) {
+function chat_add(msg) {
 	objSidebarGUIChat.chat_scroll = 0
     array_push(objSidebarGUIChat.chat,msg)
 }

@@ -18,4 +18,4 @@ else if coords_in(mouse_x,mouse_y,x,y,x+sprite_width,y+sprite_height) {
 }
 
 mouse_surf_x = mouse_x - (x+16)
-mouse_surf_y = mouse_y - (y+16)
+mouse_surf_y = mouse_y - (y+16) + scroll

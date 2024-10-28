@@ -1,6 +1,6 @@
 var box_size = sprite_height;
 
-if mouse_check_pressed(mb_left) and global.mouse_depth >= depth {
+if mouse_check_pressed(mb_left) {
 	//left arrow
 	if coords_in(mouse_x,mouse_y,x,y,x+box_size,y+box_size) {
 		index--
