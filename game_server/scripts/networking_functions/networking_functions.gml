@@ -87,3 +87,32 @@ function send_array(socket,message_id,datatype,array,to_group=false,inclusive=fa
 		network_send_packet(sock,objServer.server_buffer,buffer_tell(objServer.server_buffer))
 	}
 }
+
+function send_compound(socket,message_id,data,to_group=false,inclusive=false) {
+	var sockets = [socket];
+	if to_group { sockets = get_lobby_sockets(socket,inclusive) }
+	buffer_seek(objServer.server_buffer,buffer_seek_start,0)
+	buffer_write(objServer.server_buffer,buffer_u8,message_id)
+	for(var i=0; i<array_length(sockets); i++) {
+		var sock = sockets[i];
+		for(var j=0; j<array_length(data); j++) {
+			var type = data[j].type;
+			switch type {
+				case "string":
+					buffer_write(objServer.server_buffer,buffer_string,data[j].content)
+					break;
+				case "int":
+					buffer_write(objServer.server_buffer,buffer_u32,data[j].content)
+					break;
+				case "float":
+					buffer_write(objServer.server_buffer,buffer_f32,data[j].content)
+					break;
+				case "struct":
+					var text = json_stringify(data[j].content);
+					buffer_write(objServer.server_buffer,buffer_string,text)
+					break;
+			}
+		}
+		network_send_packet(sock,objServer.server_buffer,buffer_tell(objServer.server_buffer))
+	}
+}

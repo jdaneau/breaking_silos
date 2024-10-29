@@ -1,4 +1,5 @@
 info_spr = noone
+scale=1
 
 switch global.state.role {
 	case ROLE.PRESIDENT:

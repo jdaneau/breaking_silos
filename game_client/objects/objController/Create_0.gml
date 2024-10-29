@@ -10,7 +10,8 @@ enum ROLE {
 	HOUSING,
 	ENGINEER,
 	FLOOD,
-	CITIZEN
+	CITIZEN,
+	NONE
 }
 
 enum MEASURE {
@@ -78,31 +79,46 @@ global.state = {
 //roles
 global.roles = ds_map_create()
 ds_map_add(global.roles, ROLE.PRESIDENT, {
-	name:"President"	
+	name:"President",
+	description:"The Decision Maker"
 })
 ds_map_add(global.roles, ROLE.FINANCE, {
-	name:"Minister of Finance"	
+	name:"Minister of Finance",
+	description:"The Accountant"
 })
 ds_map_add(global.roles, ROLE.AGRICULTURE, {
-	name:"Agricultural Representative"	
+	name:"Agricultural Representative",
+	description:"Voice of the Farmers"
 })
 ds_map_add(global.roles, ROLE.CITIZEN, {
-	name:"Citizen Representative"	
+	name:"Citizen Representative",
+	description:"Voice of the Locals"
 })
 ds_map_add(global.roles, ROLE.ENGINEER, {
-	name:"Engineer"	
+	name:"Engineer",
+	description:"Logistics Expert"
 })
 ds_map_add(global.roles, ROLE.FLOOD, {
-	name:"National Flood Coordinator"	
+	name:"National Flood Coordinator",
+	description:"Expert on Flood Prevention"
 })
 ds_map_add(global.roles, ROLE.HOUSING, {
-	name:"National Housing Chief"	
+	name:"National Housing Chief",
+	description:"Head of Urban Development"
 })
 ds_map_add(global.roles, ROLE.INTERNATIONAL, {
-	name:"International Aid Representative"	
+	name:"International Aid Representative",
+	description:"Head of Emergency Response"
 })
-role_ids = ds_map_keys_to_array(global.roles)
-role_id_index = array_find_index(role_ids,function(_value,_index){return _value == global.state.role})
+function get_role_id(role_name) {
+	var roles = ds_map_keys_to_array(global.roles);
+	for(var i=0; i<array_length(roles); i++) {
+		if global.roles[? roles[i]].name == role_name {
+			return roles[i]	
+		}
+	}
+	return ROLE.NONE
+}
 
 //measures that can be taken throughout the game
 global.measures = ds_map_create()

@@ -30,12 +30,21 @@ var message_type = buffer_read(packet,buffer_u8);
 switch(message_type) {
 	case MESSAGE.ANNOUNCEMENT: //server announcement
 		_msg = buffer_read(packet,buffer_string);
-		chat_add(string("Server announcement: {0}",_msg))
+		with objSidebarGUIChat chat_add(string("Server announcement: {0}",_msg))
+	break;
+	
+	case MESSAGE.CHAT:
+		_name = buffer_read(packet,buffer_string);
+		_msg = buffer_read(packet,buffer_string);
+		with objSidebarGUIChat chat_add(string("{0}: {1}",_name,_msg))
 	break;
 	
 	case MESSAGE.DISCONNECT: //user disconnects
 		_name = buffer_read(packet,buffer_string);
 		chat_add(string("{0} has disconnected.",_name))
+		if ds_map_exists(players,_name) {
+			ds_map_delete(players,_name)	
+		}
 	break;
 	
 	case MESSAGE.TIME: //host sends time
@@ -43,13 +52,11 @@ switch(message_type) {
 	break;
 	
 	case MESSAGE.MAP: //host sends map data
-		var map_data = buffer_read(packet,buffer_string);
-		global.map = json_parse(map_data)
+		global.map = receive_struct(packet)
 	break;
 	
 	case MESSAGE.STATE: //host sends state data
-		var state_data = buffer_read(packet,buffer_string);
-		var state_struct = json_parse(state_data);
+		var state_data = receive_struct(packet);
 		global.state.current_round = state_struct.current_round
 		global.state.datetime = state_struct.datetime
 		global.state.current_phase = state_struct.current_phase
@@ -72,8 +79,11 @@ switch(message_type) {
 	break;
 	
 	case MESSAGE.CREATE_GAME:
-		//room_goto(rLobby)
 		lobby_id = buffer_read(packet,buffer_string)
+		connected = true
+		ds_map_clear(players)
+		ds_map_add(players,"player1",ROLE.NONE)
+		room_goto(rLobby)
 	break;
 	
 	case MESSAGE.GET_LOBBIES:
@@ -91,40 +101,59 @@ switch(message_type) {
 	break;
 	
 	case MESSAGE.GET_PLAYERS:
-		var n_players = buffer_read(packet,buffer_u8);
-		players = []
-		for(var i=0; i<n_players; i++) {
-			array_push(players,buffer_read(packet,buffer_string))
+		var n = buffer_read(packet,buffer_u8);
+		ds_map_clear(players)
+		for(var i=0; i<n; i++) {
+			var player = receive_struct(packet);
+			ds_map_add(players,player.name,objController.get_role_id(player.role))
 		}
+		with objGUIText {
+			if room == rLobby event_user(0) //update user list
+		}
+		send(MESSAGE.GET_NAME)
 	break;
 	
 	case MESSAGE.JOIN_GAME:
 		//joining a lobby
-		if room == rJoinGame {
-			var n_players = buffer_read(packet,buffer_u8);
-			if n_players > 0 {
-				players = []
-				for (var i=0; i<n_players; i++) {
-					array_push(players, buffer_read(packet,buffer_string))	
-				}
-				connected = true
-				//room_goto(rLobby)
+		if lobby_id == "" {
+			lobby_id = buffer_read(packet,buffer_string);
+			if lobby_id != "" {
+				send(MESSAGE.GET_NAME)
+				room_goto(rLobby)
 			}
-			else open_dialog_info("Unable to join lobby. Refresh and try again!")
+			else {
+				open_dialog_info("Unable to join lobby. Refresh and try again!")
+			}
 		}
 		//other player joins 
-		else if room == rInGame  {
+		else {
 			var player_name = buffer_read(packet,buffer_string);
-			chat_add(string("{0} has joined the game.",player_name))
-			array_push(players, player_name)
+			with objSidebarGUIChat chat_add(string("{0} has joined the game.",player_name))
+			ds_map_add(players, player_name, ROLE.NONE)
+			with objGUIText {
+				if room == rLobby event_user(0) //update user list
+			}
 		}
 	break;
 	
 	case MESSAGE.LEAVE_GAME:
 		var player_name = buffer_read(packet,buffer_string);
-		var ind = array_get_index(players, player_name);
-		if (ind >= 0 ) array_delete(players,ind,1)
-		chat_add(string("{0} has left the game.",player_name))
+		if ds_map_exists(players, player_name) ds_map_delete(players, player_name)
+		with objSidebarGUIChat chat_add(string("{0} has left the game.",player_name))
+	break;
+	
+	case MESSAGE.GET_NAME:
+		var result = buffer_read(packet, buffer_string);
+		if result != "" {
+			global.state.player_name = result
+		}
+		else open_dialog_info("Error setting name! Please try again.")
+	break;
+	
+	case MESSAGE.SET_NAME:
+		var old_name = buffer_read(packet, buffer_string);
+		var new_name = buffer_read(packet, buffer_string);
+		with objSidebarGUIChat chat_add(string("{0} has changed their name to {1}.",old_name,new_name))
 	break;
 	
 	default:

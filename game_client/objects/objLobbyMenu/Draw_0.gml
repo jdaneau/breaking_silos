@@ -1,3 +1,6 @@
+if room != home_room { exit; }
+if !surface_exists(surf) surf = surface_create(w,surf_h)
+
 //draw main border
 draw_color_rectangle(x,y,x+sprite_width,y+sprite_height,make_color_hsv(color_get_hue(global.colors.myriad_dark_blue),100,200),false)
 draw_gui_border(x,y,x+sprite_width,y+sprite_height)
@@ -82,7 +85,7 @@ for(var i=0; i<n; i++) {
 		}
 		if mouse_check_released(mb_left) and button_click[i] {
 			if lobby.open {
-				send_string(MESSAGE.JOIN_GAME, lobby.lobby_id)
+				with objOnline { send_string(MESSAGE.JOIN_GAME, lobby.lobby_id) }
 			}
 		}
 	} else hover = false

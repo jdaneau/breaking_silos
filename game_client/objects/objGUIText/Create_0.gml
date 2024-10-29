@@ -16,3 +16,4 @@ font=fSidebar
 color=c_black
 
 update = noone
+manual_update = noone

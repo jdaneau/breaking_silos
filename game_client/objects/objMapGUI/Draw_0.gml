@@ -1,4 +1,5 @@
-if room != home_room { exit }
+if room != home_room  { exit }
+if !surface_exists(map_surface) map_surface = surface_create(global.map.width,global.map.height)
 
 var i;
 

@@ -19,3 +19,5 @@ mouse_surf_x = 0
 mouse_surf_y = 0
 
 button_click = []
+
+home_room = room

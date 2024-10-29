@@ -66,6 +66,7 @@
     {"id":{"name":"objHospital","path":"objects/objHospital/objHospital.yy",},},
     {"id":{"name":"objInitMapData","path":"objects/objInitMapData/objInitMapData.yy",},},
     {"id":{"name":"objLobbyMenu","path":"objects/objLobbyMenu/objLobbyMenu.yy",},},
+    {"id":{"name":"objLobbyRole","path":"objects/objLobbyRole/objLobbyRole.yy",},},
     {"id":{"name":"objMapGUI","path":"objects/objMapGUI/objMapGUI.yy",},},
     {"id":{"name":"objMapLegend","path":"objects/objMapLegend/objMapLegend.yy",},},
     {"id":{"name":"objMapTile","path":"objects/objMapTile/objMapTile.yy",},},

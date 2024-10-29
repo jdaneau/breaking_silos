@@ -1,3 +1,9 @@
+if room != home_room {
+	surface_free(surf)
+	instance_destroy()
+	exit
+}
+
 max_scroll = max(0,array_length(lobbies) * (row_h + row_sep) - h)
 
 if !mouse_check(mb_left) scroll_click = false
