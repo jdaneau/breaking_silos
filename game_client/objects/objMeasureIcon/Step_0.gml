@@ -1,3 +1,9 @@
+if room != home_room {
+	if surface_exists(surf) surface_free(surf)
+	instance_destroy()
+	exit
+}
+
 draw_set_halign(fa_left)
 draw_set_valign(fa_top)
 

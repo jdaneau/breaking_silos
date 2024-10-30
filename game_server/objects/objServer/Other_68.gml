@@ -157,6 +157,7 @@ switch(type_event){
 					ds_map_replace(lobbies[? lobby_id].players, socket, {name:name,role:role})
 					lobby_players = ds_map_values_to_array(lobbies[? lobby_id].players);
 					send_array(socket,MESSAGE.GET_PLAYERS,"struct",lobby_players,true,true)
+					send(socket,MESSAGE.JOIN_ROLE,buffer_string,role)
 				}
 			break;
 			
@@ -166,6 +167,7 @@ switch(type_event){
 				ds_map_replace(lobbies[? lobby_id].players, socket, {name:name, role:""})
 				lobby_players = ds_map_values_to_array(lobbies[? lobby_id].players);
 				send_array(socket,MESSAGE.GET_PLAYERS,"struct",lobby_players,true,true)
+				send_id(socket,MESSAGE.LEAVE_ROLE)
 			break;
 			
 			case MESSAGE.START_GAME:
@@ -173,9 +175,14 @@ switch(type_event){
 				lobby_players = ds_map_values_to_array(lobbies[? lobby_id].players);
 				var found_president = array_find_index(lobby_players,function(p){ return p.role == "President" });
 				if found_president >= 0 {
-					send_to_all(socket,MESSAGE.START_GAME,buffer_bool,true)
+					send_to_all(socket, MESSAGE.START_GAME, buffer_string, json_stringify(lobbies[? lobby_id].settings))
 					lobbies[? lobby_id].state = "ingame"
-				} else send(socket,MESSAGE.START_GAME,buffer_bool,false) //no president, don't start game
+				} else send(socket,MESSAGE.START_GAME,buffer_string,"") //no president, don't start game
+			break;
+			
+			case MESSAGE.LOBBY_INFO:
+				lobby_id = sockets[? socket]
+				send(socket, MESSAGE.LOBBY_INFO, buffer_string, json_stringify(lobbies[? lobby_id].settings))
 			break;
 			
 			default:

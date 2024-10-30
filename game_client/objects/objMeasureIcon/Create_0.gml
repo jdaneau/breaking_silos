@@ -15,6 +15,7 @@ draw_x = x-16
 draw_y = y-32
 
 surf = noone
+home_room = room
 
 //for decision phase
 selected = false

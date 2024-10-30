@@ -82,5 +82,6 @@ for (n=0; n<instance_number(objAirport); ++n;) {
 	struct.airport_grid[_x,_y] = 1
 }
 
-global.map = struct
-room_goto(rTitle)
+global.maps[? room] = struct
+if string_starts_with(room_get_name(room_next(room)),"rMap") room_goto_next()
+else room_goto(rTitle)

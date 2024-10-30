@@ -1,8 +1,18 @@
+if room != home_room {
+	exit
+}
+
 if locked {
 	draw_sprite_ext(sprite_index,0,x,y,1,1,0,c_gray,0.7)
 }
 else draw_self()
 
+if !surface_exists(surf) {
+	if max_w > 0 and max_h > 0 {
+		surf = surface_create(max_w,max_h)
+	}
+}
+	
 if h > 1 and w > 1 and surface_exists(surf) {
 	surface_set_target(surf)
 	draw_color_rectangle(0,0,max_w,max_h,c_white,false)

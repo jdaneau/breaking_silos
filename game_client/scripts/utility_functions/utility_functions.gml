@@ -79,3 +79,13 @@ function mouse_check_released(button) {
 	} 
 	return false
 }
+
+function get_role_id(role_name) {
+	var roles = ds_map_keys_to_array(global.roles);
+	for(var i=0; i<array_length(roles); i++) {
+		if global.roles[? roles[i]].name == role_name {
+			return roles[i]	
+		}
+	}
+	return ROLE.NONE
+}

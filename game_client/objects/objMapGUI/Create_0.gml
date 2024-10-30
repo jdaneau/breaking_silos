@@ -48,7 +48,7 @@ reset_info_layers = function() {
 
 //placing mode
 placing = false
-selected_measure = noone
+selected_measure = -1
 
 //list of projects for every tile (for tooltip)
 tile_projects = {}

@@ -47,7 +47,7 @@ if global.mouse_depth >= depth {
 }
 
 //handle placing measures on the map
-if mouse_in_map and placing and selected_measure != noone {
+if mouse_in_map and placing and selected_measure >= 0 {
 	var _mouse_i = clamp(mouse_map_x div 64,0,14);
 	var _mouse_j = clamp(mouse_map_y div 64,0,14);
 	if global.map.land_grid[_mouse_i,_mouse_j] == 1 {
@@ -57,7 +57,7 @@ if mouse_in_map and placing and selected_measure != noone {
 			if (global.state.state_budget - _measure.cost) > 0 and !array_contains(_tile.measures, selected_measure) and array_length(_tile.measures)<9 {
 				array_push(_tile.measures, selected_measure)
 				global.state.state_budget -= _measure.cost
-				var error_status = check_map_placement(selected_measure, _tile);
+				var error_status = check_map_placement(real(selected_measure), _tile);
 				if error_status != "OK" {
 					array_pop(_tile.measures)
 					global.state.state_budget += _measure.cost

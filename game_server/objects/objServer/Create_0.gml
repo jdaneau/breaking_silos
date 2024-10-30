@@ -12,6 +12,7 @@ enum MESSAGE {
 	START_GAME = 11,
 	JOIN_ROLE = 12,
 	LEAVE_ROLE = 13,
+	LOBBY_INFO = 14,
 	CHAT = 21,
 	TIME = 22,
 	MAP = 23,

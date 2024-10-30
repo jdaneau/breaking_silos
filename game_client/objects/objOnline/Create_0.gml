@@ -12,6 +12,7 @@ enum MESSAGE {
 	START_GAME = 11,
 	JOIN_ROLE = 12,
 	LEAVE_ROLE = 13,
+	LOBBY_INFO = 14,
 	CHAT = 21,
 	TIME = 22,
 	MAP = 23,
@@ -36,7 +37,10 @@ client_buffer = buffer_create(1024,buffer_fixed,1)
 
 connected = false
 lobby_id = ""
+lobby_settings = {}
 players = ds_map_create()
+got_map = false
+got_state = false
 
 function get_role_player(role_id) {
 	var _players = ds_map_keys_to_array(objOnline.players);

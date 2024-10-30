@@ -48,16 +48,16 @@ global.time_limits = {
 
 //state of the game
 global.state = {
-	player_name : "Player1",
+	player_name : "",
 	current_round : 1,
 	datetime : date_current_datetime(),
 	current_phase : "menu",
-	seconds_remaining : global.time_limits.discussion,
-	time_remaining : game_get_speed(gamespeed_fps) * global.time_limits.discussion, 
-	state_budget : 30000,
-	base_tax : 10000,
+	seconds_remaining : 0,
+	time_remaining : 0, 
+	state_budget : 0,
+	base_tax : 0,
 	money_spent : 0,
-	role: ROLE.PRESIDENT,
+	role: ROLE.NONE,
 	disaster: "",
 	disaster_intensity: "",
 	affected_tiles : [],
@@ -110,15 +110,6 @@ ds_map_add(global.roles, ROLE.INTERNATIONAL, {
 	name:"International Aid Representative",
 	description:"Head of Emergency Response"
 })
-function get_role_id(role_name) {
-	var roles = ds_map_keys_to_array(global.roles);
-	for(var i=0; i<array_length(roles); i++) {
-		if global.roles[? roles[i]].name == role_name {
-			return roles[i]	
-		}
-	}
-	return ROLE.NONE
-}
 
 //measures that can be taken throughout the game
 global.measures = ds_map_create()

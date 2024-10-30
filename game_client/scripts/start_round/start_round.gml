@@ -1,6 +1,7 @@
 function start_round() {
 	// first round 
 	if global.state.current_round == 1 { 
+		init_state()
 		var first_disaster = get_next_disaster();
 		global.state.disaster = first_disaster.disaster;
 		global.state.disaster_intensity = first_disaster.intensity;
@@ -12,6 +13,17 @@ function start_round() {
 	global.state.measures_implemented = array_create(global.N_MEASURES, 0)
 	global.state.money_spent = 0
 	global.state.current_phase = "discussion"	
+	global.state.seconds_remaining = global.time_limits.discussion
+	global.state.time_remaining = game_get_speed(gamespeed_fps) * global.time_limits.discussion
+	global.state.aid_objectives = {
+		buildings : false,
+		hospitals : false,
+		airport : false,
+		agriculture : false
+	}
+	
+	send_struct(MESSAGE.STATE, global.state)
+	send_struct(MESSAGE.MAP, global.map)
 	room_goto(rInGame)
 }
 
@@ -105,3 +117,9 @@ function do_map_damages(){
 	}
 }
 
+function init_state() {
+	global.state.datetime = date_current_datetime()
+	global.state.seconds_remaining = global.time_limits.discussion
+	global.state.state_budget = 30000
+	global.state.base_tax = 10000
+}

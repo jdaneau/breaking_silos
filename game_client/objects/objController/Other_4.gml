@@ -1,5 +1,6 @@
 if room == rInit {
-	room_goto(rMap01) //init map before going to title	
+	global.maps = ds_map_create()
+	room_goto(rMap01) //init map data
 }
 
 global.mouse_depth = 0;

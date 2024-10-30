@@ -53,6 +53,10 @@ switch(message_type) {
 	
 	case MESSAGE.MAP: //host sends map data
 		global.map = receive_struct(packet)
+		got_map = true
+		if got_state {
+			room_goto(rInGame)	
+		}
 	break;
 	
 	case MESSAGE.STATE: //host sends state data
@@ -72,6 +76,10 @@ switch(message_type) {
 		global.state.measures_implemented = state_struct.measures_implemented
 		global.state.next_disaster = state_struct.next_disaster
 		global.state.aid_objectives = state_struct.aid_objectives
+		got_state = true
+		if got_map {
+			room_goto(rInGame)	
+		}
 	break;
 	
 	case MESSAGE.END_DISCUSSION:
@@ -105,7 +113,7 @@ switch(message_type) {
 		ds_map_clear(players)
 		for(var i=0; i<n; i++) {
 			var player = receive_struct(packet);
-			ds_map_add(players,player.name,objController.get_role_id(player.role))
+			ds_map_add(players,player.name,get_role_id(player.role))
 		}
 		with objGUIText {
 			if room == rLobby event_user(0) //update user list
@@ -142,6 +150,15 @@ switch(message_type) {
 		with objSidebarGUIChat chat_add(string("{0} has left the game.",player_name))
 	break;
 	
+	case MESSAGE.JOIN_ROLE:
+		var role = buffer_read(packet,buffer_string);
+		global.state.role = get_role_id(role)
+	break;
+	
+	case MESSAGE.LEAVE_ROLE:
+		global.state.role = ROLE.NONE
+	break;
+	
 	case MESSAGE.GET_NAME:
 		var result = buffer_read(packet, buffer_string);
 		if result != "" {
@@ -154,6 +171,24 @@ switch(message_type) {
 		var old_name = buffer_read(packet, buffer_string);
 		var new_name = buffer_read(packet, buffer_string);
 		with objSidebarGUIChat chat_add(string("{0} has changed their name to {1}.",old_name,new_name))
+	break;
+	
+	case MESSAGE.START_GAME:
+		var lobby_info = buffer_read(packet, buffer_string);
+		if lobby_info != "" {
+			lobby_settings = json_parse(lobby_info)
+			if global.state.role == ROLE.PRESIDENT { 
+				var map_room = rMap01
+				switch(lobby_settings.landscape_type) {
+					case "Island":
+						map_room = rMap01
+					break;
+				}
+				global.map = global.maps[? map_room]
+				start_round() 
+			}
+		}
+		else open_dialog_info("Erorr starting game! Please try again.")
 	break;
 	
 	default:
