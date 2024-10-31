@@ -28,3 +28,15 @@ function player_names(lobby) {
 	}
 	return names
 }
+
+function string_chunk(str, chunk_size) {
+	var index = 1;
+	var length = string_length(str);
+	var chunks = [];
+	while(index <= length) {
+		var count = min(chunk_size, length-index+1);
+		var chunk = string_copy(str,index,count);
+		array_push(chunks,chunk)
+	}
+	return chunks
+}

@@ -58,7 +58,10 @@ if mouse_in_map and placing and selected_measure >= 0 {
 				array_push(_tile.measures, selected_measure)
 				global.state.state_budget -= _measure.cost
 				var error_status = check_map_placement(real(selected_measure), _tile);
-				if error_status != "OK" {
+				if error_status == "OK" {
+					send_struct(MESSAGE.PLACE_MEASURE, {measure:selected_measure, x:_mouse_i, y:_mouse_j})
+					send_int(MESSAGE.BUDGET, global.state.state_budget)
+				} else {
 					array_pop(_tile.measures)
 					global.state.state_budget += _measure.cost
 					open_dialog_info(string("Error placing measure on tile {0}:\n{1}",coords_to_grid(_mouse_i,_mouse_j,false),error_status))
@@ -70,6 +73,8 @@ if mouse_in_map and placing and selected_measure >= 0 {
 				var _index = array_index(_tile.measures,selected_measure)
 				array_delete(_tile.measures, _index, 1)
 				global.state.state_budget += _measure.cost
+				send_struct(MESSAGE.REMOVE_MEASURE, {measure:selected_measure, x:_mouse_i, y:_mouse_j})
+				send_int(MESSAGE.BUDGET, global.state.state_budget)
 			}
 		}
 		exit //don't allow scrolling/pinging when placing measures
@@ -100,10 +105,10 @@ if mouse_in_map and mouse_check(mb_left) {
 if mouse_in_map and mouse_check_pressed(mb_right) {
 	var _x = mouse_map_x div 64;
 	var _y = mouse_map_y div 64;
-	var _mark = instance_create_depth(_x,_y,-1,objMarker);
 	var _square = coords_to_grid(mouse_map_x,mouse_map_y)
 	var msg = string("{0} has highlighted square {1}!","Player1",_square);
 	if instance_exists(objOnline) {
-		send_string(MESSAGE.ANNOUNCEMENT, msg)	
+		send_string(MESSAGE.ANNOUNCEMENT, msg)
+		send_string(MESSAGE.PING, _square)
 	}
 }

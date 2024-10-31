@@ -20,7 +20,7 @@ else if network_type != network_type_data {
 }
 
 var packet = async_load[? "buffer"];
-var _name, _msg;
+var _name, _msg, struct, tile;
 buffer_seek(packet,buffer_seek_start,0)
 
 try {
@@ -49,6 +49,10 @@ switch(message_type) {
 	
 	case MESSAGE.TIME: //host sends time
 		global.state.seconds_remaining = buffer_read(packet,buffer_u32);
+	break;
+	
+	case MESSAGE.BUDGET: //host sends state budget update
+		global.state.state_budget = buffer_read(packet,buffer_u32)
 	break;
 	
 	case MESSAGE.MAP: //host sends map data
@@ -82,8 +86,32 @@ switch(message_type) {
 		}
 	break;
 	
+	case MESSAGE.PING:
+		var square = buffer_read(packet, buffer_string);
+		var coords = grid_to_coords(square,false);
+		instance_create_depth(coords[0],coords[1],-1,objMarker);
+	break;
+	
 	case MESSAGE.END_DISCUSSION:
 		with objController end_discussion()
+	break;
+	
+	case MESSAGE.END_ROUND:
+		global.state = receive_struct(packet)
+		global.map = receive_struct(packet)
+		room_goto(rRoundResults)
+	break;
+	
+	case MESSAGE.PROGRESS_ROUND:
+		global.state = receive_struct(packet)
+		global.map = receive_struct(packet)
+		if room == rRoundResults create(0,0,objMoveCameraDown)
+	break;
+	
+	case MESSAGE.NEW_ROUND:
+		global.state = receive_struct(packet)
+		global.map = receive_struct(packet)
+		room_goto(rInGame)
 	break;
 	
 	case MESSAGE.CREATE_GAME:
@@ -153,6 +181,20 @@ switch(message_type) {
 	case MESSAGE.JOIN_ROLE:
 		var role = buffer_read(packet,buffer_string);
 		global.state.role = get_role_id(role)
+		if role == "President" {
+			if room == rRoundResults {
+				with objGUIButton {
+					visible = true
+					clickable = true
+				}
+			}
+			if room == rInGame {
+				room_restart()
+				if global.state.current_phase == "decision" {
+					with objController end_discussion()	
+				}
+			}
+		}
 	break;
 	
 	case MESSAGE.LEAVE_ROLE:
@@ -189,6 +231,19 @@ switch(message_type) {
 			}
 		}
 		else open_dialog_info("Erorr starting game! Please try again.")
+	break;
+	
+	case MESSAGE.PLACE_MEASURE:
+		struct = receive_struct(packet);
+		tile = tile_from_coords(struct.x,struct.y);
+		array_push(tile.measures, struct.measure)
+	break;
+	
+	case MESSAGE.REMOVE_MEASURE:
+		struct = receive_struct(packet);
+		tile = tile_from_coords(struct.x,struct.y);
+		var index = array_index(tile.measures,struct.measure)
+		array_delete(tile.measures, index, 1)
 	break;
 	
 	default:

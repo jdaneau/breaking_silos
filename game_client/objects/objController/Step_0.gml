@@ -8,7 +8,6 @@ if (global.state.current_phase == "discussion" or global.state.current_phase == 
 				send_int(MESSAGE.TIME, seconds)
 			}
 		}
-		show_debug_message(global.state.time_remaining)
 	} else {
 		if global.state.current_phase == "discussion" {
 			end_discussion()	
@@ -18,6 +17,14 @@ if (global.state.current_phase == "discussion" or global.state.current_phase == 
 				selected = false
 				locked = true
 			}
+			global.state.current_phase = "decision_timeout"
 		}
 	}
+}
+
+if os_browser != browser_not_a_browser and (browser_width != bw or browser_height != bh) {
+	bw = browser_width
+	bh = browser_height
+	window_set_size(bw,bh)
+	window_center()
 }

@@ -1,5 +1,5 @@
 var type_event = async_load[? "type"];
-var socket, sock, cid, did, buffer, message_id, findsocket, name, data, value, lobby_id, playernames, role, lobby_players;
+var socket, sock, cid, did, buffer, message_id, findsocket, name, data, msg, value, lobby_id, playernames, role, lobby_players;
 
 try {
 
@@ -16,12 +16,23 @@ switch(type_event){
 			var lobby = lobbies[? lobby_ids[i]];
 			if ds_map_exists(lobby.players, socket) {
 				name = ds_map_find_value(lobby.players,socket).name
+				role = ds_map_find_value(lobby.players,socket).role
 				sockets[? socket] = lobby_ids[i]
 				send_to_others(socket,MESSAGE.DISCONNECT,buffer_string,name)
 				ds_map_delete(lobby.players, socket)
 				if ds_map_size(lobby.players) == 0 {
 					ds_map_destroy(lobby.players)
 					ds_map_delete(lobbies, lobby_ids[i])	
+				}
+				else {
+					if role == "President" {
+						var new_president = array_first(ds_map_keys_to_array(lobby.players));
+						var new_president_name = lobby.players[? new_president].name;
+						send(new_president, MESSAGE.JOIN_ROLE,buffer_string,"President")
+						send_to_all(new_president, MESSAGE.ANNOUNCEMENT, buffer_string, string("{0} has replaced {1} as President.",new_president_name,name))
+					}
+					var lobby_socket = array_first(ds_map_keys_to_array(lobby.players));
+					send_array(lobby_socket,MESSAGE.GET_PLAYERS,"struct",lobby_players,true,true)
 				}
 			}
 		}
@@ -35,25 +46,47 @@ switch(type_event){
 		message_id = buffer_read(buffer,buffer_u8)
 		switch(message_id) {
 			case MESSAGE.TIME:
-				value = buffer_read(buffer,buffer_u32);
-				send_to_others(socket,MESSAGE.TIME,buffer_u32,value)
+			case MESSAGE.BUDGET:
+				value = buffer_read(buffer,buffer_u32)
+				send_to_others(socket,message_id,buffer_u32,value)
 			break;
 			
 			case MESSAGE.MAP:
 			case MESSAGE.STATE:
+			case MESSAGE.PLACE_MEASURE:
+			case MESSAGE.REMOVE_MEASURE:
 				data = buffer_read(buffer,buffer_string)
 				send_to_others(socket,message_id,buffer_string,data)
 			break;
 			
 			case MESSAGE.END_DISCUSSION:
-				send_id_to_others(socket,MESSAGE.END_DISCUSSION)
+				send_id_to_others(socket,message_id)
+			break;
+			
+			case MESSAGE.END_ROUND:
+			case MESSAGE.PROGRESS_ROUND:
+			case MESSAGE.NEW_ROUND:
+				var state_data = buffer_read(buffer, buffer_string);
+				var map_data = buffer_read(buffer, buffer_string);
+				send_compound(socket, MESSAGE.END_ROUND,[{type:"string",content:state_data},{type:"string",content:map_data}],true,false)
+			break;
+			
+			case MESSAGE.ANNOUNCEMENT:
+				msg = buffer_read(buffer,buffer_string);
+				lobby_id = sockets[? socket]
+				send_to_all(socket,MESSAGE.ANNOUNCEMENT,buffer_string,msg)
 			break;
 			
 			case MESSAGE.CHAT:
-				var msg = buffer_read(buffer,buffer_string);
+				msg = buffer_read(buffer,buffer_string);
 				lobby_id = sockets[? socket]
 				name = ds_map_find_value(lobbies[? lobby_id].players, socket).name
 				send_compound(socket, MESSAGE.CHAT, [{type:"string",content:name},{type:"string",content:msg}], true,true)
+			break;
+			
+			case MESSAGE.PING:
+				data = buffer_read(buffer,buffer_string)
+				send_to_all(socket,MESSAGE.PING,buffer_string,data)
 			break;
 			
 			case MESSAGE.CREATE_GAME:

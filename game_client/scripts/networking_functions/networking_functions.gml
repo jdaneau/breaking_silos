@@ -69,3 +69,15 @@ function receive_struct(buffer) {
 	var _json = buffer_read(buffer, buffer_string);
 	return json_parse(_json)
 }
+
+function send_chunked_string(message_id,str) {
+	var buffer = objOnline.client_buffer;
+	var chunks = string_chunk(str,1000);
+	for(var i=0; i<array_length(chunks); i++) {
+		buffer_seek(buffer,buffer_seek_start,0)
+		buffer_write(buffer,buffer_u8,message_id)
+		buffer_write(buffer,buffer_u8,i)
+		buffer_write(buffer,buffer_string,chunks[i])
+		network_send_packet(objOnline.socket,buffer,buffer_tell(buffer))
+	}
+}

@@ -54,6 +54,20 @@ function euclidean_distance(x1,y1,x2,y2) {
 	return sqrt( sqr(x2-x1) + sqr(y2-y1) )
 }
 
+/// @function string_chunk(str, chunk_size)
+/// @description breaks a string up into chunks of size chunk_size, and returns an array of strings
+function string_chunk(str, chunk_size) {
+	var index = 1;
+	var length = string_length(str);
+	var chunks = [];
+	while(index <= length) {
+		var count = min(chunk_size, length-index+1);
+		var chunk = string_copy(str,index,count);
+		array_push(chunks,chunk)
+	}
+	return chunks
+}
+
 /// @function create(_x, _y, obj)
 /// @description shorthand for instance_create_depth
 function create(_x, _y, _obj, _depth=0) {

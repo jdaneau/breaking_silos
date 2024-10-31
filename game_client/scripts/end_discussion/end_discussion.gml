@@ -27,7 +27,17 @@ function end_discussion(){
 			placing = true
 			layer_caption = "Click on the measures to place them on the map.\nLeft click = add, Right click = remove"
 		}
+		
+		send_struct(MESSAGE.STATE,global.state)
+		send_struct(MESSAGE.MAP,global.map)
 	} else {
-		// other players	
+		with objGUIMesaures {
+			measures = []
+			event_user(0)
+		}
+		with objMapGUI {
+			placing = false
+			layer_caption = "The President will now decide what measures to implement."
+		}	
 	}
 }

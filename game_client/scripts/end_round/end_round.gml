@@ -91,7 +91,8 @@ function end_round(){
 	global.state.current_phase = "results"
 		
 	if instance_exists(objOnline) {
-		send_struct(MESSAGE.STATE, global.state) // update other players' state
+		//update other players
+		send_compound(MESSAGE.END_ROUND, [{type:"struct",content:global.state},{type:"struct",content:global.map}])
 	}
 		
 	room_goto(rRoundResults)

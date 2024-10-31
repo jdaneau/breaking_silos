@@ -17,7 +17,14 @@ enum MESSAGE {
 	TIME = 22,
 	MAP = 23,
 	STATE = 24,
+	PING = 25,
+	PLACE_MEASURE = 26,
+	REMOVE_MEASURE = 27,
+	BUDGET = 28,
 	END_DISCUSSION = 31,
+	END_ROUND = 32,
+	PROGRESS_ROUND = 33,
+	NEW_ROUND = 34
 }
 
 var socket_type = network_socket_ws;
@@ -33,7 +40,7 @@ port = 20002
 socket = network_create_socket(socket_type)
 
 network_connect_async(socket,server_ip,port)
-client_buffer = buffer_create(1024,buffer_fixed,1)
+client_buffer = buffer_create(1024,buffer_fixed,1) 
 
 connected = false
 lobby_id = ""
