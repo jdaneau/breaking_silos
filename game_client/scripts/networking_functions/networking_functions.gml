@@ -73,11 +73,36 @@ function receive_struct(buffer) {
 function send_chunked_string(message_id,str) {
 	var buffer = objOnline.client_buffer;
 	var chunks = string_chunk(str,1000);
+	var chunk_id = irandom(255);
+	var n = array_length(chunks);
 	for(var i=0; i<array_length(chunks); i++) {
 		buffer_seek(buffer,buffer_seek_start,0)
 		buffer_write(buffer,buffer_u8,message_id)
-		buffer_write(buffer,buffer_u8,i)
-		buffer_write(buffer,buffer_string,chunks[i])
+		buffer_write(buffer,buffer_string,json_stringify({id:chunk_id,num:i,total:n,chunk:chunks[i]}))
 		network_send_packet(objOnline.socket,buffer,buffer_tell(buffer))
 	}
+}
+
+function receive_map_chunk(buffer) {
+	var chunk_data = json_parse(buffer_read(buffer,buffer_string));
+	var chunk_list;
+	if ds_map_exists(objOnline.chunks,chunk_data.id) {
+		var struct = objOnline.chunks[? chunk_data.id];
+		struct.chunks[chunk_data.num] = chunk_data.chunk
+		struct.count ++
+		if struct.count == struct.total {
+			var result_string = "";
+			for (var i=0; i<array_length(struct.chunks); i++) {
+				result_string = string_concat(result_string,struct.chunks[i])
+			}
+			ds_map_delete(objOnline.chunks,chunk_data.id)
+			return result_string;
+		}
+	}
+	else {
+		chunk_list = array_create(chunk_data.total, "")
+		chunk_list[chunk_data.num] = chunk_data.chunk
+		ds_map_add(objOnline.chunks,chunk_data.id,{total:chunk_data.total, count:1, chunks:chunk_list})
+	}
+	return ""
 }

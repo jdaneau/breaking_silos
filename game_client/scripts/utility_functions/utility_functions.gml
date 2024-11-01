@@ -64,6 +64,7 @@ function string_chunk(str, chunk_size) {
 		var count = min(chunk_size, length-index+1);
 		var chunk = string_copy(str,index,count);
 		array_push(chunks,chunk)
+		index += chunk_size
 	}
 	return chunks
 }

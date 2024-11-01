@@ -9,7 +9,8 @@ if network_type == network_type_non_blocking_connect {
 	}
 	exit;
 }
-else if network_type == network_type_disconnect {
+
+else if network_type == network_type_disconnect || network_type == network_type_down {
 	show_message("Disconnected from server.")
 	game_restart()
 	exit;
@@ -20,7 +21,7 @@ else if network_type != network_type_data {
 }
 
 var packet = async_load[? "buffer"];
-var _name, _msg, struct, tile;
+var _name, _msg, struct, tile, result;
 buffer_seek(packet,buffer_seek_start,0)
 
 try {
@@ -28,6 +29,10 @@ try {
 var message_type = buffer_read(packet,buffer_u8);
 
 switch(message_type) {
+	case MESSAGE.PING:
+		timeout = false
+	break;
+	
 	case MESSAGE.ANNOUNCEMENT: //server announcement
 		_msg = buffer_read(packet,buffer_string);
 		with objSidebarGUIChat chat_add(string("Server announcement: {0}",_msg))
@@ -41,7 +46,7 @@ switch(message_type) {
 	
 	case MESSAGE.DISCONNECT: //user disconnects
 		_name = buffer_read(packet,buffer_string);
-		chat_add(string("{0} has disconnected.",_name))
+		with objSidebarGUIChat chat_add(string("{0} has disconnected.",_name))
 		if ds_map_exists(players,_name) {
 			ds_map_delete(players,_name)	
 		}
@@ -56,15 +61,39 @@ switch(message_type) {
 	break;
 	
 	case MESSAGE.MAP: //host sends map data
-		global.map = receive_struct(packet)
-		got_map = true
-		if got_state {
-			room_goto(rInGame)	
+		result = receive_map_chunk(packet);
+		if result != "" {
+			global.map = json_parse(result)
+			if room == rLobby { room_goto(rInGame) }
+		}
+	break;
+	
+	case MESSAGE.END_ROUND: //host sends map data at end of round
+		result = receive_map_chunk(packet);
+		if result != "" {
+			global.map = json_parse(result)
+			if room == rInGame { room_goto(rRoundResults) }
+		}
+	break;
+	
+	case MESSAGE.PROGRESS_ROUND: //host sends map data during round progression
+		result = receive_map_chunk(packet);
+		if result != "" {
+			global.map = json_parse(result)
+			if room == rRoundResults { create(0,0,objMoveCameraDown) }
+		}
+	break;
+	
+	case MESSAGE.NEW_ROUND: //host sends map data during new round
+		result = receive_map_chunk(packet);
+		if result != "" {
+			global.map = json_parse(result)
+			if room == rRoundResults { room_goto(rInGame) }
 		}
 	break;
 	
 	case MESSAGE.STATE: //host sends state data
-		var state_data = receive_struct(packet);
+		var state_struct = receive_struct(packet);
 		global.state.current_round = state_struct.current_round
 		global.state.datetime = state_struct.datetime
 		global.state.current_phase = state_struct.current_phase
@@ -80,13 +109,9 @@ switch(message_type) {
 		global.state.measures_implemented = state_struct.measures_implemented
 		global.state.next_disaster = state_struct.next_disaster
 		global.state.aid_objectives = state_struct.aid_objectives
-		got_state = true
-		if got_map {
-			room_goto(rInGame)	
-		}
 	break;
 	
-	case MESSAGE.PING:
+	case MESSAGE.MAP_PING:
 		var square = buffer_read(packet, buffer_string);
 		var coords = grid_to_coords(square,false);
 		instance_create_depth(coords[0],coords[1],-1,objMarker);
@@ -94,24 +119,6 @@ switch(message_type) {
 	
 	case MESSAGE.END_DISCUSSION:
 		with objController end_discussion()
-	break;
-	
-	case MESSAGE.END_ROUND:
-		global.state = receive_struct(packet)
-		global.map = receive_struct(packet)
-		room_goto(rRoundResults)
-	break;
-	
-	case MESSAGE.PROGRESS_ROUND:
-		global.state = receive_struct(packet)
-		global.map = receive_struct(packet)
-		if room == rRoundResults create(0,0,objMoveCameraDown)
-	break;
-	
-	case MESSAGE.NEW_ROUND:
-		global.state = receive_struct(packet)
-		global.map = receive_struct(packet)
-		room_goto(rInGame)
 	break;
 	
 	case MESSAGE.CREATE_GAME:
@@ -190,9 +197,6 @@ switch(message_type) {
 			}
 			if room == rInGame {
 				room_restart()
-				if global.state.current_phase == "decision" {
-					with objController end_discussion()	
-				}
 			}
 		}
 	break;
@@ -202,7 +206,7 @@ switch(message_type) {
 	break;
 	
 	case MESSAGE.GET_NAME:
-		var result = buffer_read(packet, buffer_string);
+		result = buffer_read(packet, buffer_string);
 		if result != "" {
 			global.state.player_name = result
 		}
@@ -235,13 +239,13 @@ switch(message_type) {
 	
 	case MESSAGE.PLACE_MEASURE:
 		struct = receive_struct(packet);
-		tile = tile_from_coords(struct.x,struct.y);
+		tile = map_get_tile(struct.x,struct.y);
 		array_push(tile.measures, struct.measure)
 	break;
 	
 	case MESSAGE.REMOVE_MEASURE:
 		struct = receive_struct(packet);
-		tile = tile_from_coords(struct.x,struct.y);
+		tile = map_get_tile(struct.x,struct.y);
 		var index = array_index(tile.measures,struct.measure)
 		array_delete(tile.measures, index, 1)
 	break;

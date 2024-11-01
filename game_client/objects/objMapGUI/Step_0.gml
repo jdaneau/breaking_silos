@@ -109,6 +109,6 @@ if mouse_in_map and mouse_check_pressed(mb_right) {
 	var msg = string("{0} has highlighted square {1}!","Player1",_square);
 	if instance_exists(objOnline) {
 		send_string(MESSAGE.ANNOUNCEMENT, msg)
-		send_string(MESSAGE.PING, _square)
+		send_string(MESSAGE.MAP_PING, _square)
 	}
 }

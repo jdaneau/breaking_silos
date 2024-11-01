@@ -23,7 +23,7 @@ function start_round() {
 	}
 	
 	send_struct(MESSAGE.STATE, global.state)
-	send_struct(MESSAGE.MAP, global.map)
+	send_chunked_string(MESSAGE.MAP,json_stringify(global.map))
 	room_goto(rInGame)
 }
 

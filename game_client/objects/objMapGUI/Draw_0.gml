@@ -149,8 +149,8 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	}
 }
 
-//draw added measures (president)
-if placing {
+//draw added measures 
+if global.state.current_phase == "decision" {
 	for(i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];
 		if array_length(_tile.measures) > 0 {

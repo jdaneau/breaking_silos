@@ -10,7 +10,8 @@ on_click = function(on) {
 	}
 	with objOnline {
 		//send data to others
-		send_compound(MESSAGE.PROGRESS_ROUND,[{type:"struct",content:global.state},{type:"struct",content:global.map}])	
+		send_struct(MESSAGE.STATE,global.state)
+		send_chunked_string(MESSAGE.PROGRESS_ROUND, json_stringify(global.map))
 	}
 	create(0,0,objMoveCameraDown)
 	clickable = false

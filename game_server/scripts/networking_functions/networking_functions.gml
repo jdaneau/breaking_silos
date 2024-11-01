@@ -127,19 +127,3 @@ function send_compound(socket,message_id,data,to_group=false,inclusive=false) {
 		network_send_packet(sock,objServer.server_buffer,buffer_tell(objServer.server_buffer))
 	}
 }
-
-function send_chunked_string(socket,message_id,str,to_group=false,inclusive=false) {
-	var sockets = [socket];
-	if to_group { sockets = get_lobby_sockets(socket,inclusive) }
-	var chunks = string_chunk(str,1000);
-	for(var s=0; s<array_length(sockets); s++) {
-		var sock = sockets[s];
-		for(var i=0; i<array_length(chunks); i++) {
-			buffer_seek(buffer,buffer_seek_start,0)
-			buffer_write(buffer,buffer_u8,message_id)
-			buffer_write(buffer,buffer_u8,i)
-			buffer_write(buffer,buffer_string,chunks[i])
-			network_send_packet(sock,objServer.server_buffer,buffer_tell(objServer.server_buffer))
-		}
-	}
-}

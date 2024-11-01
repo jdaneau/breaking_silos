@@ -6,7 +6,8 @@ on_click = function(on) {
 	with objController { start_round() }
 	with objOnline {
 		//send data to others
-		send_compound(MESSAGE.NEW_ROUND,[{type:"struct",content:global.state},{type:"struct",content:global.map}])	
+		send_struct(MESSAGE.STATE,global.state)
+		send_chunked_string(MESSAGE.NEW_ROUND, json_stringify(global.map))
 	}
 	room_goto(rInGame)
 }

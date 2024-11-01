@@ -32,6 +32,7 @@ switch(type_event){
 						send_to_all(new_president, MESSAGE.ANNOUNCEMENT, buffer_string, string("{0} has replaced {1} as President.",new_president_name,name))
 					}
 					var lobby_socket = array_first(ds_map_keys_to_array(lobby.players));
+					lobby_players = ds_map_values_to_array(lobby.players)
 					send_array(lobby_socket,MESSAGE.GET_PLAYERS,"struct",lobby_players,true,true)
 				}
 			}
@@ -45,30 +46,29 @@ switch(type_event){
 		buffer_seek(buffer,buffer_seek_start,0)
 		message_id = buffer_read(buffer,buffer_u8)
 		switch(message_id) {
+			case MESSAGE.PING:
+				send_id(socket,MESSAGE.PING)
+			break;
+			
 			case MESSAGE.TIME:
 			case MESSAGE.BUDGET:
 				value = buffer_read(buffer,buffer_u32)
 				send_to_others(socket,message_id,buffer_u32,value)
 			break;
 			
-			case MESSAGE.MAP:
 			case MESSAGE.STATE:
+			case MESSAGE.MAP:
 			case MESSAGE.PLACE_MEASURE:
 			case MESSAGE.REMOVE_MEASURE:
+			case MESSAGE.END_ROUND:
+			case MESSAGE.PROGRESS_ROUND:
+			case MESSAGE.NEW_ROUND:
 				data = buffer_read(buffer,buffer_string)
 				send_to_others(socket,message_id,buffer_string,data)
 			break;
 			
 			case MESSAGE.END_DISCUSSION:
 				send_id_to_others(socket,message_id)
-			break;
-			
-			case MESSAGE.END_ROUND:
-			case MESSAGE.PROGRESS_ROUND:
-			case MESSAGE.NEW_ROUND:
-				var state_data = buffer_read(buffer, buffer_string);
-				var map_data = buffer_read(buffer, buffer_string);
-				send_compound(socket, MESSAGE.END_ROUND,[{type:"string",content:state_data},{type:"string",content:map_data}],true,false)
 			break;
 			
 			case MESSAGE.ANNOUNCEMENT:
@@ -84,9 +84,9 @@ switch(type_event){
 				send_compound(socket, MESSAGE.CHAT, [{type:"string",content:name},{type:"string",content:msg}], true,true)
 			break;
 			
-			case MESSAGE.PING:
+			case MESSAGE.MAP_PING:
 				data = buffer_read(buffer,buffer_string)
-				send_to_all(socket,MESSAGE.PING,buffer_string,data)
+				send_to_all(socket,MESSAGE.MAP_PING,buffer_string,data)
 			break;
 			
 			case MESSAGE.CREATE_GAME:

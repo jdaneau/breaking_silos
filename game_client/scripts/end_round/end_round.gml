@@ -92,7 +92,8 @@ function end_round(){
 		
 	if instance_exists(objOnline) {
 		//update other players
-		send_compound(MESSAGE.END_ROUND, [{type:"struct",content:global.state},{type:"struct",content:global.map}])
+		send_struct(MESSAGE.STATE,global.state)
+		send_chunked_string(MESSAGE.END_ROUND, json_stringify(global.map))
 	}
 		
 	room_goto(rRoundResults)
