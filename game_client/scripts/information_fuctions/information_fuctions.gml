@@ -90,10 +90,15 @@ function is_damaged(refStruct, refGrid) {
 /// @function is_coastal(_x,_y)
 /// @description Returns true if the provided coordinates map to a tile on the map that is coastal
 function is_coastal(_x,_y) {
-	if global.map.land_grid[_x-1,_y] == 0 { return true }
-	if global.map.land_grid[_x+1,_y] == 0 { return true }
-	if global.map.land_grid[_x,_y+1] == 0 { return true }
-	if global.map.land_grid[_x,_y-1] == 0 { return true }
+	var foreign_grid = array_init_2d(global.map.width div 64, global.map.height div 64, 0);
+	for(var i=0; i<array_length(global.map.foreign_tiles); i++) {
+		var _tile = global.map.foreign_tiles[i];
+		foreign_grid[_tile.x div 64, _tile.y div 64] = 1
+	}
+	if _x > 0 && global.map.land_grid[_x-1,_y] == 0 && foreign_grid[_x-1,_y] == 0 { return true }
+	if _x < (global.map.width div 64) - 1 && global.map.land_grid[_x+1,_y] == 0 && foreign_grid[_x+1,_y] == 0 { return true }
+	if _y < (global.map.height div 64) - 1 && global.map.land_grid[_x,_y+1] == 0 && foreign_grid[_x,_y+1] == 0 { return true }
+	if _y > 0 && global.map.land_grid[_x,_y-1] == 0 && foreign_grid[_x,_y-1] == 0 { return true }
 	return false
 }
 

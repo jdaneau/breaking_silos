@@ -120,6 +120,30 @@ function do_map_damages(){
 function init_state() {
 	global.state.datetime = date_current_datetime()
 	global.state.seconds_remaining = global.time_limits.discussion
-	global.state.state_budget = 30000
-	global.state.base_tax = 10000
+	var tax_mult = 1;
+	switch(objOnline.lobby_settings.gdp) {
+		case "High":
+			global.state.state_budget = 45000
+			tax_mult = 1.5
+		break;
+		case "Average":
+			global.state.state_budget = 30000
+		break;
+		case "Low":
+			global.state.state_budget = 15000
+			tax_mult = 0.5
+		break;
+	}
+	var normal_population = get_total_population("raw");
+	var new_population = 0;
+	var pop_mult = 1;
+	if objOnline.lobby_settings.population == "High" pop_mult = 4;
+	else if objOnline.lobby_settings.population == "Low" pop_mult = 0.2;
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var _tile = global.map.land_tiles[i];
+		_tile.metrics.population = round_nearest(_tile.metrics.population * pop_mult, 25);
+		new_population += (_tile.metrics.population * 1000);
+	}
+	global.map.starting_population = new_population / 1000
+	global.state.base_tax = 10000 * (new_population / normal_population) * tax_mult
 }

@@ -34,6 +34,10 @@ function array_index(_array,_val) {
 	return -1
 }
 
+function round_nearest(val,factor) {
+	return round(val / factor) * factor;
+}
+
 /// @function copy_stuct(struct)
 /// @description returns a copy of the provided struct 
 function copy_stuct(struct){

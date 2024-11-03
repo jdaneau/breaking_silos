@@ -4,6 +4,7 @@ var struct = {
 	width : room_width,
 	height: room_height,
 	land_tiles : [],
+	foreign_tiles : [],
 	river_tiles : [],
 	hospitals : [],
 	airports : [],
@@ -14,7 +15,14 @@ var struct = {
 	airport_grid : array_init_2d(room_width/64,room_height/64,0),
 	buildings_grid : array_init_2d(room_width/64,room_height/64,0),
 	starting_population : 0,
-	starting_agriculture : 0
+	starting_agriculture : 0,
+	hospitals_repaired: 0,
+	airports_repaired: 0,
+	crops_planted: 0,
+	deaths: 0,
+	lives_saved: 0,
+	money_spent: 0,
+	measures_implemented: 0
 };
 
 var n,i,j;
@@ -31,6 +39,11 @@ for (n=0; n<instance_number(objMapTile); ++n;) {
 	struct.buildings_grid[_x,_y] = 1
 	struct.starting_population += _tile.metrics.population
 	if _tile.metrics.agriculture > 0 { struct.starting_agriculture += 1 }
+}
+//account for any foreign tiles
+for (n=0; n<instance_number(objForeignTile); ++n;) {
+	var _tile = instance_find(objForeignTile,n);
+	array_push(struct.foreign_tiles,{x:_tile.x,y:_tile.y,index:_tile.image_index})
 }
 
 //account for river tiles
@@ -83,5 +96,6 @@ for (n=0; n<instance_number(objAirport); ++n;) {
 }
 
 global.maps[? room] = struct
-if string_starts_with(room_get_name(room_next(room)),"rMap") room_goto_next()
+if room == rMap01 { room_goto(rMap02) }
+else if room == rMap02 { room_goto(rMap03) }
 else room_goto(rTitle)

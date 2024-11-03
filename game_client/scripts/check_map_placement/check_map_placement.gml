@@ -86,6 +86,10 @@ function check_map_placement(measure,tile) {
 			if !global.map.river_grid[tx,ty] {
 				return "Cannot build a dam on a cell without a river."
 			}
+			var upstream_tiles = get_upstream_tiles(tile);
+			if array_length(upstream_tiles) == 0 {
+				return "Cannot build a dam on a river source."	
+			}
 			var watershed_tiles = get_tiles_in_watershed(tile.metrics.watershed);
 			var implementing = false;
 			var built = false;

@@ -57,6 +57,7 @@ if mouse_in_map and placing and selected_measure >= 0 {
 			if (global.state.state_budget - _measure.cost) > 0 and !array_contains(_tile.measures, selected_measure) and array_length(_tile.measures)<9 {
 				array_push(_tile.measures, selected_measure)
 				global.state.state_budget -= _measure.cost
+				global.map.money_spent += _measure.cost
 				var error_status = check_map_placement(real(selected_measure), _tile);
 				if error_status == "OK" {
 					send_struct(MESSAGE.PLACE_MEASURE, {measure:selected_measure, x:_mouse_i, y:_mouse_j})
@@ -64,6 +65,7 @@ if mouse_in_map and placing and selected_measure >= 0 {
 				} else {
 					array_pop(_tile.measures)
 					global.state.state_budget += _measure.cost
+					global.map.money_spent -= _measure.cost
 					open_dialog_info(string("Error placing measure on tile {0}:\n{1}",coords_to_grid(_mouse_i,_mouse_j,false),error_status))
 				}
 			}
@@ -73,6 +75,7 @@ if mouse_in_map and placing and selected_measure >= 0 {
 				var _index = array_index(_tile.measures,selected_measure)
 				array_delete(_tile.measures, _index, 1)
 				global.state.state_budget += _measure.cost
+				global.map.money_spent -= _measure.cost
 				send_struct(MESSAGE.REMOVE_MEASURE, {measure:selected_measure, x:_mouse_i, y:_mouse_j})
 				send_int(MESSAGE.BUDGET, global.state.state_budget)
 			}

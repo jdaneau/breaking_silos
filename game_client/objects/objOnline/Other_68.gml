@@ -35,7 +35,7 @@ switch(message_type) {
 	
 	case MESSAGE.ANNOUNCEMENT: //server announcement
 		_msg = buffer_read(packet,buffer_string);
-		with objSidebarGUIChat chat_add(string("Server announcement: {0}",_msg))
+		with objSidebarGUIChat chat_add(_msg)
 	break;
 	
 	case MESSAGE.CHAT:
@@ -229,6 +229,12 @@ switch(message_type) {
 					case "Island":
 						map_room = rMap01
 					break;
+					case "Coastal":
+						map_room = rMap02
+					break;
+					case "Continental":
+						map_room = rMap03
+					break;
 				}
 				global.map = global.maps[? map_room]
 				start_round() 
@@ -248,6 +254,11 @@ switch(message_type) {
 		tile = map_get_tile(struct.x,struct.y);
 		var index = array_index(tile.measures,struct.measure)
 		array_delete(tile.measures, index, 1)
+	break;
+	
+	case MESSAGE.GAME_END:
+		global.state.affected_tiles = []
+		room_goto(rGameResults)
 	break;
 	
 	default:

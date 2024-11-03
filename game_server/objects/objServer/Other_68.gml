@@ -25,7 +25,7 @@ switch(type_event){
 					ds_map_delete(lobbies, lobby_ids[i])	
 				}
 				else {
-					if role == "President" {
+					if role == "President" and lobby.state == "started" {
 						var new_president = array_first(ds_map_keys_to_array(lobby.players));
 						var new_president_name = lobby.players[? new_president].name;
 						send(new_president, MESSAGE.JOIN_ROLE,buffer_string,"President")
@@ -68,7 +68,12 @@ switch(type_event){
 			break;
 			
 			case MESSAGE.END_DISCUSSION:
+			case MESSAGE.GAME_END:
 				send_id_to_others(socket,message_id)
+				if message_id == MESSAGE.GAME_END {
+					lobby_id = sockets[? socket]
+					lobbies[? lobby_id].state = "finished"
+				}
 			break;
 			
 			case MESSAGE.ANNOUNCEMENT:
@@ -107,7 +112,7 @@ switch(type_event){
 			case MESSAGE.JOIN_GAME:
 				lobby_id = buffer_read(buffer,buffer_string)
 				var n_players = num_players(lobby_id);
-				if ds_map_exists(lobbies, lobby_id) and n_players < max_per_lobby {
+				if n_players > 0 and n_players < max_per_lobby and lobbies[? lobby_id].state == "lobby" {
 					name = string("player{0}",n_players+1)
 					sockets[? socket] = lobby_id
 					ds_map_add(lobbies[? lobby_id].players, socket, {name:name,role:""})
@@ -122,11 +127,24 @@ switch(type_event){
 			case MESSAGE.LEAVE_GAME:
 				lobby_id = sockets[? socket];
 				if lobby_id != "" {
-					name = ds_map_find_value(lobbies[? lobby_id].players,socket).name
+					var lobby = lobbies[? lobby_id];
+					name = ds_map_find_value(lobby.players,socket).name
+					role = ds_map_find_value(lobby.players,socket).role
 					send_to_others(socket,MESSAGE.LEAVE_GAME,buffer_string,name)
-					ds_map_delete(lobbies[? lobby_id].players, socket)
-					if ds_map_size(lobbies[? lobby_id].players) == 0 {
+					ds_map_delete(lobby.players, socket)
+					if ds_map_size(lobby.players) == 0 {
 						ds_map_delete(lobbies, lobby_id)	
+					}
+					else if lobby.state == "started" {
+						if role == "President" {
+							var new_president = array_first(ds_map_keys_to_array(lobby.players));
+							var new_president_name = lobby.players[? new_president].name;
+							send(new_president, MESSAGE.JOIN_ROLE,buffer_string,"President")
+							send_to_all(new_president, MESSAGE.ANNOUNCEMENT, buffer_string, string("{0} has replaced {1} as President.",new_president_name,name))
+						}
+						var lobby_socket = array_first(ds_map_keys_to_array(lobby.players));
+						lobby_players = ds_map_values_to_array(lobby.players)
+						send_array(lobby_socket,MESSAGE.GET_PLAYERS,"struct",lobby_players,true,true)
 					}
 				}
 			break;
@@ -209,7 +227,7 @@ switch(type_event){
 				var found_president = array_find_index(lobby_players,function(p){ return p.role == "President" });
 				if found_president >= 0 {
 					send_to_all(socket, MESSAGE.START_GAME, buffer_string, json_stringify(lobbies[? lobby_id].settings))
-					lobbies[? lobby_id].state = "ingame"
+					lobbies[? lobby_id].state = "started"
 				} else send(socket,MESSAGE.START_GAME,buffer_string,"") //no president, don't start game
 			break;
 			

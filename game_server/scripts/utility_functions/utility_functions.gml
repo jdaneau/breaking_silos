@@ -17,6 +17,7 @@ function get_lobby_sockets(socket,inclusive=true) {
 }
 
 function num_players(lobby_id) {
+	if !ds_map_exists(objServer.lobbies,lobby_id) return -1
 	return ds_map_size(objServer.lobbies[? lobby_id].players)	
 }
 

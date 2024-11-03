@@ -8,11 +8,31 @@ surface_set_target(map_surface)
 draw_set_color(make_color_rgb(127,140,255)) //lighter version of myriad_light_blue for the water
 draw_rectangle(0,0,global.map.width,global.map.height,false)
 draw_set_color(c_white)
+var land_sprite;
+var damaged_sprite;
+switch(objOnline.lobby_settings.climate_type) {
+	case "Tropical":
+		land_sprite = sprMapTileTropical;
+		damaged_sprite = sprMapTileTropicalDamaged;
+	break;
+	case "Temperate":
+		land_sprite = sprMapTile;
+		damaged_sprite = sprMapTileDamaged;
+	break;
+	case "Boreal":
+		land_sprite = sprMapTileBoreal;
+		damaged_sprite = sprMapTileBorealDamaged;
+	break;
+}
 for(i=0; i<array_length(global.map.land_tiles); i++) {
 	var _tile = global.map.land_tiles[i];
-	var _sprite = is_damaged(_tile, global.map.buildings_grid) ? sprMapTileDamaged : sprMapTile;
+	var _sprite = is_damaged(_tile, global.map.buildings_grid) ? damaged_sprite : land_sprite;
 	draw_sprite(_sprite,_tile.index,_tile.x,_tile.y)
 }
+for(i=0; i<array_length(global.map.foreign_tiles); i++) {
+	var _tile = global.map.foreign_tiles[i];
+	draw_sprite(sprForeignTile,_tile.index,_tile.x,_tile.y)
+}	
 for(i=0; i<array_length(global.map.river_tiles); i++) {
 	var _river = global.map.river_tiles[i];
 	draw_sprite(_river.spr,0,_river.x,_river.y)

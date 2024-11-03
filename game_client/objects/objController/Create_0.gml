@@ -1,5 +1,7 @@
 //init globals
 global.mouse_depth = 10
+bw=0
+bh=0
 
 //global constants and enums
 enum ROLE {
@@ -60,6 +62,7 @@ global.state = {
 	role: ROLE.NONE,
 	disaster: "",
 	disaster_intensity: "",
+	multi_hazard: false,
 	affected_tiles : [],
 	round_reports : [],
 	measures_implemented: array_create(global.N_MEASURES, 0),

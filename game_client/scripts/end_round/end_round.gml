@@ -17,7 +17,7 @@ function end_round(){
 		while array_length(_tile.measures) > 0 {
 			var _measure = array_pop(_tile.measures);
 			global.state.measures_implemented[_measure] += 1
-			if _measure == MEASURE.AIRPORT {
+			if _measure == MEASURE.AIRPORT && array_contains(global.state.affected_tiles,coords_to_grid(_tile.x div 64, _tile.y div 64)) {
 				var pop = _tile.metrics.population;
 				if pop > airport_pop { airport_pop = pop }
 			}
@@ -41,6 +41,7 @@ function end_round(){
 					break;
 			}
 			array_push(_tile.in_progress, new_struct)
+			global.map.measures_implemented++
 		}
 	}
 		
@@ -159,11 +160,13 @@ function update_buildings(finished_projects) {
 		if just_completed(_tile, MEASURE.HOSPITAL, finished_projects) {
 			//repairing hospitals that were damaged before
 			global.map.hospital_grid[tx, ty] = 1
+			global.map.hospitals_repaired++
 			add_report(string("Hospital in tile {0} was repaired.",coords_to_grid(tx,ty,false)))
 		}
 		if just_completed(_tile, MEASURE.AIRPORT, finished_projects) {
 			//repairing airports that were damaged before
 			global.map.airport_grid[tx, ty] = 1
+			global.map.airports_repaired++
 			add_report(string("Airport in tile {0} was repaired.",coords_to_grid(tx,ty,false)))
 		}
 	}
@@ -193,6 +196,7 @@ function update_map_measures(finished_projects) {
 			tile.dammed = true
 			var cur_tile = tile;
 			var n_dammed = 0;
+			var n_upstream = 0;
 			//decrease flood risk on downstream tiles (max of 3)
 			while(get_downstream_tile(cur_tile) != noone and n_dammed < 3) {
 				cur_tile.dammed = true
@@ -200,11 +204,13 @@ function update_map_measures(finished_projects) {
 				cur_tile = get_downstream_tile(cur_tile)
 				n_dammed++
 			}
-			//increase flood risk on upstream tiles
+			//increase flood risk on upstream tiles (max of 3)
 			var upstream_tiles = get_upstream_tiles(tile);
 			for(var t=0; t<array_length(upstream_tiles); t++) {
 				var up_tile = upstream_tiles[t];
 				up_tile.metrics.flood_risk = clamp(up_tile.metrics.flood_risk+1, 0,5)
+				n_upstream++
+				if n_upstream >= 3 break;
 			}
 		}
 	
@@ -229,10 +235,12 @@ function update_map_measures(finished_projects) {
 		//crops (normal/resistant)
 		if just_completed(tile,MEASURE.NORMAL_CROPS,finished_projects) {
 			tile.metrics.agriculture = 1
+			global.map.crops_planted++
 			add_report(string("Normal crops on tile {0} were planted.",coords_to_grid(tile.x,tile.y)))
 		}
 		else if just_completed(tile,MEASURE.RESISTANT_CROPS,finished_projects) {
 			tile.metrics.agriculture = 2
+			global.map.crops_planted++
 			add_report(string("Drought-resistant crops on tile {0} were planted.",coords_to_grid(tile.x,tile.y)))
 		}
 		else {
@@ -283,8 +291,8 @@ function update_population_loss(finished_projects) {
 			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.6
 			if global.state.disaster_intensity == "high" disaster_multiplier = 1
 		}
-		var movePopulation = round(fromTile.metrics.population * disaster_multiplier * random_range(0.4, 0.8));
-		movePopulation = clamp(movePopulation, 0, 200);
+		var movePopulation = round(fromTile.metrics.population * disaster_multiplier * random_range(0.6, 0.9));
+		movePopulation = clamp(movePopulation, 0, 500);
 		evacuatedPopulation += movePopulation
 		array_push(toTile.evacuated_population, {
 			origin: coords_to_grid(fromTile.x,fromTile.y),
@@ -295,12 +303,22 @@ function update_population_loss(finished_projects) {
 	add_report(string("{0} citizens were evacuated to {1} cells",evacuatedPopulation*1000,array_length(evacuateList)))
 	
 	//population loss on tiles (deaths related to climate disasters)
-	//TODO: get more accurate estimates for loss rates
 	var total_population_lost = 0;
+	var potential_population_lost = 0;
 	var number_tiles_pop_lost = 0;
 	for(var i=0; i<array_length(global.state.affected_tiles); i++) {
 		var tile = tile_from_square(global.state.affected_tiles[i]);
+		
+		//dont know where else to put this
+		if global.state.disaster == "flood" {
+			tile.metrics.observed_flood = true	
+		}
+		else if global.state.disaster == "drought" {
+			tile.metrics.observed_drought = true	
+		}
+		
 		var loss_rate = 0;
+		var base_loss_rate = 0;
 		var high_agriculture_multiplier = 1;
 		var less_agriculture_multiplier = 1.2;
 		var low_agriculture_multiplier = 1.4;
@@ -315,6 +333,7 @@ function update_population_loss(finished_projects) {
 				if global.state.disaster_intensity == "low" { loss_rate = random_range(0.001,0.002) }
 				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.002,0.01) }
 				else { loss_rate = random_range(0.01,0.025) }
+				base_loss_rate = loss_rate
 				
 				if has_implemented(tile,MEASURE.EWS_FLOOD,finished_projects) {
 					var mitigation_rate = random_range(40,50);
@@ -348,6 +367,7 @@ function update_population_loss(finished_projects) {
 				if global.state.disaster_intensity == "low" { loss_rate = random_range(0,0.0005) }
 				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.001,0.0025) }
 				else { loss_rate = random_range(0.005,0.01) }
+				base_loss_rate = loss_rate
 				
 				high_agriculture_multiplier = 1.1;
 				less_agriculture_multiplier = 1.4;
@@ -360,6 +380,8 @@ function update_population_loss(finished_projects) {
 				if global.state.disaster_intensity == "low" { loss_rate = random_range(0.001,0.002) }
 				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.002,0.01) }
 				else { loss_rate = random_range(0.01,0.05) }
+				
+				base_loss_rate = loss_rate
 				
 				if has_implemented(tile,MEASURE.EWS_CYCLONE,finished_projects) {
 					var mitigation_rate = random_range(40,50);
@@ -389,6 +411,7 @@ function update_population_loss(finished_projects) {
 		//losses from unrepaired buildings
 		if global.map.buildings_grid[tile.x div 64, tile.y div 64] == -1 {
 			loss_rate *= 2	
+			base_loss_rate *= 2
 		}
 		
 		//losses from hospital access
@@ -397,10 +420,13 @@ function update_population_loss(finished_projects) {
 			//nothing	
 		} else if hospital_access > 0.75 {
 			loss_rate *= 1.4
+			base_loss_rate *= 1.4
 		} else if hospital_access > 0.5 {
 			loss_rate *= 1.6	
+			base_loss_rate *= 1.6
 		} else {
 			loss_rate *= 2	
+			base_loss_rate *= 2
 		}
 		
 		//losses from agriculture access (crops)
@@ -409,13 +435,17 @@ function update_population_loss(finished_projects) {
 			loss_rate *= high_agriculture_multiplier
 		} else if agriculture_access > 0.75 {
 			loss_rate *= less_agriculture_multiplier
+			base_loss_rate *= less_agriculture_multiplier
 		} else if agriculture_access > 0.5 {
 			loss_rate *= low_agriculture_multiplier	
+			base_loss_rate *= low_agriculture_multiplier
 		} else {
 			loss_rate *= critical_agriculture_multiplier
+			base_loss_rate *= critical_agriculture_multiplier
 		}
 		
 		var lost_population = round(tile.metrics.population * loss_rate);
+		potential_population_lost += round(tile.metrics.population * base_loss_rate);
 		tile.metrics.population -= lost_population
 		if lost_population > 0 {
 			total_population_lost += lost_population
@@ -423,6 +453,9 @@ function update_population_loss(finished_projects) {
 		}
 	}
 	total_population_lost *= 1000
+	potential_population_lost *= 1000
+	global.map.deaths += floor(total_population_lost)
+	global.map.lives_saved += (evacuatedPopulation * 1000) + floor(potential_population_lost - total_population_lost)
 	var pop_string = string_format(total_population_lost, floor(log10(total_population_lost)), 0);
 	add_report(string("{0} total people died over {1} cells due to the disaster.",pop_string,number_tiles_pop_lost))
 }

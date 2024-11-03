@@ -22,25 +22,165 @@ function progress_round(){
 	global.state.current_round ++
 }
 
-//todo: make this more realistic (i.e. based on the map and current climate scenario)
 function get_next_disaster(){
-	var n_days = choose(7,30,365);
-	var mult;
-	switch(n_days) {
-		case 7:
-			mult = random_range(2,8)
-			break;
-		case 30:
-			mult = random_range(2,24)
-			break;
-		case 365:
-			mult = random_range(1,3)
-			break;
+	var last_disaster = global.state.disaster;
+	var next_disaster;
+	var multi_hazard = true;
+	var rand_value = random(1);
+	switch(last_disaster) {
+		case "flood":
+		case "drought":
+			//medium risk flood = 10% chance
+			if rand_value <= 0.1 { next_disaster = "flood" }
+			//low risk drought = 5% chance
+			else if rand_value <= 0.15 { next_disaster = "drought" }
+			//medium risk cyclone = 10% chance
+			else if rand_value <= 0.25 { next_disaster = "cyclone" }
+			//75% chance no multi hazard
+			else { multi_hazard = false	}
+		break;
+		
+		case "cyclone":
+			//high risk flood = 25% chance
+			if rand_value <= 0.25 { next_disaster = "flood" }
+			//medium risk drought = 10% chance
+			else if rand_value <= 0.35 { next_disaster = "drought" }
+			//low risk cyclone = 5% chance
+			else if rand_value <= 0.4 { next_disaster = "cyclone" }
+			//60% chance no multi hazard
+			else { multi_hazard = false }
+		break;
+		
+		default:
+			multi_hazard = false
+		break;
 	}
-	return {
-		disaster : choose("flood","drought","cyclone"),
-		intensity : choose("low","medium","high"),
-		days_since_last_disaster : round(n_days * mult)
+	//don't allow two multi-hazard scenarios in a row
+	if global.state.multi_hazard { multi_hazard = false; global.state.multi_hazard = false } 
+	
+	if multi_hazard {
+		var n_days = irandom_range(1,14);
+		global.state.multi_hazard = true
+		return {
+			disaster : next_disaster,
+			intensity : choose("low","medium","high"),
+			days_since_last_disaster : n_days
+		}
+	}
+	else {
+		rand_value = random(1)
+		switch(objOnline.lobby_settings.landscape_type) {
+			case "Island":
+				//40% chance flood
+				if rand_value <= 0.4 { next_disaster = "flood" }
+				//20% chance drought
+				else if rand_value <= 0.6 { next_disaster = "drought" }
+				//40% chance cyclone
+				else { next_disaster = "cyclone" }
+			break;
+			
+			case "Coastal":
+				//40% chance flood
+				if rand_value <= 0.4 { next_disaster = "flood" }
+				//30% chance drought
+				else if rand_value <= 0.7 { next_disaster = "drought" }
+				//30% chance cyclone
+				else { next_disaster = "cyclone" }
+			break;
+			
+			case "Continental":
+				//40% chance flood
+				if rand_value <= 0.4 { next_disaster = "flood"	}
+				//40% chance drought
+				else if rand_value <= 0.8 { next_disaster = "drought" }
+				//20% chance cyclone
+				else { next_disaster = "cyclone" }
+			break;
+		}
+		
+		var n_days = choose(7,30,365);
+		var mult;
+		switch(n_days) {
+			case 7:
+				mult = random_range(2,8)
+				break;
+			case 30:
+				mult = random_range(2,24)
+				break;
+			case 365:
+				mult = random_range(1,3)
+				break;
+		}
+		n_days = round(n_days * mult)
+		
+		rand_value = random(1)
+		switch(objOnline.lobby_settings.climate_intensity) {
+			case "High":
+				//50% chance time = time/2
+				if rand_value <= 0.5 { n_days = round(n_days / 2) }
+				//25% chance time = time*(2/3)
+				else if rand_value <= 0.75 { n_days = round(n_days * (2/3)) }
+				//25% chance time = time*(3/4)
+				else { n_days = round(n_days * (3/4)) }
+			break;
+			
+			case "Medium":
+				//40% chance time = time*(2/3)
+				if rand_value <= 0.4 { n_days = round(n_days * (2/3)) }
+				//40% chance time = time*(3/4)
+				else if rand_value <= 0.8 { n_days = round(n_days * (3/4)) }
+				//20% chance nothing
+				else {}
+			break;
+			
+			case "Low":
+				//25% chance time = time*(3/4)
+				if rand_value <= 0.25 { n_days = round(n_days * (3/4)) }
+				//50% chance nothing
+				else if rand_value <= 0.75 {}
+				//25% chance time = time*(5/4)
+				else { n_days = round(n_days * (5/4)) }
+			break;
+		}
+		switch(objOnline.lobby_settings.climate_type) {
+			case "Tropical":
+				//50% chance time = time/2
+				if rand_value <= 0.5 { n_days = round(n_days / 2) }
+				//25% chance time = time*(2/3)
+				else if rand_value <= 0.75 { n_days = round(n_days * (2/3)) }
+				//25% chance time = time*(3/4)
+				else { n_days = round(n_days * (3/4)) }
+			break;
+			
+			case "Temperate":
+				//40% chance time = time*(2/3)
+				if rand_value <= 0.4 { n_days = round(n_days * (2/3)) }
+				//40% chance time = time*(3/4)
+				else if rand_value <= 0.8 { n_days = round(n_days * (3/4)) }
+				//20% chance nothing
+				else {}
+			break;
+			
+			case "Boreal":
+				//25% chance time = time*(3/4)
+				if rand_value <= 0.25 { n_days = round(n_days * (3/4)) }
+				//50% chance nothing
+				else if rand_value <= 0.75 {}
+				//25% chance time = time*(5/4)
+				else { n_days = round(n_days * (5/4)) }
+			break;
+		}
+		
+		var intensity = choose("low","medium","high");
+		if next_disaster == "cyclone" and objOnline.lobby_settings.landscape_type == "Continental" {
+			intensity = choose("low","low","medium")
+		}
+		
+		return {
+			disaster : next_disaster,
+			intensity : choose("low","medium","high"),
+			days_since_last_disaster : n_days
+		}
 	}
 }
 
@@ -220,6 +360,14 @@ function set_new_affected_area() {
 }
 
 function get_disaster_center() {
+	//for multi-hazard scenarios: choose a spot that's already affected
+	if global.state.multi_hazard {
+		var spot = global.state.affected_tiles[irandom(array_length(global.state.affected_tiles)-1)];
+		var spot_coords = grid_to_coords(spot,false);
+		return [spot_coords[0], spot_coords[1]]
+	}
+	
+	//else: choose a random spot based on risk 
 	var map_key = "";
 	switch(global.state.disaster) {
 		case "cyclone":
@@ -236,8 +384,10 @@ function get_disaster_center() {
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var tile = global.map.land_tiles[i];
 		// insert n copies of the tile into candidate array, where n is the tile's risk value for the given disaster
-		repeat tile.metrics[$ map_key] {
-			array_push(candidate_tiles,tile);	
+		if tile.metrics[$ map_key] > 0 {
+			repeat tile.metrics[$ map_key] {
+				array_push(candidate_tiles,tile);	
+			}
 		}
 	}
 	var chosen_tile = candidate_tiles[irandom(array_length(candidate_tiles)-1)];

@@ -25,7 +25,8 @@ enum MESSAGE {
 	END_DISCUSSION = 31,
 	END_ROUND = 32,
 	PROGRESS_ROUND = 33,
-	NEW_ROUND = 34
+	NEW_ROUND = 34,
+	GAME_END = 35
 }
 
 var socket_type = network_socket_ws;
