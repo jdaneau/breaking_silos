@@ -44,7 +44,7 @@ global.colors = {
 }
 
 global.time_limits = {
-	discussion: 600, //seconds
+	discussion: 900, //seconds
 	decision: 300
 }
 

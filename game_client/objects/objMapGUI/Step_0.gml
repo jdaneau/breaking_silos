@@ -54,7 +54,7 @@ if mouse_in_map and placing and selected_measure >= 0 {
 		var _tile = map_get_tile(_mouse_i,_mouse_j);
 		var _measure = ds_map_find_value(global.measures,selected_measure);
 		if mouse_check_pressed(mb_left) {
-			if (global.state.state_budget - _measure.cost) > 0 and !array_contains(_tile.measures, selected_measure) and array_length(_tile.measures)<9 {
+			if (global.state.state_budget - _measure.cost) >= 0 and !array_contains(_tile.measures, selected_measure) and array_length(_tile.measures)<9 {
 				array_push(_tile.measures, selected_measure)
 				global.state.state_budget -= _measure.cost
 				global.map.money_spent += _measure.cost
@@ -109,7 +109,7 @@ if mouse_in_map and mouse_check_pressed(mb_right) {
 	var _x = mouse_map_x div 64;
 	var _y = mouse_map_y div 64;
 	var _square = coords_to_grid(mouse_map_x,mouse_map_y)
-	var msg = string("{0} has highlighted square {1}!","Player1",_square);
+	var msg = string("{0} has highlighted square {1}!",global.state.player_name,_square);
 	if instance_exists(objOnline) {
 		send_string(MESSAGE.ANNOUNCEMENT, msg)
 		send_string(MESSAGE.MAP_PING, _square)

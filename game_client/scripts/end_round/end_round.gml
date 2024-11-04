@@ -17,7 +17,7 @@ function end_round(){
 		while array_length(_tile.measures) > 0 {
 			var _measure = array_pop(_tile.measures);
 			global.state.measures_implemented[_measure] += 1
-			if _measure == MEASURE.AIRPORT && array_contains(global.state.affected_tiles,coords_to_grid(_tile.x div 64, _tile.y div 64)) {
+			if _measure == MEASURE.AIRPORT && array_contains(global.state.affected_tiles,coords_to_grid(_tile.x,_tile.y)) {
 				var pop = _tile.metrics.population;
 				if pop > airport_pop { airport_pop = pop }
 			}
