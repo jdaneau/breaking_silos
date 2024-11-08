@@ -17,7 +17,7 @@ function end_round(){
 		while array_length(_tile.measures) > 0 {
 			var _measure = array_pop(_tile.measures);
 			global.state.measures_implemented[_measure] += 1
-			if _measure == MEASURE.AIRPORT && array_contains(global.state.affected_tiles,coords_to_grid(_tile.x div 64, _tile.y div 64)) {
+			if _measure == MEASURE.AIRPORT && array_contains(global.state.affected_tiles,coords_to_grid(_tile.x,_tile.y)) {
 				var pop = _tile.metrics.population;
 				if pop > airport_pop { airport_pop = pop }
 			}
@@ -332,9 +332,9 @@ function update_population_loss(finished_projects) {
 		
 		switch(global.state.disaster) {
 			case "flood":
-				if global.state.disaster_intensity == "low" { loss_rate = random_range(0.001,0.002) }
-				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.002,0.01) }
-				else { loss_rate = random_range(0.01,0.025) }
+				if global.state.disaster_intensity == "low" { loss_rate = random_range(0.0005,0.001) }
+				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.001,0.0025) }
+				else { loss_rate = random_range(0.0025,0.01) }
 				base_loss_rate = loss_rate
 				
 				if has_implemented(tile,MEASURE.EWS_FLOOD,finished_projects) {
@@ -367,8 +367,8 @@ function update_population_loss(finished_projects) {
 				
 			case "drought":
 				if global.state.disaster_intensity == "low" { loss_rate = random_range(0,0.0005) }
-				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.001,0.0025) }
-				else { loss_rate = random_range(0.005,0.01) }
+				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.0005,0.001) }
+				else { loss_rate = random_range(0.001,0.005) }
 				base_loss_rate = loss_rate
 				
 				high_agriculture_multiplier = 1.1;
@@ -379,9 +379,9 @@ function update_population_loss(finished_projects) {
 				break;
 				
 			case "cyclone":
-				if global.state.disaster_intensity == "low" { loss_rate = random_range(0.001,0.002) }
-				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.002,0.01) }
-				else { loss_rate = random_range(0.01,0.05) }
+				if global.state.disaster_intensity == "low" { loss_rate = random_range(0,0.0005) }
+				else if global.state.disaster_intensity == "medium" { loss_rate = random_range(0.0005,0.005) }
+				else { loss_rate = random_range(0.005,0.01) }
 				
 				base_loss_rate = loss_rate
 				

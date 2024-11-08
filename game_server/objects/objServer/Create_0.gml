@@ -1,3 +1,25 @@
+draw_enable_drawevent(false);
+
+var p_num;
+p_num = parameter_count();
+
+var socket_type = network_socket_tcp;
+
+for (var i = 0; i < p_num; i += 1) {
+   p_string[i] = parameter_string(i);
+   switch(p_string[i]) {
+      case "-nowindow":
+         draw_enable_drawevent(false);
+      break;
+	  case "-socket":
+		 var stype = p_string[i+1];
+		 if stype == "tcp" socket_type = network_socket_tcp;
+		 else if stype == "udp" socket_type = network_socket_udp;
+		 else if stype == "ws" socket_type = network_socket_ws;
+	  break;
+   }
+}
+
 enum MESSAGE {
 	CONNECT = 1,
 	DISCONNECT = 2,
@@ -28,8 +50,6 @@ enum MESSAGE {
 	NEW_ROUND = 34,
 	GAME_END = 35
 }
-
-var socket_type = show_question("Use web sockets?") ? network_socket_ws : network_socket_tcp;
 
 port = 20002
 max_per_lobby = 8

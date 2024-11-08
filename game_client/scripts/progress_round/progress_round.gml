@@ -98,14 +98,11 @@ function get_next_disaster(){
 			break;
 		}
 		
-		var n_days = choose(7,30,365);
+		var n_days = choose(30,365);
 		var mult;
 		switch(n_days) {
-			case 7:
-				mult = random_range(2,8)
-				break;
 			case 30:
-				mult = random_range(2,24)
+				mult = random_range(4,24)
 				break;
 			case 365:
 				mult = random_range(1,3)
