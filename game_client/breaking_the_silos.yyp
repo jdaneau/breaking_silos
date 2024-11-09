@@ -34,10 +34,11 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.8.1.171",
+    "IDEVersion":"2024.8.0.169",
   },
   "name":"breaking_the_silos",
   "resources":[
+    {"id":{"name":"ext_HTMLFullScreen","path":"extensions/ext_HTMLFullScreen/ext_HTMLFullScreen.yy",},},
     {"id":{"name":"fChat","path":"fonts/fChat/fChat.yy",},},
     {"id":{"name":"fDescription","path":"fonts/fDescription/fDescription.yy",},},
     {"id":{"name":"fHeader","path":"fonts/fHeader/fHeader.yy",},},

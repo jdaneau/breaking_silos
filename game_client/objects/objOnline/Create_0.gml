@@ -30,11 +30,10 @@ enum MESSAGE {
 }
 
 var socket_type = network_socket_ws;
-var server_ip = "127.0.0.1";
+var server_ip = "98.71.249.250";
 
 if os_browser == browser_not_a_browser {
 	socket_type = network_socket_tcp
-	server_ip = "127.0.0.1";
 }
 
 ping = 0
