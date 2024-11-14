@@ -1,4 +1,4 @@
-font = fSidebar
+font = fChat
 color = c_white
 
 update = function() {

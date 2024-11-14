@@ -44,7 +44,7 @@ port = 20002
 socket = network_create_socket(socket_type)
 
 network_connect_async(socket,server_ip,port)
-client_buffer = buffer_create(2048,buffer_fixed,1) 
+client_buffer = buffer_create(4096,buffer_fixed,1) 
 
 connected = false
 lobby_id = ""
@@ -64,7 +64,8 @@ function get_role_player(role_id) {
 }
 
 game_fps = floor(game_get_speed(gamespeed_fps))
-timeout_interval = game_fps * 2
+timeout_interval = game_fps * 10
 timeout_time = game_fps
+timeout_attempts = 0
 alarm[0] = timeout_interval
 timeout = false

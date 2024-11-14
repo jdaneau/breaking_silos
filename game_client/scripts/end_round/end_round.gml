@@ -13,7 +13,7 @@ function end_round(){
 	//move measures into the in_progress array for each tile (and count measures for the aid objectives)
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];
-		if _tile.metrics.agriculture > 0 { n_remaining_agriculture++ }
+		if _tile.metrics.agriculture > 0 || array_contains(_tile.in_progress,MEASURE.NORMAL_CROPS) || array_contains(_tile.in_progress,MEASURE.RESISTANT_CROPS) { n_remaining_agriculture++ }
 		while array_length(_tile.measures) > 0 {
 			var _measure = array_pop(_tile.measures);
 			global.state.measures_implemented[_measure] += 1
@@ -246,6 +246,12 @@ function update_map_measures(finished_projects) {
 
 //matters related to population loss
 function update_population_loss(finished_projects) {
+	//set up starting populations for calculating amount of lives saved
+	var starting_populations = ds_map_create();
+	for(var i=0; i<array_length(global.state.affected_tiles); i++) {
+		var tile = tile_from_square(global.state.affected_tiles[i]);
+		starting_populations[? global.state.affected_tiles[i]] = tile.metrics.population
+	}
 	//evacuate population from affected tiles
 	var evacuateList = [];
 	var evacuatedPopulation = 0;
@@ -440,7 +446,7 @@ function update_population_loss(finished_projects) {
 		}
 		
 		var lost_population = round(tile.metrics.population * loss_rate);
-		potential_population_lost += round(tile.metrics.population * base_loss_rate);
+		potential_population_lost += round(starting_populations[? global.state.affected_tiles[i]] * base_loss_rate);
 		tile.metrics.population -= lost_population
 		if lost_population > 0 {
 			total_population_lost += lost_population
@@ -450,7 +456,8 @@ function update_population_loss(finished_projects) {
 	total_population_lost *= 1000
 	potential_population_lost *= 1000
 	global.map.deaths += floor(total_population_lost)
-	global.map.lives_saved += (evacuatedPopulation * 1000) + floor(potential_population_lost - total_population_lost)
+	global.map.lives_saved += floor(potential_population_lost - total_population_lost)
 	var pop_string = string_format(total_population_lost, floor(log10(total_population_lost)), 0);
 	add_report(string("{0} total people died over {1} cells due to the disaster.",pop_string,number_tiles_pop_lost))
+	ds_map_destroy(starting_populations)
 }

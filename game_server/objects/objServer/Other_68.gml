@@ -169,10 +169,11 @@ switch(type_event){
 					send_to_others(socket,MESSAGE.LEAVE_GAME,buffer_string,name)
 					ds_map_delete(lobby.players, socket)
 					if ds_map_size(lobby.players) == 0 {
+						ds_map_destroy(lobby.players)
 						ds_map_delete(lobbies, lobby_id)	
 					}
-					else if lobby.state == "started" {
-						if role == "President" {
+					else {
+						if role == "President" and lobby.state == "started" {
 							var new_president = array_first(ds_map_keys_to_array(lobby.players));
 							var new_president_name = lobby.players[? new_president].name;
 							send(new_president, MESSAGE.JOIN_ROLE,buffer_string,"President")

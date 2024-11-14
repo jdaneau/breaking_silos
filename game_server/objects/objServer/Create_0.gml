@@ -4,13 +4,13 @@ p_num = parameter_count();
 var socket_type = network_socket_tcp;
 
 for (var i = 0; i < p_num; i += 1) {
-   p_string[i] = parameter_string(i);
-   switch(p_string[i]) {
+	var param = parameter_string(i);
+    switch(param) {
       case "-nowindow":
          draw_enable_drawevent(false);
       break;
 	  case "-socket":
-		 var stype = p_string[i+1];
+		 var stype = parameter_string(i+1);
 		 if stype == "tcp" socket_type = network_socket_tcp;
 		 else if stype == "udp" socket_type = network_socket_udp;
 		 else if stype == "ws" socket_type = network_socket_ws;
@@ -57,7 +57,7 @@ max_lobbies = 10
 max_players = max_per_lobby * max_lobbies
 
 server = network_create_server(socket_type,port,max_players)
-server_buffer = buffer_create(2048,buffer_fixed,1)
+server_buffer = buffer_create(4096,buffer_fixed,1)
 
 interval = 20 //20 seconds per update
 last_time = 0

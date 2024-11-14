@@ -31,6 +31,7 @@ var message_type = buffer_read(packet,buffer_u8);
 switch(message_type) {
 	case MESSAGE.PING:
 		timeout = false
+		timeout_attempts = 0
 	break;
 	
 	case MESSAGE.ANNOUNCEMENT: //server announcement

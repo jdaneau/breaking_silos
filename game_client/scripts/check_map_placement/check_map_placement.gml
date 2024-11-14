@@ -55,8 +55,8 @@ function check_map_placement(measure,tile) {
 				
 		case MEASURE.NORMAL_CROPS:
 		case MEASURE.RESISTANT_CROPS:
-			if tile.metrics.agriculture > 0 {
-				return "Cannot plant crops on a cell that already has planted crops on it."
+			if (measure == MEASURE.NORMAL_CROPS and tile.metrics.agriculture == 1) or (measure == MEASURE.RESISTANT_CROPS and tile.metrics.agriculture == 2) {
+				return "This type of crop is already planted on this cell."
 			}
 			if tile.metrics.population >= 700 {
 				return "Cannot plant crops in densely populated cells."
