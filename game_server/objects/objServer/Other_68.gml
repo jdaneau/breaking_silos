@@ -1,5 +1,5 @@
 var type_event = async_load[? "type"];
-var socket, sock, cid, did, buffer, message_id, findsocket, name, data, msg, value, lobby_id, playernames, role, lobby_players;
+var socket, sock, cid, did, buffer, message_id, findsocket, name, data, msg, value, lobby_id, playernames, role, lobby_players, lobby_sockets;
 
 try {
 
@@ -57,14 +57,47 @@ switch(type_event){
 			break;
 			
 			case MESSAGE.STATE:
-			case MESSAGE.MAP:
 			case MESSAGE.PLACE_MEASURE:
 			case MESSAGE.REMOVE_MEASURE:
+			case MESSAGE.MAP_CHANGE:
+				data = buffer_read(buffer,buffer_string)
+				send_to_others(socket,message_id,buffer_string,data)
+			break;
+			
 			case MESSAGE.END_ROUND:
 			case MESSAGE.PROGRESS_ROUND:
 			case MESSAGE.NEW_ROUND:
+				send_id_to_others(socket,message_id)
+			break;
+			
+			case MESSAGE.REQUEST_MAP:
+				lobby_id = sockets[? socket]
+				name = ds_map_find_value(lobbies[? lobby_id].players, socket).name
+				lobby_sockets = ds_map_keys_to_array(lobbies[? lobby_id].players)
+				var president_socket;
+				for(var i=0; i<array_length(lobby_sockets); i++) {
+					if ds_map_find_value(lobbies[? lobby_id].players, lobby_sockets[i]).role == "President" {
+						president_socket = lobby_sockets[i]
+						break;
+					}
+				}
+				send(president_socket,MESSAGE.REQUEST_MAP,buffer_string,name)
+			break;
+			
+			case MESSAGE.MAP:
 				data = buffer_read(buffer,buffer_string)
-				send_to_others(socket,message_id,buffer_string,data)
+				var struct = json_parse(data)
+				var target_player = struct.target_player;
+				lobby_id = sockets[? socket]
+				lobby_sockets = ds_map_keys_to_array(lobbies[? lobby_id].players)
+				var target_socket;
+				for(var i=0; i<array_length(lobby_sockets); i++) {
+					if ds_map_find_value(lobbies[? lobby_id].players, lobby_sockets[i]).name == target_player {
+						target_socket = lobby_sockets[i]
+						break;
+					}
+				}
+				send(target_socket,MESSAGE.MAP_CHANGE,buffer_string,data)
 			break;
 			
 			case MESSAGE.END_DISCUSSION:
@@ -117,7 +150,10 @@ switch(type_event){
 					sockets[? socket] = lobby_id
 					ds_map_add(lobbies[? lobby_id].players, socket, {name:name,role:""})
 					var _players = ds_map_values_to_array(lobbies[? lobby_id].players);
-					send(socket,MESSAGE.JOIN_GAME,buffer_string,lobby_id)
+					send_compound(socket,MESSAGE.JOIN_GAME,[
+						{type:"string", content:lobby_id},
+						{type:"string", content:lobbies[? lobby_id].settings.landscape_type}
+					])
 					send_to_others(socket,MESSAGE.JOIN_GAME,buffer_string,name)
 					send_array(socket,MESSAGE.GET_PLAYERS,"struct",_players)
 				}

@@ -69,6 +69,7 @@ global.state = {
 	time_remaining : 0, 
 	state_budget : 0,
 	base_tax : 0,
+	starting_population : 0,
 	money_spent : 0,
 	role: ROLE.NONE,
 	disaster: "",
@@ -87,7 +88,12 @@ global.state = {
 		hospitals : false,
 		airport : false,
 		agriculture : false
-	}
+	},
+	n_projects_interrupted : 0,
+	n_agriculture_lost : 0,
+	n_airports_damaged : 0,
+	n_hospitals_damaged : 0,
+	n_tiles_damaged : 0
 }
 
 //roles
@@ -259,8 +265,8 @@ ds_map_add(global.measures, MEASURE.EVACUATE, {
 })
 
 //used by the text objects in the roundresults screen
-global.n_tiles_damaged = 0
-global.n_hospitals_damaged = 0
-global.n_agriculture_lost = 0
-global.n_airports_damaged = 0
-global.n_projects_interrupted = 0
+global.state.n_tiles_damaged = 0
+global.state.n_hospitals_damaged = 0
+global.state.n_agriculture_lost = 0
+global.state.n_airports_damaged = 0
+global.state.n_projects_interrupted = 0

@@ -14,7 +14,6 @@ var struct = {
 	hospital_grid : array_init_2d(room_width/64,room_height/64,0),
 	airport_grid : array_init_2d(room_width/64,room_height/64,0),
 	buildings_grid : array_init_2d(room_width/64,room_height/64,0),
-	starting_population : 0,
 	starting_agriculture : 0,
 	hospitals_repaired: 0,
 	airports_repaired: 0,
@@ -37,7 +36,6 @@ for (n=0; n<instance_number(objMapTile); ++n;) {
 		measures:[], in_progress:[], implemented:[], evacuated_population:[], dammed:false})
 	struct.land_grid[_x,_y] = 1
 	struct.buildings_grid[_x,_y] = 1
-	struct.starting_population += _tile.metrics.population
 	if _tile.metrics.agriculture > 0 { struct.starting_agriculture += 1 }
 }
 //account for any foreign tiles
@@ -98,4 +96,7 @@ for (n=0; n<instance_number(objAirport); ++n;) {
 global.maps[? room] = struct
 if room == rMap01 { room_goto(rMap02) }
 else if room == rMap02 { room_goto(rMap03) }
-else room_goto(rTitle)
+else {
+	global.map = global.maps[? rMap01]
+	room_goto(rTitle)
+}

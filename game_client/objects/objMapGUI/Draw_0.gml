@@ -79,6 +79,7 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	}
 	if show_drought_risk {
 		var _hazard = _tile.metrics.drought_risk;
+		if _hazard == 0 { draw_set_alpha(0) }
 		if _hazard == 1 { draw_set_alpha(0.2) }
 		else if _hazard == 2 { draw_set_alpha(0.35) }
 		else if _hazard == 3 { draw_set_alpha(0.5) }
@@ -93,6 +94,7 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	}
 	if show_flood_risk {
 		var _hazard = _tile.metrics.flood_risk;
+		if _hazard == 0 { draw_set_alpha(0) }
 		if _hazard == 1 { draw_set_alpha(0.2) }
 		else if _hazard == 2 { draw_set_alpha(0.35) }
 		else if _hazard == 3 { draw_set_alpha(0.5) }
@@ -107,6 +109,7 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	}
 	if show_cyclone_risk {
 		var _hazard = _tile.metrics.cyclone_risk;
+		if _hazard == 0 { draw_set_alpha(0) }
 		if _hazard == 1 { draw_set_alpha(0.2) }
 		else if _hazard == 2 { draw_set_alpha(0.35) }
 		else if _hazard == 3 { draw_set_alpha(0.5) }

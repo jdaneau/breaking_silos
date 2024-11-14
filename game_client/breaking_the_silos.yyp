@@ -112,6 +112,7 @@
     {"id":{"name":"end_discussion","path":"scripts/end_discussion/end_discussion.yy",},},
     {"id":{"name":"end_round","path":"scripts/end_round/end_round.yy",},},
     {"id":{"name":"get_ai_messages","path":"scripts/get_ai_messages/get_ai_messages.yy",},},
+    {"id":{"name":"get_map_changes","path":"scripts/get_map_changes/get_map_changes.yy",},},
     {"id":{"name":"get_measure_sprite","path":"scripts/get_measure_sprite/get_measure_sprite.yy",},},
     {"id":{"name":"information_fuctions","path":"scripts/information_fuctions/information_fuctions.yy",},},
     {"id":{"name":"map_get_tile","path":"scripts/map_get_tile/map_get_tile.yy",},},

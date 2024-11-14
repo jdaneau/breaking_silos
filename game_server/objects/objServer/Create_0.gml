@@ -1,5 +1,3 @@
-draw_enable_drawevent(false);
-
 var p_num;
 p_num = parameter_count();
 
@@ -44,6 +42,8 @@ enum MESSAGE {
 	PLACE_MEASURE = 26,
 	REMOVE_MEASURE = 27,
 	BUDGET = 28,
+	MAP_CHANGE = 29,
+	REQUEST_MAP = 30,
 	END_DISCUSSION = 31,
 	END_ROUND = 32,
 	PROGRESS_ROUND = 33,

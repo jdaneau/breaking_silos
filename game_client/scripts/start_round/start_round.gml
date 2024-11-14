@@ -23,17 +23,17 @@ function start_round() {
 	}
 	
 	send_struct(MESSAGE.STATE, global.state)
-	send_chunked_string(MESSAGE.MAP,json_stringify(global.map))
+	send_updated_map()
 	room_goto(rInGame)
 }
 
 function do_map_damages(){
 	
-	global.n_projects_interrupted = 0
-	global.n_agriculture_lost = 0
-	global.n_airports_damaged = 0
-	global.n_hospitals_damaged = 0
-	global.n_tiles_damaged = 0
+	global.state.n_projects_interrupted = 0
+	global.state.n_agriculture_lost = 0
+	global.state.n_airports_damaged = 0
+	global.state.n_hospitals_damaged = 0
+	global.state.n_tiles_damaged = 0
 	
 	for(var i=0; i<array_length(global.state.affected_tiles); i++) {
 		var tile = tile_from_square(global.state.affected_tiles[i]);
@@ -44,24 +44,24 @@ function do_map_damages(){
 		switch(global.state.disaster) {
 			case "flood":
 				global.map.buildings_grid[tx,ty] = -1
-				global.n_tiles_damaged++
+				global.state.n_tiles_damaged++
 				if global.state.disaster_intensity != "low" {
 					if global.map.hospital_grid[tx,ty] == 1 {
 						global.map.hospital_grid[tx,ty] = -1
-						global.n_hospitals_damaged++
+						global.state.n_hospitals_damaged++
 					}
 					if global.map.airport_grid[tx,ty] == 1 {
 						global.map.airport_grid[tx,ty] = -1
-						global.n_airports_damaged++
+						global.state.n_airports_damaged++
 					}
 					if tile.metrics.agriculture != 0 { 
 						tile.metrics.agriculture = -1 
-						global.n_agriculture_lost++
+						global.state.n_agriculture_lost++
 					}
 				} else {
 					if tile.metrics.agriculture == 2 { 
 						tile.metrics.agriculture = -1 
-						global.n_agriculture_lost++
+						global.state.n_agriculture_lost++
 					}
 				}
 			break;
@@ -71,23 +71,23 @@ function do_map_damages(){
 				if global.state.disaster_intensity != "low" {
 					if global.map.hospital_grid[tx,ty] == 1 {
 						global.map.hospital_grid[tx,ty] = -1
-						global.n_hospitals_damaged++
+						global.state.n_hospitals_damaged++
 					}
 					if global.map.airport_grid[tx,ty] == 1 {
 						global.map.airport_grid[tx,ty] = -1
-						global.n_airports_damaged++
+						global.state.n_airports_damaged++
 					}
 				}
 				if tile.metrics.agriculture != 0 { 
 					tile.metrics.agriculture = -1 
-					global.n_agriculture_lost++
+					global.state.n_agriculture_lost++
 				}
 			break;
 			
 			case "drought":
 				if tile.metrics.agriculture == 1 { 
 					tile.metrics.agriculture = -1 
-					global.n_agriculture_lost++
+					global.state.n_agriculture_lost++
 				}
 			break;
 		}
@@ -96,21 +96,21 @@ function do_map_damages(){
 			case "low":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
 					tile.in_progress[p].days_remaining += 7 * random_range(1,4) // add 1-4 weeks extra time
-					global.n_projects_interrupted++
+					global.state.n_projects_interrupted++
 				}
 			break;
 			
 			case "medium":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
 					tile.in_progress[p].days_remaining += 30 * random_range(2,12) // add 2-12 months extra time
-					global.n_projects_interrupted++
+					global.state.n_projects_interrupted++
 				}
 			break;
 			
 			case "high":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
 					tile.in_progress[p].days_remaining += 365 * random_range(1,2) // add 1-2 years extra time
-					global.n_projects_interrupted++
+					global.state.n_projects_interrupted++
 				}
 			break;
 		}
@@ -144,6 +144,6 @@ function init_state() {
 		_tile.metrics.population = round_nearest(_tile.metrics.population * pop_mult, 25);
 		new_population += (_tile.metrics.population * 1000);
 	}
-	global.map.starting_population = new_population / 1000
+	global.state.starting_population = new_population / 1000
 	global.state.base_tax = 10000 * (new_population / normal_population) * tax_mult
 }

@@ -187,7 +187,7 @@ function increase_global_time(days) {
 	//tax revenue
 	var new_years = date_get_year(new_datetime) - date_get_year(global.state.datetime);
 	if new_years > 0 {
-		var tax_amount = round(new_years * global.state.base_tax * (get_total_population("thousands",false) / global.map.starting_population));
+		var tax_amount = round(new_years * global.state.base_tax * (get_total_population("thousands",false) / global.state.starting_population));
 		global.state.state_budget += tax_amount;
 		add_report(string("{0} new year{1} {2} passed, providing a tax income of {3} coins!",new_years,new_years > 1 ? "s" : "", new_years > 1 ? "have" : "has", tax_amount))
 	}

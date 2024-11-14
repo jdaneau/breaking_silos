@@ -94,7 +94,8 @@ function end_round(){
 	if instance_exists(objOnline) {
 		//update other players
 		send_struct(MESSAGE.STATE,global.state)
-		send_chunked_string(MESSAGE.END_ROUND, json_stringify(global.map))
+		send_updated_map()
+		send(MESSAGE.END_ROUND)
 	}
 		
 	room_goto(rRoundResults)
@@ -193,26 +194,18 @@ function update_map_measures(finished_projects) {
 		if just_completed(tile,MEASURE.DAM,finished_projects) {
 			array_push(tile.implemented, MEASURE.DAM)	
 			add_report(string("A dam has completed construction on tile {0}.",coords_to_grid(tile.x,tile.y)))
-			tile.dammed = true
+			tile.metrics.flood_risk = clamp(tile.metrics.flood_risk+1, 0,4)
+			tile.metrics.drought_risk = clamp(tile.metrics.drought_risk-1, 0,3)
 			var cur_tile = tile;
 			var n_dammed = 0;
 			var n_upstream = 0;
-			//decrease flood risk on downstream tiles (max of 3)
-			while(get_downstream_tile(cur_tile) != noone and n_dammed < 3) {
+			//decrease flood risk and increase drought risk on downstream tiles (max of 5)
+			while(get_downstream_tile(cur_tile) != noone and n_dammed < 5) {
 				cur_tile.dammed = true
 				cur_tile.metrics.flood_risk = clamp(cur_tile.metrics.flood_risk-2, 0,3)
 				cur_tile.metrics.drought_risk = clamp(cur_tile.metrics.drought_risk+1, 0,4)
 				cur_tile = get_downstream_tile(cur_tile)
 				n_dammed++
-			}
-			//increase flood risk on upstream tiles (max of 3)
-			var upstream_tiles = get_upstream_tiles(tile);
-			for(var t=0; t<array_length(upstream_tiles); t++) {
-				var up_tile = upstream_tiles[t];
-				up_tile.metrics.flood_risk = clamp(up_tile.metrics.flood_risk+1, 0,4)
-				up_tile.metrics.drought_risk = clamp(up_tile.metrics.drought_risk-1,0,3)
-				n_upstream++
-				if n_upstream >= 3 break;
 			}
 		}
 	

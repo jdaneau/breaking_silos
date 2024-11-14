@@ -106,3 +106,36 @@ function receive_map_chunk(buffer) {
 	}
 	return ""
 }
+
+function send_updated_map() {
+	var updates = [];
+	array_push(updates, {
+		type: "buildings",
+		buildings_grid: global.map.buildings_grid
+	})
+	array_push(updates, {
+		type: "hospitals",
+		hospital_grid: global.map.hospital_grid
+	})
+	array_push(updates, {
+		type: "airports",
+		airport_grid: global.map.airport_grid
+	})
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tile = global.map.land_tiles[i];
+		array_push(updates, {
+			type : "tile",
+			x : tile.x div 64,
+			y : tile.y div 64,
+			metrics: tile.metrics,
+			measures: tile.measures,
+			in_progress: tile.in_progress,
+			implemented: tile.implemented,
+			evacuated_population: tile.evacuated_population,
+			dammed: tile.dammed
+		})		
+	}
+	for(var i=0; i<array_length(updates); i++){
+		send_struct(MESSAGE.MAP_CHANGE,updates[i])	
+	}
+}

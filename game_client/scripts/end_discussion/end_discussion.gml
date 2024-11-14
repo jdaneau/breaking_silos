@@ -29,7 +29,7 @@ function end_discussion(){
 		}
 		
 		send_struct(MESSAGE.STATE,global.state)
-		send_chunked_string(MESSAGE.MAP,json_stringify(global.map))
+		send_updated_map()
 	} else {
 		with objGUIMesaures {
 			measures = []

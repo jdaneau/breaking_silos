@@ -22,6 +22,8 @@ enum MESSAGE {
 	PLACE_MEASURE = 26,
 	REMOVE_MEASURE = 27,
 	BUDGET = 28,
+	MAP_CHANGE = 29,
+	REQUEST_MAP = 30,
 	END_DISCUSSION = 31,
 	END_ROUND = 32,
 	PROGRESS_ROUND = 33,
@@ -34,6 +36,7 @@ var server_ip = "98.71.249.250";
 
 if os_browser == browser_not_a_browser {
 	socket_type = network_socket_tcp
+	//server_ip = "127.0.0.1"
 }
 
 ping = 0
@@ -42,12 +45,13 @@ socket = network_create_socket(socket_type)
 
 network_connect_async(socket,server_ip,port)
 client_buffer = buffer_create(2048,buffer_fixed,1) 
-chunks = ds_map_create()
 
 connected = false
 lobby_id = ""
 lobby_settings = {}
 players = ds_map_create()
+
+map_initialized = false
 
 function get_role_player(role_id) {
 	var _players = ds_map_keys_to_array(objOnline.players);

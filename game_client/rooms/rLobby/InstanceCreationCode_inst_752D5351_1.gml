@@ -2,7 +2,10 @@ text = "Start game"
 
 on_click = function(on) {
 	var occupied_roles = ds_map_values_to_array(objOnline.players);
-	if array_contains(occupied_roles, ROLE.PRESIDENT) {
+	if array_contains(occupied_roles, ROLE.NONE) {
+		open_dialog_info("All players must join a role before the game can start!")
+	}
+	else if array_contains(occupied_roles, ROLE.PRESIDENT) {
 		if global.state.role == ROLE.PRESIDENT {
 			var n_players = ds_map_size(objOnline.players);
 			var dialog_text = "Are you sure you want to start the game?";

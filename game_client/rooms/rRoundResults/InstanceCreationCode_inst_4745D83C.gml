@@ -7,7 +7,8 @@ on_click = function(on) {
 	with objOnline {
 		//send data to others
 		send_struct(MESSAGE.STATE,global.state)
-		send_chunked_string(MESSAGE.NEW_ROUND, json_stringify(global.map))
+		send_updated_map()
+		send(MESSAGE.NEW_ROUND)
 	}
 	room_goto(rInGame)
 }

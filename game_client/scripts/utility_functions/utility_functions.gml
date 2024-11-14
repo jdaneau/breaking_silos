@@ -41,15 +41,29 @@ function round_nearest(val,factor) {
 /// @function copy_stuct(struct)
 /// @description returns a copy of the provided struct 
 function copy_stuct(struct){
-    var key, value;
-    var newCopy = {};
-    var keys = variable_struct_get_names(struct);
-    for (var i = array_length(keys)-1; i >= 0; --i) {
-            key = keys[i];
-            value = variable_struct_get(struct, key);
-            variable_struct_set(newCopy, key, value)
-    }
-    return newCopy;
+	var copy = {};
+	var keys = variable_struct_get_names(struct);
+	for (var i=0; i<array_length(keys); i++) {
+		var key = keys[i];
+		var value = variable_struct_get(struct, key);
+		variable_struct_set(copy, key, value)
+	}
+	return copy;
+}
+
+/// @function struct_equals(struct1, struct2)
+/// @description returns true if the two provided structs have the same data
+function struct_equals(struct1, struct2) {
+	var keys1 = variable_struct_get_names(struct1);
+	var keys2 = variable_struct_get_names(struct2);
+	if !array_equals(keys1,keys2) return false
+	 
+	for (var i=0; i<array_length(keys1); i++) {
+		var value1 = variable_struct_get(struct1, keys1[i]);
+		var value2 = variable_struct_get(struct2, keys1[i]);
+        if value1 != value2 { return false }
+	}
+	return true
 }
 
 /// @function euclidean_distance(x1,y1,x2,y2)

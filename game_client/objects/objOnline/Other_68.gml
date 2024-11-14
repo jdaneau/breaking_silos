@@ -60,36 +60,80 @@ switch(message_type) {
 		global.state.state_budget = buffer_read(packet,buffer_u32)
 	break;
 	
-	case MESSAGE.MAP: //host sends map data
-		result = receive_map_chunk(packet);
-		if result != "" {
-			global.map = json_parse(result)
-			if room == rLobby { room_goto(rInGame) }
+	case MESSAGE.MAP_CHANGE:
+		if !objOnline.map_initialized {
+			switch(objOnline.lobby_settings.landscape_type) {
+				case "Island":
+					global.map = global.maps[? rMap01]
+					objOnline.map_initialized = true
+				break;
+				case "Coastal":
+					global.map = global.maps[? rMap02]
+					objOnline.map_initialized = true
+				break;
+				case "Continental":
+					global.map = global.maps[? rMap03]
+					objOnline.map_initialized = true
+				break;
+			}
+		}
+		result = receive_struct(packet)
+		switch(result.type) {
+			case "tile":
+				tile = tile_from_coords(result.x, result.y)
+				tile.metrics = result.metrics
+				tile.measures = result.measures
+				tile.in_progress = result.in_progress
+				tile.implemented = result.implemented
+				tile.evacuated_population = result.evacuated_population
+				tile.dammed = result.dammed
+			break;
+			
+			case "buildings":
+				global.map.buildings_grid = result.buildings_grid
+			break;
+
+			case "hospitals":
+				global.map.hospital_grid = result.hospital_grid
+			break;
+
+			case "airports":
+				global.map.airport_grid = result.airport_grid
+			break;
+			
+			case "stats":
+				global.map.hospitals_repaired = result.hospitals_repaired
+				global.map.airports_repaired = result.airports_repaired
+				global.map.crops_planted = result.crops_planted
+				global.map.deaths = result.deaths
+				global.map.lives_saved = result.lives_saved
+				global.map.money_spent = result.money_spent
+				global.map.measures_implemented = result.measures_implemented
+			break;
+		}
+		if room == rRoundResults { with objGUIText event_user(0) }
+	break;
+	
+	case MESSAGE.REQUEST_MAP:
+		var target_player = buffer_read(packet,buffer_string);
+		var changes = get_map_changes();
+		for(var i=0; i<array_length(changes); i++) {
+			struct = changes[i]
+			struct[$ "target_player"] = target_player
+			send_struct(MESSAGE.MAP, struct)
 		}
 	break;
 	
-	case MESSAGE.END_ROUND: //host sends map data at end of round
-		result = receive_map_chunk(packet);
-		if result != "" {
-			global.map = json_parse(result)
-			if room == rInGame { room_goto(rRoundResults) }
-		}
+	case MESSAGE.END_ROUND:
+		room_goto(rRoundResults) 
 	break;
 	
-	case MESSAGE.PROGRESS_ROUND: //host sends map data during round progression
-		result = receive_map_chunk(packet);
-		if result != "" {
-			global.map = json_parse(result)
-			if room == rRoundResults { create(0,0,objMoveCameraDown) }
-		}
+	case MESSAGE.PROGRESS_ROUND:
+		if room == rRoundResults { create(0,0,objMoveCameraDown) }
 	break;
 	
-	case MESSAGE.NEW_ROUND: //host sends map data during new round
-		result = receive_map_chunk(packet);
-		if result != "" {
-			global.map = json_parse(result)
-			if room == rRoundResults { room_goto(rInGame) }
-		}
+	case MESSAGE.NEW_ROUND:
+		if room == rRoundResults { room_goto(rInGame) }
 	break;
 	
 	case MESSAGE.STATE: //host sends state data
@@ -109,6 +153,16 @@ switch(message_type) {
 		global.state.measures_implemented = state_struct.measures_implemented
 		global.state.next_disaster = state_struct.next_disaster
 		global.state.aid_objectives = state_struct.aid_objectives
+		global.state.n_projects_interrupted = state_struct.n_projects_interrupted
+		global.state.n_agriculture_lost = state_struct.n_agriculture_lost
+		global.state.n_airports_damaged = state_struct.n_airports_damaged
+		global.state.n_hospitals_damaged = state_struct.n_hospitals_damaged
+		global.state.n_tiles_damaged = state_struct.n_tiles_damaged
+		global.state.starting_population = state_struct.starting_population
+		
+		if room == rLobby {
+			room_goto(rInGame) //start game after receiving game state	
+		}
 	break;
 	
 	case MESSAGE.MAP_PING:
@@ -161,6 +215,21 @@ switch(message_type) {
 		if lobby_id == "" {
 			lobby_id = buffer_read(packet,buffer_string);
 			if lobby_id != "" {
+				var landscape_type = buffer_read(packet, buffer_string);
+				switch(landscape_type) {
+					case "Island":
+						global.map = global.maps[? rMap01]
+						objOnline.map_initialized = true
+					break;
+					case "Coastal":
+						global.map = global.maps[? rMap02]
+						objOnline.map_initialized = true
+					break;
+					case "Continental":
+						global.map = global.maps[? rMap03]
+						objOnline.map_initialized = true
+					break;
+				}
 				send(MESSAGE.GET_NAME)
 				room_goto(rLobby)
 			}
