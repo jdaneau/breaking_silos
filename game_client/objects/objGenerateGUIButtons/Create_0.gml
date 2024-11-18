@@ -5,7 +5,7 @@ btn_show_drought_risk = {
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_drought_risk = true }
+					with objMapGUI { show_drought_risk = true; layer_caption = "1 = Low, 2 = Medium, 3 = High" }
 				} else with objMapGUI show_drought_risk = false
 			}	
 		}
@@ -15,7 +15,7 @@ btn_show_flood_risk = {
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_flood_risk = true }
+					with objMapGUI { show_flood_risk = true; layer_caption = "1 = Low, 2 = Medium, 3 = High" }
 				} else with objMapGUI show_flood_risk = false
 			}	
 		}
@@ -25,7 +25,7 @@ btn_show_cyclone_risk = {
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_cyclone_risk = true }
+					with objMapGUI { show_cyclone_risk = true; layer_caption = "1 = Low, 2 = Medium, 3 = High" }
 				} else with objMapGUI show_cyclone_risk = false
 			}	
 		}
@@ -108,7 +108,7 @@ btn_show_watersheds = {
 			toggle : true,
 			on_click : function(on) {
 				if on {
-					with objMapGUI { show_watersheds = true }
+					with objMapGUI { show_watersheds = true; layer_caption = "Each watershed belongs to one river system.\nArrows show direction of flow." }
 				} else with objMapGUI show_watersheds = false
 			}	
 		}

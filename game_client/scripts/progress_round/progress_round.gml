@@ -201,12 +201,10 @@ function move_appeal(origTile,destTile) {
 	var origX = origTile.x div 64; var origY = origTile.y div 64;
 	var destX = destTile.x div 64; var destY = destTile.y div 64;
 	var distance = euclidean_distance(origX,origY,destX,destY);
-	var appeal = 1/(distance / 3);
-	if global.map.hospital_grid[destX,destY] > 0 { appeal *= 1.5 }
-	if global.map.hospital_grid[destX,destY] < 0 { appeal *= 0.75 }
-	if global.map.airport_grid[destX,destY] > 0 { appeal *= 1.5 }
-	if global.map.airport_grid[destX,destY] < 0 { appeal *= 0.75 }
-	if global.map.buildings_grid[destX,destY] < 0 { appeal *= 0.5 }
+	var appeal = clamp(1/(distance / 2),0,1);
+	if global.map.hospital_grid[origX,origY] > global.map.hospital_grid[destX,destY] { appeal *= 0.4 }
+	if global.map.airport_grid[origX,origY] > global.map.airport_grid[destX,destY] { appeal *= 0.4 }
+	if global.map.buildings_grid[origX,origY] > global.map.buildings_grid[destX,destY] { appeal *= 0.25 }
 	appeal *= agricultural_availability(destTile)
 	return appeal
 }
@@ -215,24 +213,30 @@ function relocate_and_grow_population(finished_projects) {
 	
 	var years_passed = global.state.next_disaster.days_since_last_disaster / 365;
 	
+	var returned_population = 0;
+	
 	//return previously evacuated population
-	var base_return_amount = clamp(years_passed,0,1) //assumed that evacuated population moves back within a year, unless their origin tile is still damaged
+	var base_return_amount = clamp(years_passed,0,1); //assumed that evacuated population moves back within a year, unless their origin tile is still damaged
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var tile = global.map.land_tiles[i];
+		var remaining_evacuated = [];
 		while(array_length(tile.evacuated_population) > 0) {
 			var struct = array_pop(tile.evacuated_population);
 			var targetTile = tile_from_square(struct.origin);
 			var return_amount = struct.population * base_return_amount;
-			return_amount = clamp(return_amount * move_appeal(tile,targetTile),0,struct.population)
+			return_amount = round(clamp(return_amount * move_appeal(tile,targetTile),0,struct.population))
 			if return_amount == struct.population {
 				targetTile.metrics.population += struct.population;
 			} else {
 				struct.population -= return_amount
-				array_push(tile.evacuated_population, struct)
+				array_push(remaining_evacuated, struct)
 				targetTile.metrics.population += return_amount
 			}
+			returned_population += return_amount
 		}
+		tile.evacuated_population = remaining_evacuated
 	}
+	add_report(string("{0} citizens returned back home from their temporary shelters.",returned_population*1000))
 	
 	//relocation incentive
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
@@ -265,15 +269,23 @@ function relocate_and_grow_population(finished_projects) {
 				population_to_move -= moving
 				index += choose(1,2,3)
 			}
+			
+			add_report(string("A relocation incentive has finished on cell {0}, with {1} people moving away!",coords_to_grid(tile.x,tile.y),population_to_move*1000))
 		}
 	}
 	
 	//natural population growth
+	var pop_growth = 0;
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];
 		//assuming random growth between 0.1-0.5% per year
 		var growth_factor = 1 + (random_range(0.001,0.005) * years_passed);
+		var old_pop = _tile.metrics.population;
 		_tile.metrics.population = round(_tile.metrics.population * growth_factor)
+		pop_growth += (_tile.metrics.population - old_pop)
+	}
+	if pop_growth > 0 {
+		add_report(string("Natural population growth has increased our population by {0}.",round(pop_growth*1000)))
 	}
 }
 

@@ -2,9 +2,6 @@ var buttons = [];
 
 switch(global.state.role) {
 	case ROLE.PRESIDENT:
-		if !role_in_game(ROLE.HOUSING) && !role_in_game(ROLE.INTERNATIONAL) {
-			array_push(buttons, btn_show_population_map)
-		}
 		if !role_in_game(ROLE.ENGINEER) {
 			if !role_in_game(ROLE.FLOOD) {
 				array_push(buttons, btn_show_flood_risk)
@@ -15,26 +12,27 @@ switch(global.state.role) {
 			if !role_in_game(ROLE.AGRICULTURE) {
 				array_push(buttons, btn_show_drought_risk)	
 			}
+			array_push(buttons, btn_show_watersheds)
 		}
 		if !role_in_game(ROLE.AGRICULTURE) and !role_in_game(ROLE.HOUSING) {
 			array_push(buttons, btn_show_agricultural_areas)
 		}
-		array_push(buttons, btn_finalize_decision)
+		array_push(buttons, btn_show_population_map, btn_finalize_decision)
 	break;
 	case ROLE.FINANCE:
-		array_push(buttons, btn_open_calculator)
+		array_push(buttons, btn_show_population_map, btn_open_calculator)
 	break;
 	case ROLE.AGRICULTURE:
-		array_push(buttons, btn_show_agricultural_areas)
+		array_push(buttons, btn_show_population_map, btn_show_agricultural_areas)
 		if !role_in_game(ROLE.FLOOD) {
 			array_push(buttons, btn_show_drought_risk)	
 		}
 	break;
 	case ROLE.CITIZEN:
-		array_push(buttons, btn_show_drought_history, btn_show_flood_history)
+		array_push(buttons, btn_show_population_map, btn_show_drought_history, btn_show_flood_history)
 	break;
 	case ROLE.ENGINEER:
-		array_push(buttons, btn_show_cyclone_risk, btn_show_watersheds)	
+		array_push(buttons, btn_show_population_map, btn_show_cyclone_risk, btn_show_watersheds)	
 		if !role_in_game(ROLE.FLOOD) {
 			array_push(buttons, btn_show_flood_risk)
 			if !role_in_game(ROLE.AGRICULTURE) {
@@ -43,7 +41,7 @@ switch(global.state.role) {
 		}
 	break;
 	case ROLE.FLOOD:
-		array_push(buttons, btn_show_flood_risk, btn_show_drought_risk)
+		array_push(buttons, btn_show_population_map, btn_show_flood_risk, btn_show_drought_risk)
 		if !role_in_game(ROLE.ENGINEER) {
 			array_push(buttons, btn_show_watersheds)
 		}
@@ -58,11 +56,9 @@ switch(global.state.role) {
 		}
 	break;
 	case ROLE.INTERNATIONAL:
+		array_push(buttons, btn_show_population_map)	
 		if !role_in_game(ROLE.CITIZEN) {
 			array_push(buttons, btn_show_flood_history, btn_show_drought_history)
-		}
-		if !role_in_game(ROLE.HOUSING) {
-			array_push(buttons, btn_show_population_map)	
 		}
 	break;
 }

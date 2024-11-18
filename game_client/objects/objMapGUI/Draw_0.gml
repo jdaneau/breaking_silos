@@ -129,7 +129,7 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 		var _pop = get_population(_tile)
 		var _evacuated_pop = 0;
 		for(var _i=0; _i<array_length(_tile.evacuated_population); _i++) {
-			_evacuated_pop += _tile.evacuated_population.population
+			_evacuated_pop += _tile.evacuated_population[_i].population
 		}
 		var _sat = (_pop/1000)*255;
 		var _draw_color = make_color_hsv(color_get_hue(c_maroon),_sat,255);
@@ -155,6 +155,21 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 		draw_set_alpha(0.4)
 		draw_color_rectangle(_x1,_y1,_x2,_y2,_watershed_colors[_watershed_number-1],false)
 		draw_set_alpha(1)
+		var _direction = global.map.river_flow_grid[_tile.x div 64, _tile.y div 64];
+		switch(_direction) {
+			case "left":
+				draw_sprite(sprRiverFlowLeft,0,_x1,_y1)
+			break;
+			case "right":
+				draw_sprite(sprRiverFlowRight,0,_x1,_y1)
+			break;
+			case "up":
+				draw_sprite(sprRiverFlowUp,0,_x1,_y1)
+			break;
+			case "down":
+				draw_sprite(sprRiverFlowDown,0,_x1,_y1)
+			break;
+		}
 	}
 }
 

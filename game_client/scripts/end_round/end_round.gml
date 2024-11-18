@@ -285,18 +285,18 @@ function update_population_loss(finished_projects) {
 		var disaster_multiplier = 1;
 		if global.state.disaster == "drought" {
 			if global.state.disaster_intensity == "low" disaster_multiplier = 0.005
-			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.05
-			if global.state.disaster_intensity == "high" disaster_multiplier = 0.1
+			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.01
+			if global.state.disaster_intensity == "high" disaster_multiplier = 0.05
 		}
 		if global.state.disaster == "flood" {
 			if global.state.disaster_intensity == "low" disaster_multiplier = 0.01
 			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.3
-			if global.state.disaster_intensity == "high" disaster_multiplier = 0.8
+			if global.state.disaster_intensity == "high" disaster_multiplier = 0.7
 		}
 		if global.state.disaster == "cyclone" {
 			if global.state.disaster_intensity == "low" disaster_multiplier = 0.01
 			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.2
-			if global.state.disaster_intensity == "high" disaster_multiplier = 0.9
+			if global.state.disaster_intensity == "high" disaster_multiplier = 0.7
 		}
 		var movePopulation = round(fromTile.metrics.population * disaster_multiplier * random_range(0.6, 0.9));
 		movePopulation = clamp(movePopulation, 0, 500);
