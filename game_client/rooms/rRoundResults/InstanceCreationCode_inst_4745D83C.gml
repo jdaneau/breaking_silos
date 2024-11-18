@@ -6,7 +6,7 @@ on_click = function(on) {
 	with objController { start_round() }
 	with objOnline {
 		//send data to others
-		send_struct(MESSAGE.STATE,global.state)
+		send_state()
 		send_updated_map()
 		send(MESSAGE.NEW_ROUND)
 	}

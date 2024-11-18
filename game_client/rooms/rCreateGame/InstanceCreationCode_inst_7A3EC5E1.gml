@@ -1,0 +1,1 @@
+text = "Higher climate change intensity reflects scenarios where humanity has allowed climate change to worsen. This results in higher global temperatures and thus raises the chance of some natural hazards happening."

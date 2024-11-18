@@ -22,7 +22,7 @@ function start_round() {
 		agriculture : false
 	}
 	
-	send_struct(MESSAGE.STATE, global.state)
+	send_state()
 	send_updated_map()
 	room_goto(rInGame)
 }
@@ -43,14 +43,16 @@ function do_map_damages(){
 		//set damages on the map
 		switch(global.state.disaster) {
 			case "flood":
-				global.map.buildings_grid[tx,ty] = -1
-				global.state.n_tiles_damaged++
+				if global.map.buildings_grid[tx,ty] != 2 && !has_implemented(tile,MEASURE.DIKE,[]) && !tile.dammed{
+					global.map.buildings_grid[tx,ty] = -1
+					global.state.n_tiles_damaged++
+				}
 				if global.state.disaster_intensity != "low" {
-					if global.map.hospital_grid[tx,ty] == 1 {
+					if global.map.hospital_grid[tx,ty] == 1 && !has_implemented(tile,MEASURE.SEAWALL,[]) && !tile.dammed{
 						global.map.hospital_grid[tx,ty] = -1
 						global.state.n_hospitals_damaged++
 					}
-					if global.map.airport_grid[tx,ty] == 1 {
+					if global.map.airport_grid[tx,ty] == 1 && !has_implemented(tile,MEASURE.SEAWALL,[]) && !tile.dammed{
 						global.map.airport_grid[tx,ty] = -1
 						global.state.n_airports_damaged++
 					}
@@ -67,13 +69,16 @@ function do_map_damages(){
 			break;
 			
 			case "cyclone":
-				global.map.buildings_grid[tx,ty] = -1
+				if global.map.buildings_grid[tx,ty] != 3 && !has_implemented(tile,MEASURE.SEAWALL,[]){
+					global.map.buildings_grid[tx,ty] = -1
+					global.state.n_tiles_damaged++
+				}
 				if global.state.disaster_intensity != "low" {
-					if global.map.hospital_grid[tx,ty] == 1 {
+					if global.map.hospital_grid[tx,ty] == 1 && !has_implemented(tile,MEASURE.SEAWALL,[]){
 						global.map.hospital_grid[tx,ty] = -1
 						global.state.n_hospitals_damaged++
 					}
-					if global.map.airport_grid[tx,ty] == 1 {
+					if global.map.airport_grid[tx,ty] == 1 && !has_implemented(tile,MEASURE.SEAWALL,[]){
 						global.map.airport_grid[tx,ty] = -1
 						global.state.n_airports_damaged++
 					}
@@ -95,21 +100,24 @@ function do_map_damages(){
 		switch(global.state.disaster_intensity) {
 			case "low":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
-					tile.in_progress[p].days_remaining += 7 * random_range(1,4) // add 1-4 weeks extra time
+					var amount = random_range(1.1,1.3); // 10-30% time delay
+					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
 					global.state.n_projects_interrupted++
 				}
 			break;
 			
 			case "medium":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
-					tile.in_progress[p].days_remaining += 30 * random_range(2,12) // add 2-12 months extra time
+					var amount = random_range(1.3,1.6); // 30-60% time delay
+					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
 					global.state.n_projects_interrupted++
 				}
 			break;
 			
 			case "high":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
-					tile.in_progress[p].days_remaining += 365 * random_range(1,2) // add 1-2 years extra time
+					var amount = random_range(1.6,1.9); // 60-90% time delay
+					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
 					global.state.n_projects_interrupted++
 				}
 			break;

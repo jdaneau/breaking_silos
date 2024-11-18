@@ -1,0 +1,1 @@
+text = "The proximity of land to water has a large impact on its vulnerability to different natural hazards. Coastline exposes a nation to cyclone risk, but also decreases the chance of droughts happening."

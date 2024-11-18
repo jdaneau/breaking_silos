@@ -24,8 +24,8 @@ if room == rInGame {
 		case ROLE.PRESIDENT:
 			array_push(chat,
 				"As the President, you need to lead the discussion with your representatives in order to decide which measures to implement. Your associates' suggested implementations will show up on the map.",
-				"Your finance minister should report the cost of certain measures.",
-				"Click on \"End Discussion\" to start making your final decision!"
+				"Your finance minister should report the cost of your planned measures. If there is no finance minister, the budget will automatically update for you.",
+				"You need to select measures and place them on the map within the time limit. Good luck!"
 			)
 		break;
 		case ROLE.FINANCE:

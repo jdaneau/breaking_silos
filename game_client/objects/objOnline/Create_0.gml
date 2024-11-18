@@ -24,11 +24,11 @@ enum MESSAGE {
 	BUDGET = 28,
 	MAP_CHANGE = 29,
 	REQUEST_MAP = 30,
-	END_DISCUSSION = 31,
 	END_ROUND = 32,
 	PROGRESS_ROUND = 33,
 	NEW_ROUND = 34,
-	GAME_END = 35
+	GAME_END = 35,
+	CHECK_ONLINE = 40
 }
 
 var socket_type = network_socket_ws;
@@ -36,7 +36,7 @@ var server_ip = "98.71.249.250";
 
 if os_browser == browser_not_a_browser {
 	socket_type = network_socket_tcp
-	//server_ip = "127.0.0.1"
+	server_ip = "127.0.0.1"
 }
 
 ping = 0

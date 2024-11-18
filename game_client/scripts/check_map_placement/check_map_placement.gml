@@ -10,7 +10,7 @@ function check_map_placement(measure,tile) {
 		if days < 60 { completion = "weeks remaining" }
 		else if days < (365*2) { completion = "months remaining" }
 		else { completion = "years remaining" }
-		return string("Already implementing measure '{0}' on this cell ({0}).",name,completion)	
+		return string("Already implementing measure '{0}' on this cell ({1}).",name,completion)	
 	}
 	else if array_contains(tile.implemented,measure) {
 		return string("Measure '{0}' is already implemented on this cell.",name)
@@ -36,13 +36,34 @@ function check_map_placement(measure,tile) {
 		break;
 				
 		case MEASURE.BUILDINGS:
-			if global.map.buildings_grid[tx,ty] == 1 {
+			if array_contains(tile.measures,MEASURE.FLOOD_BUILDINGS) or array_contains(tile.measures,MEASURE.CYCLONE_BUILDINGS) {
+				return "You can only rebuild buildings once on a cell. Deselect the other type to implement this measure."	
+			}
+			if global.map.buildings_grid[tx,ty] >= 1 {
+				return "The buildings in this sqaure are not damaged."
+			}
+		break;
+		
+		case MEASURE.FLOOD_BUILDINGS:
+			if array_contains(tile.measures,MEASURE.BUILDINGS) or array_contains(tile.measures,MEASURE.CYCLONE_BUILDINGS) {
+				return "You can only rebuild buildings once on a cell. Deselect the other type to implement this measure."	
+			}
+			if global.map.buildings_grid[tx,ty] >= 1 {
+				return "The buildings in this sqaure are not damaged."
+			}
+		break;
+		
+		case MEASURE.CYCLONE_BUILDINGS:
+			if array_contains(tile.measures,MEASURE.BUILDINGS) or array_contains(tile.measures,MEASURE.FLOOD_BUILDINGS) {
+				return "You can only rebuild buildings once on a cell. Deselect the other type to implement this measure."	
+			}
+			if global.map.buildings_grid[tx,ty] >= 1 {
 				return "The buildings in this sqaure are not damaged."
 			}
 		break;
 				
 		case MEASURE.NBS:
-			if tile.metrics.agriculture {
+			if tile.metrics.agriculture || array_contains(tile.measures,MEASURE.NORMAL_CROPS) || array_contains(tile.measures,MEASURE.RESISTANT_CROPS) {
 				return "Cannot implement NBS on a cell with agricultural crops."
 			}
 		break;
@@ -57,6 +78,12 @@ function check_map_placement(measure,tile) {
 		case MEASURE.RESISTANT_CROPS:
 			if (measure == MEASURE.NORMAL_CROPS and tile.metrics.agriculture == 1) or (measure == MEASURE.RESISTANT_CROPS and tile.metrics.agriculture == 2) {
 				return "This type of crop is already planted on this cell."
+			}
+			if (measure == MEASURE.NORMAL_CROPS and array_contains(tile.measures,MEASURE.RESISTANT_CROPS)) or (measure == MEASURE.RESISTANT_CROPS and array_contains(tile.measures, MEASURE.NORMAL_CROPS)) {
+				return "You can only plant one type of crop on a cell."	
+			}
+			if array_contains(tile.implemented,MEASURE.NBS) || is_implementing(tile,MEASURE.NBS) || array_contains(tile.measures,MEASURE.NBS) {
+				return "Cannot plant crops on a tile with NBS."	
 			}
 			if tile.metrics.population >= 700 {
 				return "Cannot plant crops in densely populated cells."

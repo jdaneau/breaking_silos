@@ -34,6 +34,10 @@ switch(message_type) {
 		timeout_attempts = 0
 	break;
 	
+	case MESSAGE.CHECK_ONLINE:
+		send(MESSAGE.CHECK_ONLINE)
+	break;
+	
 	case MESSAGE.ANNOUNCEMENT: //server announcement
 		_msg = buffer_read(packet,buffer_string);
 		with objSidebarGUIChat chat_add(_msg)
@@ -139,41 +143,22 @@ switch(message_type) {
 	
 	case MESSAGE.STATE: //host sends state data
 		var state_struct = receive_struct(packet);
-		global.state.current_round = state_struct.current_round
-		global.state.datetime = state_struct.datetime
-		global.state.current_phase = state_struct.current_phase
-		global.state.time_remaining = state_struct.time_remaining
-		global.state.seconds_remaining = state_struct.seconds_remaining
-		global.state.state_budget = state_struct.state_budget
-		global.state.base_tax = state_struct.base_tax
-		global.state.money_spent = state_struct.money_spent
-		global.state.disaster = state_struct.disaster
-		global.state.disaster_intensity = state_struct.disaster_intensity
-		global.state.affected_tiles = state_struct.affected_tiles
-		global.state.round_reports = state_struct.round_reports
-		global.state.measures_implemented = state_struct.measures_implemented
-		global.state.next_disaster = state_struct.next_disaster
-		global.state.aid_objectives = state_struct.aid_objectives
-		global.state.n_projects_interrupted = state_struct.n_projects_interrupted
-		global.state.n_agriculture_lost = state_struct.n_agriculture_lost
-		global.state.n_airports_damaged = state_struct.n_airports_damaged
-		global.state.n_hospitals_damaged = state_struct.n_hospitals_damaged
-		global.state.n_tiles_damaged = state_struct.n_tiles_damaged
-		global.state.starting_population = state_struct.starting_population
+		var keys = variable_struct_get_names(state_struct);
+		for(var i=0; i<array_length(keys); i++) {
+			global.state[$ keys[i]] = state_struct[$ keys[i]]	
+		}
 		
-		if room == rLobby {
+		if room == rLobby and array_length(keys) > 1 {
 			room_goto(rInGame) //start game after receiving game state	
 		}
 	break;
 	
 	case MESSAGE.MAP_PING:
+		var name = buffer_read(packet, buffer_string);
 		var square = buffer_read(packet, buffer_string);
 		var coords = grid_to_coords(square,false);
-		instance_create_depth(coords[0],coords[1],-1,objMarker);
-	break;
-	
-	case MESSAGE.END_DISCUSSION:
-		with objController end_discussion()
+		var m = instance_create_depth(coords[0],coords[1],-1,objMarker);
+		m.caption = name;
 	break;
 	
 	case MESSAGE.CREATE_GAME:

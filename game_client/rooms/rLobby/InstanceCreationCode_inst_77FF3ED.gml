@@ -1,0 +1,1 @@
+text = "The Citizen Representative speaks for the local population and is more interested in seeing natural solutions to problems instead of invasive/obstructive measures. They have knowledge about previous floods/droughts."

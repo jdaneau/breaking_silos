@@ -1,0 +1,1 @@
+text = "The Flood Coordinator is mainly concerned with reducing nationwide flood risk and mitigating possible damages from flooding events."

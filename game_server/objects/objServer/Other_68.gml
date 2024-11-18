@@ -50,6 +50,13 @@ switch(type_event){
 				send_id(socket,MESSAGE.PING)
 			break;
 			
+			case MESSAGE.CHECK_ONLINE:
+				lobby_id = sockets[socket]
+				if array_contains(destroy_lobbies,lobby_id) {
+					array_delete(destroy_lobbies,array_get_index(destroy_lobbies,lobby_id),1)
+				}
+			break;
+			
 			case MESSAGE.TIME:
 			case MESSAGE.BUDGET:
 				value = buffer_read(buffer,buffer_u32)
@@ -100,7 +107,6 @@ switch(type_event){
 				send(target_socket,MESSAGE.MAP_CHANGE,buffer_string,data)
 			break;
 			
-			case MESSAGE.END_DISCUSSION:
 			case MESSAGE.GAME_END:
 				send_id_to_others(socket,message_id)
 				if message_id == MESSAGE.GAME_END {
@@ -124,7 +130,9 @@ switch(type_event){
 			
 			case MESSAGE.MAP_PING:
 				data = buffer_read(buffer,buffer_string)
-				send_to_all(socket,MESSAGE.MAP_PING,buffer_string,data)
+				lobby_id = sockets[? socket]
+				name = ds_map_find_value(lobbies[? lobby_id].players, socket).name
+				send_compound(socket,MESSAGE.MAP_PING,[{type:"string",content:name},{type:"string",content:data}],true,true)
 			break;
 			
 			case MESSAGE.CREATE_GAME:
@@ -222,8 +230,16 @@ switch(type_event){
 						open : (_lobby.state == "lobby")
 					};
 					array_push(lobby_list, lobby_struct)
+					
+					//send a ping to all lobby players and if we get no response from anyone, delete the lobby
+					var player_sockets = ds_map_keys_to_array(_lobby.players);
+					for(var p=0; p<array_length(player_sockets); p++) {
+						send_id(player_sockets[p],MESSAGE.CHECK_ONLINE)
+					}
+					if !array_contains(destroy_lobbies,key) array_push(destroy_lobbies,key)
 				}
 				send_array(socket,MESSAGE.GET_LOBBIES,"struct",lobby_list)
+				alarm[0] = round(game_get_speed(gamespeed_fps) * 5)
 			break;
 			
 			case MESSAGE.GET_PLAYERS:

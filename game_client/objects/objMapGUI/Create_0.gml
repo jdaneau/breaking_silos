@@ -57,6 +57,11 @@ for(var i=0; i<array_length(global.map.land_tiles); i++) {
 	var tx = tile.x div 64;
 	var ty = tile.y div 64;
 	var projects = [];
+	for(var n=0; n<array_length(tile.implemented); n++) {
+		var measure = tile.implemented[n];
+		var name = global.measures[? measure].name;
+		array_push(projects, name)
+	}
 	for(var n=0; n<array_length(tile.in_progress); n++) {
 		var struct = tile.in_progress[n];
 		var name = global.measures[? struct.measure].name;

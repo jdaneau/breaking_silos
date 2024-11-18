@@ -241,6 +241,10 @@ function get_implementing(tile,_measure) {
 	return noone
 }
 
+function role_in_game(role) {
+	return array_contains(ds_map_values_to_array(objOnline.players),role)	
+}
+
 /// @function hospital_availability(tile)
 /// @description Calculates the availability of hospitals on a given tile based on its distance to the nearest hospital.
 function hospital_availability(tile) {

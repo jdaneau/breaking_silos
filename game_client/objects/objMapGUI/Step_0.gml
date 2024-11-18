@@ -109,9 +109,9 @@ if mouse_in_map and mouse_check_pressed(mb_right) {
 	var _x = mouse_map_x div 64;
 	var _y = mouse_map_y div 64;
 	var _square = coords_to_grid(mouse_map_x,mouse_map_y)
-	var msg = string("{0} has highlighted square {1}!",global.state.player_name,_square);
+	//var msg = string("{0} has highlighted square {1}!",global.state.player_name,_square);
 	if instance_exists(objOnline) {
-		send_string(MESSAGE.ANNOUNCEMENT, msg)
+		//send_string(MESSAGE.ANNOUNCEMENT, msg)
 		send_string(MESSAGE.MAP_PING, _square)
 	}
 }

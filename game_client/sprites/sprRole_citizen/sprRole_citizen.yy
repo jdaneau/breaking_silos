@@ -2,7 +2,7 @@
   "$GMSprite":"",
   "%Name":"sprRole_citizen",
   "bboxMode":0,
-  "bbox_bottom":233,
+  "bbox_bottom":264,
   "bbox_left":0,
   "bbox_right":709,
   "bbox_top":0,
@@ -16,7 +16,7 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":234,
+  "height":265,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"cd67d28b-3726-46dd-88da-e6082bddd613","blendMode":0,"displayName":"default","isLocked":false,"name":"cd67d28b-3726-46dd-88da-e6082bddd613","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},

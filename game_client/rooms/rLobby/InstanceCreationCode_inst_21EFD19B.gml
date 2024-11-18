@@ -1,0 +1,1 @@
+text = "The Finance Minister is responsible for keeping track of spending, and informing the President (and everyone else) about how money should be allocated."

@@ -1,0 +1,1 @@
+text = "Generally, countries that are closer to the equator are more threatened by natural hazards. For example, tropical climates are highly susceptible to cyclones due to the warm weather, whereas cyclones rarely strike boreal climates."

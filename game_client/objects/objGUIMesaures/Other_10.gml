@@ -4,6 +4,7 @@ var _icon;
 var _measure;
 var _sep = 128;
 if array_length(measures) > 4 { _sep = 96 }
+if array_length(measures) > 12 { _sep = 64 +16 }
 for(var i=0; i<array_length(measures); i++) {
 	if i mod 2 == 0 { _x = x+(sprite_width/4)-32 } else { _x = x+(sprite_width*(3/4))-32 }
 	_icon = instance_create_depth(_x,_y,-1,objMeasureIcon)

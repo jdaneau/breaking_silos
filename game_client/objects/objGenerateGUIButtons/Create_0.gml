@@ -58,20 +58,18 @@ btn_show_agricultural_areas = {
 			}	
 		}
 		
-btn_end_discussion = {
-			text : "End Discussion",
-			toggle : false,
-			on_click : function(on) {
-				with objGUIButton if text=="End Discussion" {
-					open_dialog("Are you sure you want to end the discussion?\nThis will move the game to the next phase.",
-						function(option) {
-							if option == "Yes" { with objController end_discussion() }
-						}
-					)
-				}
+btn_finalize_decision = {
+	text : "Finalize Decision",
+	toggle : false,
+	on_click : function(on) {
+				open_dialog("Are you sure you want to finalize your decision?\nThis will end the current round.",
+					function(option) {
+						if option == "Yes" { with objController end_round() }
+					}
+				)
 			}	
 		}
-		
+
 btn_open_calculator = {
 			text : "Open Calculator",
 			toggle : false,

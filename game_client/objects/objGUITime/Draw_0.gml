@@ -1,4 +1,4 @@
-if global.state.current_phase == "discussion" or global.state.current_phase == "decision" {
+if global.state.current_phase == "discussion" {
 	draw_set_font(fSidebar)
 	draw_set_color(c_white)
 

@@ -1,0 +1,1 @@
+text = "The Agricultural Representative speaks for all the country's farmers, and is mainly concerned with maintaining and expanding the agricultural areas."

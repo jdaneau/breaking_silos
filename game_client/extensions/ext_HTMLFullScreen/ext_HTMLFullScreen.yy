@@ -19,7 +19,7 @@
     {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":-1,"filename":"ToggleFullScreen.js","final":"","functions":[],"init":"","kind":5,"name":"","order":[],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":"",
-  "hasConvertedCodeInjection":false,
+  "hasConvertedCodeInjection":true,
   "helpfile":"",
   "HTML5CodeInjection":"",
   "html5Props":false,

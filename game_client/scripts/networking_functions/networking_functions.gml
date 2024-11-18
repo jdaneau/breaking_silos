@@ -139,3 +139,31 @@ function send_updated_map() {
 		send_struct(MESSAGE.MAP_CHANGE,updates[i])	
 	}
 }
+
+function send_state() {
+	send_struct(MESSAGE.STATE,{
+		current_round : global.state.current_round,
+		datetime : global.state.datetime ,
+		current_phase : global.state.current_phase ,
+		time_remaining : global.state.time_remaining ,
+		seconds_remaining : global.state.seconds_remaining,
+		state_budget : global.state.state_budget ,
+		base_tax : global.state.base_tax,
+		money_spent : global.state.money_spent,
+		disaster : global.state.disaster,
+		disaster_intensity : global.state.disaster_intensity ,
+		affected_tiles : global.state.affected_tiles ,
+		measures_implemented : global.state.measures_implemented ,
+		next_disaster : global.state.next_disaster ,
+		aid_objectives : global.state.aid_objectives,
+		n_projects_interrupted : global.state.n_projects_interrupted ,
+		n_agriculture_lost : global.state.n_agriculture_lost,
+		n_airports_damaged : global.state.n_airports_damaged ,
+		n_hospitals_damaged : global.state.n_hospitals_damaged,
+		n_tiles_damaged : global.state.n_tiles_damaged ,
+		starting_population : global.state.starting_population 
+	})
+	if array_length(global.state.round_reports) > 0 {
+		send_struct(MESSAGE.STATE,{ round_reports : global.state.round_reports })
+	}
+}

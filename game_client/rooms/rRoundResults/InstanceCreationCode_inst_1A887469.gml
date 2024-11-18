@@ -11,7 +11,7 @@ on_click = function(on) {
 		}
 		with objOnline {
 			//send data to others
-			send_struct(MESSAGE.STATE,global.state)
+			send_state()
 			send_updated_map()
 			send(MESSAGE.PROGRESS_ROUND)
 		}

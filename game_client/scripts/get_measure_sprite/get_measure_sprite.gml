@@ -40,6 +40,12 @@ function get_measure_sprite(measure){
 		case MEASURE.EVACUATE:
 			_spr = sprMeasure_evacuate
 		break;
+		case MEASURE.FLOOD_BUILDINGS:
+			_spr = sprMeasure_floodbuildings
+		break;
+		case MEASURE.CYCLONE_BUILDINGS:
+			_spr = sprMeasure_cyclonebuildings
+		break;
 	}
 	return _spr
 }

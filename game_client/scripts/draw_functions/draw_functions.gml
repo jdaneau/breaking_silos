@@ -49,7 +49,7 @@ function draw_text_outline(_text_x,_text_y,_text,_text_color,_outline_color){
 	draw_text(_text_x, _text_y, _text);
 }
 
-/// @function draw_text_outline(x, y, text, text_color, outline_color, sep, w, xscale, yscale, angle)
+/// @function draw_text_outline_ext_transformed(x, y, text, text_color, outline_color, sep, w, xscale, yscale, angle)
 /// @description Draws outlined text on the screen with the functionality of draw_text_ext_transformed
 function draw_text_outline_ext_transformed(_text_x,_text_y,_text,_text_color,_outline_color,_sep,_w,_xscale,_yscale,_angle){
 	//Draw the text outline

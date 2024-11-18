@@ -44,11 +44,11 @@ enum MESSAGE {
 	BUDGET = 28,
 	MAP_CHANGE = 29,
 	REQUEST_MAP = 30,
-	END_DISCUSSION = 31,
 	END_ROUND = 32,
 	PROGRESS_ROUND = 33,
 	NEW_ROUND = 34,
-	GAME_END = 35
+	GAME_END = 35,
+	CHECK_ONLINE = 40
 }
 
 port = 20002
@@ -64,3 +64,5 @@ last_time = 0
 
 lobbies = ds_map_create()
 sockets = ds_map_create()
+
+destroy_lobbies = []

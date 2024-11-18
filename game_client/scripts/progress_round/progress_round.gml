@@ -91,9 +91,9 @@ function get_next_disaster(){
 			case "Continental":
 				//40% chance flood
 				if rand_value <= 0.4 { next_disaster = "flood"	}
-				//40% chance drought
-				else if rand_value <= 0.8 { next_disaster = "drought" }
-				//20% chance cyclone
+				//45% chance drought
+				else if rand_value <= 0.85 { next_disaster = "drought" }
+				//15% chance cyclone
 				else { next_disaster = "cyclone" }
 			break;
 		}
@@ -164,18 +164,22 @@ function get_next_disaster(){
 				//50% chance nothing
 				else if rand_value <= 0.75 {}
 				//25% chance time = time*(5/4)
-				else { n_days = round(n_days * (5/4)) }
 			break;
 		}
 		
 		var intensity = choose("low","medium","high");
-		if next_disaster == "cyclone" and objOnline.lobby_settings.landscape_type == "Continental" {
-			intensity = choose("low","low","medium")
+		if next_disaster == "cyclone" {
+			if objOnline.lobby_settings.landscape_type == "Continental" or objOnline.lobby_settings.climate_type == "Boreal"
+				intensity = choose("low","low","medium")
+		}
+		if next_disaster == "drought" {
+			if objOnline.lobby_settings.landscape_type == "Continental"
+				intensity = choose("medium","medium","high")
 		}
 		
 		return {
 			disaster : next_disaster,
-			intensity : choose("low","medium","high"),
+			intensity : intensity,
 			days_since_last_disaster : n_days
 		}
 	}
@@ -357,14 +361,6 @@ function set_new_affected_area() {
 }
 
 function get_disaster_center() {
-	//for multi-hazard scenarios: choose a spot that's already affected
-	if global.state.multi_hazard {
-		var spot = global.state.affected_tiles[irandom(array_length(global.state.affected_tiles)-1)];
-		var spot_coords = grid_to_coords(spot,false);
-		return [spot_coords[0], spot_coords[1]]
-	}
-	
-	//else: choose a random spot based on risk 
 	var map_key = "";
 	switch(global.state.disaster) {
 		case "cyclone":
@@ -377,6 +373,25 @@ function get_disaster_center() {
 			map_key = "drought_risk"
 		break;
 	}
+	
+	//for multi-hazard scenarios: choose a spot that's already affected based on risk value
+	if global.state.multi_hazard {
+		var candidate_spots = [];
+		for(var i=0; i<array_length(global.state.affected_tiles); i++) {
+			var amt = tile_from_square(global.state.affected_tiles[i]).metrics[$ map_key];
+			if amt > 0 { 
+				repeat amt array_push(candidate_spots,global.state.affected_tiles[i])
+			}
+		}
+		if array_length(candidate_spots) > 0 {
+			candidate_spots = array_shuffle(candidate_spots)
+			var spot = candidate_spots[0];
+			var spot_coords = grid_to_coords(spot,false);
+			return [spot_coords[0], spot_coords[1]]
+		}
+	}
+	
+	//else: choose a random spot based on risk 
 	var candidate_tiles = [];
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var tile = global.map.land_tiles[i];

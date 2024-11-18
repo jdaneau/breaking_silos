@@ -40,9 +40,11 @@ enum MEASURE {
 	DIKE=9,
 	RELOCATION=10,
 	DAM=11,
-	EVACUATE=12
+	EVACUATE=12,
+	FLOOD_BUILDINGS=13,
+	CYCLONE_BUILDINGS=14
 }
-global.N_MEASURES = 13
+global.N_MEASURES = 15
 
 global.colors = {
 	myriad_light_blue : make_color_rgb(55,76,255),
@@ -55,8 +57,7 @@ global.colors = {
 }
 
 global.time_limits = {
-	discussion: 900, //seconds
-	decision: 300
+	discussion: 1200 //15 minutes per round
 }
 
 //state of the game
@@ -181,7 +182,7 @@ ds_map_add(global.measures, MEASURE.NBS, {
 	unit:"cell",
 	time: "years",
 	icon: sprMeasure_nbs,
-	description: "For protection from tropical cyclones, mangroves are especially effective in rural areas where populations are widely spread out, and the construction of long seawalls would not be economically feasible. In contrast, for densely populated coastal areas, mangroves alone will not fully protect all the buildings and people at risk since the reduction of surge height from mangroves may be limited. Moreover, the reduction in flow velocity of the storm surge protects embankments from damages.\n\nFor floods, natural overflor areas can be created to make room for the river, thereby decreasing flood risk."
+	description: "For protection from tropical cyclones, mangroves are especially effective in rural areas where populations are widely spread out, and the construction of long seawalls would not be economically feasible. In contrast, for densely populated coastal areas, mangroves alone will not fully protect all the buildings and people at risk since the reduction of surge height from mangroves may be limited. Moreover, the reduction in flow velocity of the storm surge protects embankments from damages.\n\nFor floods, natural overflow areas can be created to make room for the river, thereby decreasing flood risk."
 })
 ds_map_add(global.measures, MEASURE.NORMAL_CROPS, {
 	name:"Plant Normal Crops", 
@@ -251,7 +252,7 @@ ds_map_add(global.measures, MEASURE.DAM, {
 	unit:"cell",
 	time: "years",
 	icon: sprMeasure_dam,
-	description: "Dams can be very useful in mitigating flood impacts and can be used as a reservoir during drought periods. They can, however, also lead to lower water availability downstream and therefore increase drought impacts."
+	description: "Dams can be very useful in mitigating flood impacts and can be used as a reservoir during drought periods. They can, however, also lead to lower water availability downstream and therefore increase drought impacts. Dams will affect the cell you build them on, as well as five cells downstream. Only one dam can be built per watershed."
 })
 ds_map_add(global.measures, MEASURE.EVACUATE, {
 	name:"Evacuate Impacted Population", 
@@ -262,6 +263,26 @@ ds_map_add(global.measures, MEASURE.EVACUATE, {
 	time: "weeks",
 	icon: sprMeasure_evacuate,
 	description: "Rapid emergency evacuation to temporary shelters is very important to provide immediate relief for population affected by a disaster. These facilities provide a safe access to water, toilets, communal kitchens, medicine and basic shelter. This measure is not preventative and is not sufficient in the long term in cases where people need to be relocated out of high risk areas.\n\nTo implement this measure, place the icon in the cells where you want to move the impacted population to."
+})
+ds_map_add(global.measures, MEASURE.FLOOD_BUILDINGS, {
+	name:"Buildings Upgrade: Flood Resistance", 
+	alias:"flood_buildings",
+	key: MEASURE.FLOOD_BUILDINGS,
+	cost:1200,
+	unit:"cell",
+	time: "months",
+	icon: sprMeasure_floodbuildings,
+	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Flood-proofing can be achieved through elevation of structures above the flood line, using flood-resistant building materials, and making drainage systems more efficient.\n\nThis measure can only be placed on cells with damaged buildings. Future floods will no longer damage the buildings on this cell."
+})
+ds_map_add(global.measures, MEASURE.CYCLONE_BUILDINGS, {
+	name:"Buildings Upgrade: Cyclone Resistance", 
+	alias:"cyclone_buildings",
+	key: MEASURE.CYCLONE_BUILDINGS,
+	cost:1200,
+	unit:"cell",
+	time: "months",
+	icon: sprMeasure_cyclonebuildings,
+	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Cyclone-proofing can be achieved through wind-resistant roof designs, using strong and durable building materials, and reinforcing infrastructure (such as streetlamps and poles) in the area.\n\nThis measure can only be placed on cells with damaged buildings. Future cyclones will no longer damage the buildings on this cell."
 })
 
 //used by the text objects in the roundresults screen

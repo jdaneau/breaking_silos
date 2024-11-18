@@ -31,8 +31,12 @@ for (n=0; n<instance_number(objMapTile); ++n;) {
 	var _tile = instance_find(objMapTile,n); 
 	var _x = _tile.x div 64;
 	var _y = _tile.y div 64;
+	var _capital = false;
+	if objCapitalMarker.x == _tile.x and objCapitalMarker.y == _tile.y {
+		_capital = true;	
+	}
 	array_push(struct.land_tiles,{
-		x:_tile.x, y:_tile.y, index:_tile.image_index, metrics:_tile.metrics, 
+		x:_tile.x, y:_tile.y, index:_tile.image_index, metrics:_tile.metrics, capital:_capital,
 		measures:[], in_progress:[], implemented:[], evacuated_population:[], dammed:false})
 	struct.land_grid[_x,_y] = 1
 	struct.buildings_grid[_x,_y] = 1

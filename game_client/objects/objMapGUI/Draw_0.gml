@@ -28,6 +28,9 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	var _tile = global.map.land_tiles[i];
 	var _sprite = is_damaged(_tile, global.map.buildings_grid) ? damaged_sprite : land_sprite;
 	draw_sprite(_sprite,_tile.index,_tile.x,_tile.y)
+	if _tile.capital {
+		draw_sprite_ext(sprCapitalMarker,0,_tile.x,_tile.y,1,1,0,c_white,0.3)	
+	}
 }
 for(i=0; i<array_length(global.map.foreign_tiles); i++) {
 	var _tile = global.map.foreign_tiles[i];
@@ -164,24 +167,22 @@ if array_length(global.state.affected_tiles) > 0 {
 	}
 }
 
-//draw in-progress works
+//draw tiles with projects on them
 for(i=0; i<array_length(global.map.land_tiles); i++) {
 	var tile = global.map.land_tiles[i];
-	if array_length(tile.in_progress) > 0 {
+	if array_length(tile.in_progress) > 0 || array_length(tile.implemented) > 0 {
 		draw_sprite(sprInProgress,0,tile.x+48,tile.y+48)
 	}
 }
 
 //draw added measures 
-if global.state.current_phase == "decision" {
-	for(i=0; i<array_length(global.map.land_tiles); i++) {
-		var _tile = global.map.land_tiles[i];
-		if array_length(_tile.measures) > 0 {
-			for(var j=0; j<array_length(_tile.measures); j++) {
-				var _x = _tile.x + (64 * (1/3)) * (j mod 3);
-				var _y = _tile.y + (64 * (1/3)) * (j div 3);
-				draw_sprite_ext(get_measure_sprite(_tile.measures[j]),0,_x,_y,1/3,1/3,0,c_white,1)
-			}
+for(i=0; i<array_length(global.map.land_tiles); i++) {
+	var _tile = global.map.land_tiles[i];
+	if array_length(_tile.measures) > 0 {
+		for(var j=0; j<array_length(_tile.measures); j++) {
+			var _x = _tile.x + (64 * (1/3)) * (j mod 3);
+			var _y = _tile.y + (64 * (1/3)) * (j div 3);
+			draw_sprite_ext(get_measure_sprite(_tile.measures[j]),0,_x,_y,1/3,1/3,0,c_white,1)
 		}
 	}
 }
@@ -190,7 +191,9 @@ if global.state.current_phase == "decision" {
 if instance_number(objMarker) > 0 {
 	for(i=0; i<instance_number(objMarker); i++) {
 		var _mark = instance_find(objMarker,i);
-		draw_sprite_ext(sprMarker,0,_mark.x*64 + 32,_mark.y*64 + 32,_mark.scale,_mark.scale,0,_mark.color,_mark.alpha)
+		var _x = _mark.x*64 + 32;
+		var _y = _mark.y*64 + 32;
+		draw_sprite_ext(sprMarker,0,_x,_y,_mark.scale,_mark.scale,0,_mark.color,_mark.alpha)
 	}
 }
 
@@ -212,10 +215,9 @@ if global.mouse_depth >= depth and mouse_map_x != -1{
 surface_reset_target()
 
 //draw GUI map
-var _xscale = map_w / map_camera_w;
-var _yscale = map_h / map_camera_h;
+var _scale = map_w / map_camera_w;
 gpu_set_blendenable(false)
-draw_surface_part_ext(map_surface,map_camera_x,map_camera_y,map_camera_w,map_camera_h,map_x,map_y,_xscale,_yscale,c_white,1)
+draw_surface_part_ext(map_surface,map_camera_x,map_camera_y,map_camera_w,map_camera_h,map_x,map_y,_scale,_scale,c_white,1)
 gpu_set_blendenable(true)
 draw_gui_border(map_x,map_y,map_x+map_w,map_y+map_h)
 
@@ -229,6 +231,27 @@ if layer_caption != "" {
 	draw_text(map_x+(map_w/2), map_y+map_h-16,layer_caption)
 	draw_set_alpha(1)
 	draw_set_color(c_white)
+}
+
+//draw marker captions
+if instance_number(objMarker) > 0 {
+	for(i=0; i<instance_number(objMarker); i++) {
+		var _mark = instance_find(objMarker,i);
+		var _amt = 64 * _scale;
+		var _x = x + ((_mark.x*64)-map_camera_x)/64*_amt + _amt/2;
+		var _y = y + ((_mark.y*64)-map_camera_y)/64*_amt + _amt/2;
+		if coords_in(_x,_y,objMapGUI.x,objMapGUI.y,objMapGUI.bbox_right,objMapGUI.bbox_bottom) {
+			draw_set_font(fInput)
+			draw_set_alpha(_mark.alpha)
+			draw_text_outline(_x,_y + (56*_scale),_mark.caption,c_white,c_black)
+			draw_set_alpha(1)
+		} else {
+			if !_mark.announced {
+				_mark.announced = true
+				objSidebarGUIChat.chat_add(string("{0} has highlighted square {1}!",_mark.caption,coords_to_grid(_mark.x,_mark.y,false)))
+			}
+		}
+	}
 }
 
 //draw tooltip
