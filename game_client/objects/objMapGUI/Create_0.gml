@@ -41,7 +41,9 @@ reset_info_layers = function() {
 	show_population = false
 	show_flood_history = false
 	show_drought_history = false
-	layer_caption = ""
+	if placing {
+		layer_caption = "Click on the measures to mark them on the map.\nLeft click = add, Right click = remove"
+	} else layer_caption = ""
 	
 	with objGUIButton if toggle { on=false }
 }

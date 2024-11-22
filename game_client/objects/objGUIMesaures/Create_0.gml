@@ -19,7 +19,7 @@ switch(global.state.role) {
 	break;
 	case ROLE.CITIZEN:
 		array_push(measures, MEASURE.NBS)
-		if !role_in_game(ROLE.FLOOD) {
+		if !role_in_game(ROLE.FLOOD) and !role_in_game(ROLE.ENGINEER){
 			array_push(measures, MEASURE.EWS_FLOOD)
 		}
 		if !role_in_game(ROLE.INTERNATIONAL) && !role_in_game(ROLE.HOUSING) {

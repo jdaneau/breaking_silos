@@ -6,7 +6,7 @@ btn_show_drought_risk = {
 			on_click : function(on) {
 				if on {
 					with objMapGUI { show_drought_risk = true; layer_caption = "1 = Low, 2 = Medium, 3 = High" }
-				} else with objMapGUI show_drought_risk = false
+				} else with objMapGUI { reset_info_layers() }
 			}	
 		}
 		
@@ -16,7 +16,7 @@ btn_show_flood_risk = {
 			on_click : function(on) {
 				if on {
 					with objMapGUI { show_flood_risk = true; layer_caption = "1 = Low, 2 = Medium, 3 = High" }
-				} else with objMapGUI show_flood_risk = false
+				} else with objMapGUI { reset_info_layers() }
 			}	
 		}
 		
@@ -26,7 +26,7 @@ btn_show_cyclone_risk = {
 			on_click : function(on) {
 				if on {
 					with objMapGUI { show_cyclone_risk = true; layer_caption = "1 = Low, 2 = Medium, 3 = High" }
-				} else with objMapGUI show_cyclone_risk = false
+				} else with objMapGUI { reset_info_layers() }
 			}	
 		}
 		
@@ -44,7 +44,7 @@ btn_show_population_map = {
 							layer_caption += "\nPink values = Evacuated population"	
 						}
 					}
-				} else with objMapGUI { show_population = false; layer_caption="" }
+				} else with objMapGUI { reset_info_layers() }
 			}	
 		}
 
@@ -54,7 +54,7 @@ btn_show_agricultural_areas = {
 			on_click : function(on) {
 				if on {
 					with objMapGUI { show_agriculture = true; layer_caption="Yellow: Normal crops, Blue: Drought-resistant crops\nRed: Crops destroyed by current disaster" }
-				} else with objMapGUI { show_agriculture = false; layer_caption="" }
+				} else with objMapGUI { reset_info_layers() }
 			}	
 		}
 		
@@ -89,7 +89,7 @@ btn_show_flood_history = {
 			on_click : function(on) {
 				if on {
 					with objMapGUI { show_flood_history = true; layer_caption="Observed floods in the past 15 years" }
-				} else with objMapGUI { show_flood_history = false; layer_caption="" }
+				} else with objMapGUI { reset_info_layers() }
 			}	
 		}
 		
@@ -99,7 +99,7 @@ btn_show_drought_history = {
 			on_click : function(on) {
 				if on {
 					with objMapGUI { show_drought_history = true; layer_caption="Observed droughts in the past 15 years" }
-				} else with objMapGUI { show_drought_history = false; layer_caption="" }
+				} else with objMapGUI { reset_info_layers() }
 			}	
 		}
 		
@@ -109,6 +109,6 @@ btn_show_watersheds = {
 			on_click : function(on) {
 				if on {
 					with objMapGUI { show_watersheds = true; layer_caption = "Each watershed belongs to one river system.\nArrows show direction of flow." }
-				} else with objMapGUI show_watersheds = false
+				} else with objMapGUI { reset_info_layers() }
 			}	
 		}

@@ -1,4 +1,4 @@
-if !locked and mouse_on and mouse_check_pressed(mb_left) and global.state.role = ROLE.PRESIDENT {
+if !locked and mouse_on and mouse_check_pressed(mb_left) {
 	if !selected {
 		with objMeasureIcon selected = false
 		selected = true

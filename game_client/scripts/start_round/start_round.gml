@@ -102,6 +102,24 @@ function do_map_damages(){
 				for(var p=0; p<array_length(tile.in_progress); p++) {
 					var amount = random_range(1.1,1.3); // 10-30% time delay
 					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
+					var interrupted_measure = tile.in_progress[p].measure;
+					switch(global.measures[? interrupted_measure].time) {
+						case "weeks":
+							if tile.in_progress[p].days_remaining > 30 {
+								tile.in_progress[p].days_remaining = 30	
+							}
+						break;
+						case "months":
+							if tile.in_progress[p].days_remaining > 365 {
+								tile.in_progress[p].days_remaining = 365	
+							}
+						break;
+						case "years":
+							if tile.in_progress[p].days_remaining > (365 * 3) {
+								tile.in_progress[p].days_remaining = 365 * 3	
+							}
+						break;
+					}
 					global.state.n_projects_interrupted++
 				}
 			break;
@@ -110,6 +128,24 @@ function do_map_damages(){
 				for(var p=0; p<array_length(tile.in_progress); p++) {
 					var amount = random_range(1.3,1.6); // 30-60% time delay
 					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
+					var interrupted_measure = tile.in_progress[p].measure;
+					switch(global.measures[? interrupted_measure].time) {
+						case "weeks":
+							if tile.in_progress[p].days_remaining > 30 {
+								tile.in_progress[p].days_remaining = 30	
+							}
+						break;
+						case "months":
+							if tile.in_progress[p].days_remaining > 365 {
+								tile.in_progress[p].days_remaining = 365	
+							}
+						break;
+						case "years":
+							if tile.in_progress[p].days_remaining > (365 * 3) {
+								tile.in_progress[p].days_remaining = 365 * 3	
+							}
+						break;
+					}
 					global.state.n_projects_interrupted++
 				}
 			break;
@@ -118,6 +154,24 @@ function do_map_damages(){
 				for(var p=0; p<array_length(tile.in_progress); p++) {
 					var amount = random_range(1.6,1.9); // 60-90% time delay
 					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
+					var interrupted_measure = tile.in_progress[p].measure;
+					switch(global.measures[? interrupted_measure].time) {
+						case "weeks":
+							if tile.in_progress[p].days_remaining > 30 {
+								tile.in_progress[p].days_remaining = 30	
+							}
+						break;
+						case "months":
+							if tile.in_progress[p].days_remaining > 365 {
+								tile.in_progress[p].days_remaining = 365	
+							}
+						break;
+						case "years":
+							if tile.in_progress[p].days_remaining > (365 * 3) {
+								tile.in_progress[p].days_remaining = 365 * 3	
+							}
+						break;
+					}
 					global.state.n_projects_interrupted++
 				}
 			break;

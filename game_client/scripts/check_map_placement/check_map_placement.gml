@@ -39,6 +39,9 @@ function check_map_placement(measure,tile) {
 			if array_contains(tile.measures,MEASURE.FLOOD_BUILDINGS) or array_contains(tile.measures,MEASURE.CYCLONE_BUILDINGS) {
 				return "You can only rebuild buildings once on a cell. Deselect the other type to implement this measure."	
 			}
+			if is_implementing(tile,MEASURE.FLOOD_BUILDINGS) or is_implementing(tile,MEASURE.CYCLONE_BUILDINGS) {
+				return "You are already reconstructing the buildings on this cell."	
+			}
 			if global.map.buildings_grid[tx,ty] >= 1 {
 				return "The buildings in this sqaure are not damaged."
 			}
@@ -48,6 +51,9 @@ function check_map_placement(measure,tile) {
 			if array_contains(tile.measures,MEASURE.BUILDINGS) or array_contains(tile.measures,MEASURE.CYCLONE_BUILDINGS) {
 				return "You can only rebuild buildings once on a cell. Deselect the other type to implement this measure."	
 			}
+			if is_implementing(tile,MEASURE.CYCLONE_BUILDINGS) {
+				return "You are already reconstructing the buildings on this cell."	
+			}
 			if global.map.buildings_grid[tx,ty] >= 1 {
 				return "The buildings in this sqaure are not damaged."
 			}
@@ -56,6 +62,9 @@ function check_map_placement(measure,tile) {
 		case MEASURE.CYCLONE_BUILDINGS:
 			if array_contains(tile.measures,MEASURE.BUILDINGS) or array_contains(tile.measures,MEASURE.FLOOD_BUILDINGS) {
 				return "You can only rebuild buildings once on a cell. Deselect the other type to implement this measure."	
+			}
+			if is_implementing(tile,MEASURE.FLOOD_BUILDINGS) {
+				return "You are already reconstructing the buildings on this cell."	
 			}
 			if global.map.buildings_grid[tx,ty] >= 1 {
 				return "The buildings in this sqaure are not damaged."

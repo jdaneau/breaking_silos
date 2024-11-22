@@ -51,7 +51,7 @@ switch(type_event){
 			break;
 			
 			case MESSAGE.CHECK_ONLINE:
-				lobby_id = sockets[socket]
+				lobby_id = sockets[? socket]
 				if array_contains(destroy_lobbies,lobby_id) {
 					array_delete(destroy_lobbies,array_get_index(destroy_lobbies,lobby_id),1)
 				}
