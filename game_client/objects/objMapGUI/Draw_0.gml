@@ -56,8 +56,8 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 	var _tile = global.map.land_tiles[i];
 	var _x1 = _tile.x;
 	var _y1 = _tile.y;
-	var _x2 = _tile.x + 63;
-	var _y2 = _tile.y + 63;
+	var _x2 = _tile.x + 64;
+	var _y2 = _tile.y + 64;
 	if show_agriculture and _tile.metrics.agriculture != 0 {
 		draw_set_alpha(0.4)
 		var _draw_color = c_white;
