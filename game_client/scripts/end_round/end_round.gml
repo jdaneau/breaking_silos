@@ -22,8 +22,8 @@ function end_round(){
 				if pop > airport_pop { airport_pop = pop }
 			}
 			if _measure == MEASURE.EVACUATE { n_evacuate++ }
-			if _measure == MEASURE.BUILDINGS { n_buildings++ }
-			if _measure == MEASURE.NORMAL_CROPS || _measure == MEASURE.RESISTANT_CROPS { n_agriculture++ }
+			if _measure == MEASURE.BUILDINGS or _measure == MEASURE.FLOOD_BUILDINGS or _measure == MEASURE.CYCLONE_BUILDINGS { n_buildings++ }
+			if _measure == MEASURE.NORMAL_CROPS or _measure == MEASURE.RESISTANT_CROPS { n_agriculture++ }
 			var measure_struct = global.measures[? _measure];
 			global.state.money_spent += measure_struct.cost
 			var new_struct = {
