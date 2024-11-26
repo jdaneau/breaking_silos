@@ -426,7 +426,7 @@ function update_population_loss(finished_projects) {
 		}
 		
 		//losses from unrepaired buildings
-		if global.map.buildings_grid[tile.x div 64, tile.y div 64] == -1 {
+		if global.map.buildings_grid[tile.x div 64, tile.y div 64] == -1 and not is_implementing(tile,MEASURE.FLOOD_BUILDINGS) and not is_implementing(tile,MEASURE.CYCLONE_BUILDINGS) {
 			loss_rate *= 2	
 			base_loss_rate *= 2
 		}
