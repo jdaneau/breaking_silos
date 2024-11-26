@@ -30,24 +30,30 @@ function get_next_disaster(){
 	switch(last_disaster) {
 		case "flood":
 		case "drought":
-			//medium risk flood = 10% chance
-			if rand_value <= 0.1 { next_disaster = "flood" }
-			//low risk drought = 5% chance
-			else if rand_value <= 0.15 { next_disaster = "drought" }
-			//medium risk cyclone = 10% chance
-			else if rand_value <= 0.25 { next_disaster = "cyclone" }
-			//75% chance no multi hazard
-			else { multi_hazard = false	}
+			//medium risk flood = 5% chance
+			var _flood = 0.05 * get_risk_ratio("flood")
+			//low risk drought = 2% chance
+			var _drought = 0.02 * get_risk_ratio("drought")
+			//medium risk cyclone = 5% chance
+			var _cyclone = 0.05 * get_risk_ratio("cyclone")
+			
+			if rand_value <= _flood { next_disaster = "flood" }
+			else if rand_value <= _flood + _drought { next_disaster = "drought" }
+			else if rand_value <= _flood + _drought + _cyclone { next_disaster = "cyclone" }
+			else { multi_hazard = false }
 		break;
 		
 		case "cyclone":
-			//high risk flood = 25% chance
-			if rand_value <= 0.25 { next_disaster = "flood" }
-			//medium risk drought = 10% chance
-			else if rand_value <= 0.35 { next_disaster = "drought" }
+			//high risk flood = 5% chance
+			var _flood = 0.25 * get_risk_ratio("flood")
+			//medium risk drought = 2% chance
+			var _drought = 0.05 * get_risk_ratio("drought")
 			//low risk cyclone = 5% chance
-			else if rand_value <= 0.4 { next_disaster = "cyclone" }
-			//60% chance no multi hazard
+			var _cyclone = 0.02 * get_risk_ratio("cyclone")
+			
+			if rand_value <= _flood { next_disaster = "flood" }
+			else if rand_value <= _flood + _drought { next_disaster = "drought" }
+			else if rand_value <= _flood + _drought + _cyclone { next_disaster = "cyclone" }
 			else { multi_hazard = false }
 		break;
 		
@@ -61,9 +67,21 @@ function get_next_disaster(){
 	if multi_hazard {
 		var n_days = irandom_range(1,14);
 		global.state.multi_hazard = true
+		var _intensity;
+		switch(global.state.disaster_intensity) {
+			case "low":
+				_intensity = "low"
+			break;
+			case "medium":
+				_intensity = choose("medium","low")
+			break;
+			case "high":
+				_intensity = choose("high","medium","low")
+			break;
+		}
 		return {
 			disaster : next_disaster,
-			intensity : choose("low","medium","high"),
+			intensity : _intensity,
 			days_since_last_disaster : n_days
 		}
 	}
@@ -139,6 +157,7 @@ function get_next_disaster(){
 				else { n_days = round(n_days * (5/4)) }
 			break;
 		}
+		
 		switch(objOnline.lobby_settings.climate_type) {
 			case "Tropical":
 				//50% chance time = time/2
@@ -166,6 +185,8 @@ function get_next_disaster(){
 				//25% chance time = time*(5/4)
 			break;
 		}
+		
+		n_days = round(n_days / sqr(get_risk_ratio(next_disaster)))
 		
 		var intensity = choose("low","medium","high");
 		if next_disaster == "cyclone" {

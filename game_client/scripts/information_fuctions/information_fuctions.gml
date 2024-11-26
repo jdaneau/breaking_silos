@@ -34,6 +34,33 @@ function get_total_agriculture() {
 	return n_agriculture
 }
 
+/// @function get_total_risk(hazard)
+/// @description returns the total amount of risk for a given hazard type on the map
+/// @param {string} hazard : one of either "flood", "drought", or "cyclone".
+function get_total_risk(hazard) {
+	var map_key;
+	switch(hazard) {
+		case "flood":
+			map_key = "flood_risk"
+		break;
+		case "drought":
+			map_key = "drought_risk"
+		break;
+		case "cyclone":
+			map_key = "cyclone_risk"
+		break;
+		default: return 0
+	}
+	var total = 0;
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		total += global.map.land_tiles[i].metrics[$ map_key] 
+	}	
+	return total
+}
+function get_risk_ratio(hazard) {
+	return get_total_risk(hazard) / global.state.starting_risk[$ hazard]	
+}
+
 /// @function get_n_damaged_cells()
 /// @description returns the total number of cells with damaged buildings
 function get_n_damaged_cells() {

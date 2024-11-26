@@ -208,4 +208,7 @@ function init_state() {
 	}
 	global.state.starting_population = new_population / 1000
 	global.state.base_tax = 10000 * (new_population / normal_population) * tax_mult
+	global.state.starting_risk.flood = get_total_risk("flood")
+	global.state.starting_risk.drought = get_total_risk("drought")
+	global.state.starting_risk.cyclone = get_total_risk("cyclone")
 }

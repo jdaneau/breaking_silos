@@ -71,6 +71,11 @@ global.state = {
 	state_budget : 0,
 	base_tax : 0,
 	starting_population : 0,
+	starting_risk : {
+		flood : 0,
+		drought: 0,
+		cyclone: 0
+	},
 	money_spent : 0,
 	role: ROLE.NONE,
 	disaster: "",
