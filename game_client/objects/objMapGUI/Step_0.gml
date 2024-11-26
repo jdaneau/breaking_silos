@@ -105,7 +105,7 @@ if mouse_in_map and mouse_check(mb_left) {
 }
 
 //handle map pinging
-if mouse_in_map and mouse_check_pressed(mb_right) {
+if room == rInGame and mouse_in_map and mouse_check_pressed(mb_right) {
 	var _x = mouse_map_x div 64;
 	var _y = mouse_map_y div 64;
 	var _square = coords_to_grid(mouse_map_x,mouse_map_y)
