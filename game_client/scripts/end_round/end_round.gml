@@ -203,7 +203,8 @@ function update_map_measures(finished_projects) {
 			array_push(tile.implemented, MEASURE.DAM)	
 			add_report(string("A dam has completed construction on tile {0}.",coords_to_grid(tile.x,tile.y)))
 			tile.dammed = true
-			tile.metrics.drought_risk = clamp(tile.metrics.drought_risk-1, 0,3)
+			tile.metrics.flood_risk = clamp(tile.metrics.flood_risk-2, 0,3)
+			tile.metrics.drought_risk = clamp(tile.metrics.drought_risk+1, 0,4)
 			var cur_tile = tile;
 			var n_dammed = 0;
 			var n_upstream = 0;
