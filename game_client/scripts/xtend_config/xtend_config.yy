@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"xtend_config",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"xtend_config",
+  "parent":{
+    "name":"Xtend",
+    "path":"folders/XGASOFT/Xtend.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

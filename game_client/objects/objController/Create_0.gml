@@ -2,6 +2,7 @@
 global.mouse_depth = 10
 
 //init resolution
+/*
 bw = browser_width
 bh = browser_height
 camera_set_view_size(view_camera[0],bw,bh)
@@ -13,6 +14,7 @@ window_center()
 if bw < 1600 {
 	gpu_set_texfilter(true)
 }
+*/
 
 //global constants and enums
 enum ROLE {
