@@ -19,19 +19,3 @@ if global.state.current_phase == "discussion" and global.state.role == ROLE.PRES
 		}
 	}
 }
-
-/*
-if (browser_width != bw || browser_height != bh)
-{
-	bw = browser_width
-	bh = browser_height
-	window_set_size(bw,bh)
-	window_center()
-	
-	if bw < 1600 {
-		gpu_set_texfilter(true)
-	} else {
-		gpu_set_texfilter(false)
-	}
-}
-*/

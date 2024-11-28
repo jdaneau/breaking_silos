@@ -52,13 +52,12 @@
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/XGASOFT/Xtend/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "IncludedFiles":[
-    {"$GMIncludedFile":"","%Name":"xtend-reference-guide.pdf","CopyToMask":0,"filePath":"datafiles","name":"xtend-reference-guide.pdf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"xtend-reference-guide.pdf","CopyToMask":-1,"filePath":"datafiles","name":"xtend-reference-guide.pdf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.8.1.171",
+    "IDEVersion":"2024.8.0.169",
   },
   "name":"breaking_the_silos",
   "resources":[

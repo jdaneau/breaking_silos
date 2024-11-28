@@ -1,1 +1,1 @@
-url_open("https://www.myriadproject.eu/")
+url_open_ext("https://www.myriadproject.eu/","_blank")
