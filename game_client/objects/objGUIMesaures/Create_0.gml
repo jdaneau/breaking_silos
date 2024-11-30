@@ -45,6 +45,12 @@ switch(global.state.role) {
 		if !role_in_game(ROLE.FLOOD) {
 			array_push(measures, MEASURE.DIKE)
 		}
+		if !role_in_game(ROLE.HOUSING) {
+			array_push(measures, MEASURE.BUILDINGS)
+			array_push(measures, MEASURE.RELOCATION)	
+			array_push(measures, MEASURE.FLOOD_BUILDINGS)
+			array_push(measures, MEASURE.CYCLONE_BUILDINGS)
+		}
 	break;
 	case ROLE.FLOOD:
 		array_push(measures, MEASURE.EWS_FLOOD)
@@ -66,6 +72,8 @@ switch(global.state.role) {
 	case ROLE.HOUSING:
 		array_push(measures, MEASURE.BUILDINGS)
 		array_push(measures, MEASURE.RELOCATION)
+		array_push(measures, MEASURE.FLOOD_BUILDINGS)
+		array_push(measures, MEASURE.CYCLONE_BUILDINGS)
 		if !role_in_game(ROLE.INTERNATIONAL) {
 			array_push(measures, MEASURE.HOSPITAL)
 			array_push(measures, MEASURE.AIRPORT)
@@ -89,6 +97,9 @@ switch(global.state.role) {
 		if !role_in_game(ROLE.HOUSING) && !role_in_game(ROLE.ENGINEER) {
 			array_push(measures, MEASURE.BUILDINGS)	
 			array_push(measures, MEASURE.RELOCATION)	
+			array_push(measures, MEASURE.BUILDINGS)
+			array_push(measures, MEASURE.FLOOD_BUILDINGS)
+			array_push(measures, MEASURE.CYCLONE_BUILDINGS)
 		}
 	break;
 }
