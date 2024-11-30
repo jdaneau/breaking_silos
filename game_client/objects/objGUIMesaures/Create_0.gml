@@ -19,7 +19,7 @@ switch(global.state.role) {
 	break;
 	case ROLE.CITIZEN:
 		array_push(measures, MEASURE.NBS)
-		if !role_in_game(ROLE.FLOOD) and !role_in_game(ROLE.ENGINEER){
+		if !role_in_game(ROLE.FLOOD) and !role_in_game(ROLE.INTERNATIONAL){
 			array_push(measures, MEASURE.EWS_FLOOD)
 		}
 		if !role_in_game(ROLE.INTERNATIONAL) && !role_in_game(ROLE.HOUSING) {
@@ -38,7 +38,7 @@ switch(global.state.role) {
 		array_push(measures, MEASURE.SEAWALL)
 		if !role_in_game(ROLE.INTERNATIONAL) {
 			array_push(measures, MEASURE.EWS_CYCLONE)
-			if !role_in_game(ROLE.FLOOD) {
+			if !role_in_game(ROLE.FLOOD) and !role_in_game(ROLE.CITIZEN) {
 				array_push(measures, MEASURE.EWS_FLOOD)
 			}
 		}
@@ -78,9 +78,6 @@ switch(global.state.role) {
 			array_push(measures, MEASURE.HOSPITAL)
 			array_push(measures, MEASURE.AIRPORT)
 			array_push(measures, MEASURE.EVACUATE)
-			if !role_in_game(ROLE.ENGINEER) {
-				array_push(measures, MEASURE.EWS_CYCLONE)
-			}
 		}
 	break;
 	case ROLE.INTERNATIONAL:
@@ -90,9 +87,9 @@ switch(global.state.role) {
 		array_push(measures, MEASURE.EVACUATE)
 		if !role_in_game(ROLE.CITIZEN) {
 			array_push(measures, MEASURE.NBS)
-			if !role_in_game(ROLE.FLOOD) {
-				array_push(measures, MEASURE.EWS_FLOOD)	
-			}
+		}
+		if !role_in_game(ROLE.FLOOD) {
+			array_push(measures, MEASURE.EWS_FLOOD)	
 		}
 		if !role_in_game(ROLE.HOUSING) && !role_in_game(ROLE.ENGINEER) {
 			array_push(measures, MEASURE.BUILDINGS)	
