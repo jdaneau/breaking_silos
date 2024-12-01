@@ -185,14 +185,14 @@ function init_state() {
 	var tax_mult = 1;
 	switch(objOnline.lobby_settings.gdp) {
 		case "High":
-			global.state.state_budget = 45000
+			global.state.state_budget = 30000
 			tax_mult = 1.5
 		break;
 		case "Average":
-			global.state.state_budget = 30000
+			global.state.state_budget = 20000
 		break;
 		case "Low":
-			global.state.state_budget = 15000
+			global.state.state_budget = 10000
 			tax_mult = 0.5
 		break;
 	}
