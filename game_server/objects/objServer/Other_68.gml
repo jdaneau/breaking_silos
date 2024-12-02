@@ -51,6 +51,9 @@ switch(type_event){
 			break;
 			
 			case MESSAGE.CHECK_ONLINE:
+				if array_contains(destroy_sockets,socket) {
+					array_delete(destroy_sockets,array_get_index(destroy_sockets,socket),1)	
+				}
 				lobby_id = sockets[? socket]
 				if array_contains(destroy_lobbies,lobby_id) {
 					array_delete(destroy_lobbies,array_get_index(destroy_lobbies,lobby_id),1)
@@ -239,7 +242,7 @@ switch(type_event){
 					if !array_contains(destroy_lobbies,key) array_push(destroy_lobbies,key)
 				}
 				send_array(socket,MESSAGE.GET_LOBBIES,"struct",lobby_list)
-				alarm[0] = round(game_get_speed(gamespeed_fps) * 5)
+				alarm[0] = round(game_get_speed(gamespeed_fps) * 10) //10 second limit on response, if none then destroy lobby
 			break;
 			
 			case MESSAGE.GET_PLAYERS:

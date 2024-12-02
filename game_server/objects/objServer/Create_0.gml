@@ -59,10 +59,12 @@ max_players = max_per_lobby * max_lobbies
 server = network_create_server(socket_type,port,max_players)
 server_buffer = buffer_create(4096,buffer_fixed,1)
 
-interval = 20 //20 seconds per update
+interval = 60 * 10 //10 minutes per update
 last_time = 0
 
 lobbies = ds_map_create()
 sockets = ds_map_create()
 
 destroy_lobbies = []
+destroy_sockets = []
+alarm[1] = round(game_get_speed(gamespeed_fps) * 60 * 30) //30 minutes to check for players online
