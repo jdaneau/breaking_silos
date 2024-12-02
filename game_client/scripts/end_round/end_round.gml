@@ -13,7 +13,7 @@ function end_round(){
 	//move measures into the in_progress array for each tile (and count measures for the aid objectives)
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var _tile = global.map.land_tiles[i];
-		if _tile.metrics.agriculture > 0 || array_contains(_tile.in_progress,MEASURE.NORMAL_CROPS) || array_contains(_tile.in_progress,MEASURE.RESISTANT_CROPS) { n_remaining_agriculture++ }
+		if _tile.metrics.agriculture > 0 || is_implementing(_tile,MEASURE.NORMAL_CROPS) || is_implementing(_tile,MEASURE.RESISTANT_CROPS) { n_remaining_agriculture++ }
 		while array_length(_tile.measures) > 0 {
 			var _measure = array_pop(_tile.measures);
 			global.state.measures_implemented[_measure] += 1
