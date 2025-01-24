@@ -44,11 +44,14 @@ enum MESSAGE {
 	BUDGET = 28,
 	MAP_CHANGE = 29,
 	REQUEST_MAP = 30,
+	REQUEST_STATE = 31,
 	END_ROUND = 32,
 	PROGRESS_ROUND = 33,
 	NEW_ROUND = 34,
 	GAME_END = 35,
-	CHECK_ONLINE = 40
+	CHECK_ONLINE = 40,
+	HOTJOIN = 41,
+	HOTJOIN_DATA = 42
 }
 
 port = 20002
@@ -67,4 +70,6 @@ sockets = ds_map_create()
 
 destroy_lobbies = []
 destroy_sockets = []
-alarm[1] = round(game_get_speed(gamespeed_fps) * 60 * 30) //30 minutes to check for players online
+ping_attempts = ds_map_create()
+
+alarm[1] = round(game_get_speed(gamespeed_fps) * 5) //check players every 15 seconds

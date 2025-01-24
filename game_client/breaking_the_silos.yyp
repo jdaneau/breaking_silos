@@ -57,7 +57,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.8.0.169",
+    "IDEVersion":"2024.11.0.179",
   },
   "name":"breaking_the_silos",
   "resources":[
@@ -88,6 +88,7 @@
     {"id":{"name":"objController","path":"objects/objController/objController.yy",},},
     {"id":{"name":"objDialogWindow","path":"objects/objDialogWindow/objDialogWindow.yy",},},
     {"id":{"name":"objDropdownButton","path":"objects/objDropdownButton/objDropdownButton.yy",},},
+    {"id":{"name":"objEscapeFromLimbo","path":"objects/objEscapeFromLimbo/objEscapeFromLimbo.yy",},},
     {"id":{"name":"objForeignTile","path":"objects/objForeignTile/objForeignTile.yy",},},
     {"id":{"name":"objGenerateGUIButtons","path":"objects/objGenerateGUIButtons/objGenerateGUIButtons.yy",},},
     {"id":{"name":"objGUIBorder","path":"objects/objGUIBorder/objGUIBorder.yy",},},

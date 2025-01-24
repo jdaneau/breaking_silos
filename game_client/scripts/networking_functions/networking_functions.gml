@@ -162,7 +162,8 @@ function send_state() {
 		n_hospitals_damaged : global.state.n_hospitals_damaged,
 		n_tiles_damaged : global.state.n_tiles_damaged ,
 		starting_population : global.state.starting_population,
-		starting_risk : global.state.starting_risk
+		starting_risk : global.state.starting_risk,
+		current_room : global.state.current_room
 	})
 	if array_length(global.state.round_reports) > 0 {
 		send_struct(MESSAGE.STATE,{ round_reports : global.state.round_reports })

@@ -11,6 +11,7 @@ on_click = function(on) {
 		send(MESSAGE.NEW_ROUND)
 	}
 	room_goto(rInGame)
+	global.state.current_room = rInGame
 }
 
 if global.state.role != ROLE.PRESIDENT {

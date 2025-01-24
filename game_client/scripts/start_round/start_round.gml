@@ -25,6 +25,7 @@ function start_round() {
 	send_state()
 	send_updated_map()
 	room_goto(rInGame)
+	global.state.current_room = rInGame
 }
 
 function do_map_damages(){
@@ -100,23 +101,24 @@ function do_map_damages(){
 		switch(global.state.disaster_intensity) {
 			case "low":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
-					var amount = random_range(1.1,1.3); // 10-30% time delay
+					var amount = random_range(1,1.15); // 0-15% time delay
 					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
 					var interrupted_measure = tile.in_progress[p].measure;
+					var max_amount = get_project_days(interrupted_measure, true);
 					switch(global.measures[? interrupted_measure].time) {
 						case "weeks":
-							if tile.in_progress[p].days_remaining > 30 {
-								tile.in_progress[p].days_remaining = 30	
+							if tile.in_progress[p].days_remaining > max_amount {
+								tile.in_progress[p].days_remaining = max_amount	
 							}
 						break;
 						case "months":
-							if tile.in_progress[p].days_remaining > 365 {
-								tile.in_progress[p].days_remaining = 365	
+							if tile.in_progress[p].days_remaining > max_amount {
+								tile.in_progress[p].days_remaining = max_amount	
 							}
 						break;
 						case "years":
-							if tile.in_progress[p].days_remaining > (365 * 3) {
-								tile.in_progress[p].days_remaining = 365 * 3	
+							if tile.in_progress[p].days_remaining > max_amount {
+								tile.in_progress[p].days_remaining = max_amount
 							}
 						break;
 					}
@@ -126,7 +128,7 @@ function do_map_damages(){
 			
 			case "medium":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
-					var amount = random_range(1.3,1.6); // 30-60% time delay
+					var amount = random_range(1.15,1.3); // 15-30% time delay
 					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
 					var interrupted_measure = tile.in_progress[p].measure;
 					switch(global.measures[? interrupted_measure].time) {
@@ -152,7 +154,7 @@ function do_map_damages(){
 			
 			case "high":
 				for(var p=0; p<array_length(tile.in_progress); p++) {
-					var amount = random_range(1.6,1.9); // 60-90% time delay
+					var amount = random_range(1.3,1.45); // 30-45% time delay
 					tile.in_progress[p].days_remaining = round(tile.in_progress[p].days_remaining * amount)
 					var interrupted_measure = tile.in_progress[p].measure;
 					switch(global.measures[? interrupted_measure].time) {

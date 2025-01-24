@@ -21,6 +21,7 @@ on_click = function(on) {
 		send(MESSAGE.GAME_END)
 		global.state.affected_tiles = []
 		room_goto(rGameResults)
+		global.state.current_room = rGameResults
 	}
 }
 

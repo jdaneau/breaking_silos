@@ -13,6 +13,7 @@ calc_surface = surface_create(calc_width,calc_height)
 
 selected = array_create(ds_map_size(global.measures), 0)
 total = 0
+budget = global.state.state_budget
 
 mouse_calc_x = -1
 mouse_calc_y = -1

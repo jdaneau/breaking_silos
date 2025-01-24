@@ -15,7 +15,7 @@ for(var i=0; i<global.N_MEASURES; i++) {
 if !implemented_something {
 	text += "\nNothing :(\n"	
 }
-text +=  "\n\nIn the weeks after the meeting:\n\n"
+text +=  "\n\nDirectly following the meeting:\n\n"
 for(var i=0; i<array_length(global.state.round_reports); i++) {
 	text += global.state.round_reports[i] + "\n"
 }

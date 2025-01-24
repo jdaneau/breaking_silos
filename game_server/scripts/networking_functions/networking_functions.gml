@@ -23,13 +23,17 @@ function send_to_all(socket,message_id,type,content) {
 }
 
 function send_to_lobby(lobby_id,message_id,type,content) {
-	var sockets = ds_map_keys_to_array(lobbies[? lobby_id].players);
-	for(var i=0; i<array_length(sockets); i++) {
-		var sock = sockets[i];
-		buffer_seek(objServer.server_buffer,buffer_seek_start,0)
-		buffer_write(objServer.server_buffer,buffer_u8,message_id)
-		buffer_write(objServer.server_buffer,type,content)
-		network_send_packet(sock,objServer.server_buffer,buffer_tell(objServer.server_buffer))
+	if ds_map_exists(lobbies,lobby_id) {
+		var sockets = ds_map_keys_to_array(lobbies[? lobby_id].players);
+		for(var i=0; i<array_length(sockets); i++) {
+			var sock = sockets[i];
+			buffer_seek(objServer.server_buffer,buffer_seek_start,0)
+			buffer_write(objServer.server_buffer,buffer_u8,message_id)
+			buffer_write(objServer.server_buffer,type,content)
+			network_send_packet(sock,objServer.server_buffer,buffer_tell(objServer.server_buffer))
+		}
+	} else {
+		show_debug_message(string("Attempting to send message to lobby id {0} which doesn't exist. Message = {1}",lobby_id,content))
 	}
 }
 

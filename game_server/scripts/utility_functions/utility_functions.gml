@@ -7,7 +7,7 @@ function random_id() {
 function get_lobby_sockets(socket,inclusive=true) {
 	var lobby_id = objServer.sockets[? socket];
 	var player_sockets = [];
-	if lobby_id != "" {
+	if lobby_id != "" && ds_map_exists(lobbies, lobby_id){
 		var _keys = ds_map_keys_to_array(objServer.lobbies[? lobby_id].players);
 		for(var i=0; i<array_length(_keys); i++) {
 			if inclusive || _keys[i] != socket { array_push(player_sockets, _keys[i]) }

@@ -29,20 +29,7 @@ function end_round(){
 			var new_struct = {
 				measure: _measure	
 			};
-			switch(measure_struct.time) {
-				case "years":
-					new_struct.days_remaining = round(365 * random_range(2,3)) // 3 years max? revisit this to make it project-dependent
-					break;
-				case "months":
-					new_struct.days_remaining = round(30 * random_range(2,23)) // arbitrary
-					break;
-				case "weeks":
-					if new_struct.measure == MEASURE.SEAWALL 
-						new_struct.days_remaining = round(7 * random_range(2,4)) // seawalls won't mitigate population loss from a disaster if they're built after the disaster hits
-					else
-						new_struct.days_remaining = 1 // should always complete by next round
-					break;
-			}
+			new_struct.days_remaining = get_project_days(_measure)
 			array_push(_tile.in_progress, new_struct)
 			global.map.measures_implemented++
 		}
@@ -83,7 +70,7 @@ function end_round(){
 		global.state.state_budget += 5000 // reward for meeting all aid objectives 
 	}
 		
-	//automatically finish all short-term projects 
+	//automatically finish all "instant" projects 
 	var finished_projects = progress_projects(1);
 		
 	//update map changes
@@ -102,6 +89,37 @@ function end_round(){
 	}
 		
 	room_goto(rRoundResults)
+	global.state.current_room = rRoundResults
+}
+
+function get_project_days(_measure,_max=false) {
+	var _time = global.measures[? _measure].time;
+	var lobby_rounds = objOnline.lobby_settings.n_rounds;
+	var _min_time = 0;
+	var _max_time = 0;
+	switch(_time) {
+		case "instant":
+			_min_time = 1;
+			_max_time = 1;
+		break;
+		case "weeks":
+			if lobby_rounds < 3 { _min_time = 2; _max_time = 7 }
+			if lobby_rounds == 3 { _min_time = 2; _max_time = 14 }
+			if lobby_rounds > 3 { _min_time = 2; _max_time = 28 }
+		break;
+		case "months":
+			if lobby_rounds < 3 { _min_time = 30; _max_time = 60 }
+			if lobby_rounds == 3 { _min_time = 40; _max_time = 120 }
+			if lobby_rounds > 3 { _min_time = 60; _max_time = 365 }
+		break;
+		case "years":
+			if lobby_rounds < 3 { _min_time = 365; _max_time = 400 }
+			if lobby_rounds == 3 { _min_time = 365; _max_time = 730 }
+			if lobby_rounds > 3 { _min_time = 365; _max_time = 1095 }
+		break;
+	}
+	if _max { _min_time = _max_time }
+	return irandom_range(_min_time, _max_time)
 }
 
 // adds a report to the list of messages to show at the end of the round

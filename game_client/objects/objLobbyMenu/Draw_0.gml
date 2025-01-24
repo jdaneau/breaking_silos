@@ -84,16 +84,16 @@ for(var i=0; i<n; i++) {
 			button_click[i] = true
 		}
 		if mouse_check_released(mb_left) and button_click[i] {
-			if lobby.open {
+			//if lobby.open {
 				with objOnline { send_string(MESSAGE.JOIN_GAME, lobby.lobby_id) }
-			}
+			//}
 		}
 	} else hover = false
 	if hover {
 		if button_click[i] draw_set_color(c_gray)
 		else draw_set_color(make_color_hsv(0,0,220))
 	} else draw_set_color(c_ltgray)
-	if !lobby.open draw_set_color(c_dkgray)
+	//if !lobby.open draw_set_color(c_dkgray)
 	
 	if mouse_check_released(mb_left) {
 		button_click[i] = false

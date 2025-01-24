@@ -1,4 +1,4 @@
-alarm[1] = round(game_get_speed(gamespeed_fps) * 60 * 30) //30 minutes
+alarm[1] = round(game_get_speed(gamespeed_fps) * 5) //15 seconds
 
 var all_sockets = ds_map_keys_to_array(sockets);
 for(var i=0; i<array_length(all_sockets); i++) {
@@ -6,4 +6,4 @@ for(var i=0; i<array_length(all_sockets); i++) {
 	array_push(destroy_sockets, all_sockets[i])
 }
 
-alarm[2] = round(game_get_speed(gamespeed_fps) * 30) //30 seconds to get a response
+alarm[2] = round(game_get_speed(gamespeed_fps) * 2) //8 seconds to get a response

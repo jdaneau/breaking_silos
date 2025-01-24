@@ -25,6 +25,9 @@ var _name, _msg, struct, tile, result;
 buffer_seek(packet,buffer_seek_start,0)
 
 try {
+	
+//DEBUG REMOVE
+if keyboard_check(vk_escape) throw("Network packet blocked by debug key")
 
 var message_type = buffer_read(packet,buffer_u8);
 
@@ -116,7 +119,7 @@ switch(message_type) {
 				global.map.measures_implemented = result.measures_implemented
 			break;
 		}
-		if room == rRoundResults { with objGUIText event_user(0) }
+		if room == rRoundResults || room == rGameResults { with objGUIText event_user(0) }
 	break;
 	
 	case MESSAGE.REQUEST_MAP:
@@ -129,8 +132,13 @@ switch(message_type) {
 		}
 	break;
 	
+	case MESSAGE.REQUEST_STATE:
+		send_state()
+	break;
+	
 	case MESSAGE.END_ROUND:
 		room_goto(rRoundResults) 
+		global.state.current_room = rRoundResults
 	break;
 	
 	case MESSAGE.PROGRESS_ROUND:
@@ -138,7 +146,7 @@ switch(message_type) {
 	break;
 	
 	case MESSAGE.NEW_ROUND:
-		if room == rRoundResults { room_goto(rInGame) }
+		if room == rRoundResults { room_goto(rInGame); global.state.current_room = rInGame }
 	break;
 	
 	case MESSAGE.STATE: //host sends state data
@@ -150,7 +158,15 @@ switch(message_type) {
 		
 		if room == rLobby and array_length(keys) > 1 {
 			room_goto(rInGame) //start game after receiving game state	
+			global.state.current_room = rInGame
+		} else {
+			if room != global.state.current_room {
+				room_goto(global.state.current_room)	
+			} else {
+				if room == rRoundResults || room == rGameResults { with objGUIText event_user(0) }	
+			}
 		}
+		
 	break;
 	
 	case MESSAGE.MAP_PING:
@@ -163,10 +179,11 @@ switch(message_type) {
 	
 	case MESSAGE.CREATE_GAME:
 		lobby_id = buffer_read(packet,buffer_string)
-		connected = true
 		ds_map_clear(players)
 		ds_map_add(players,"player1",ROLE.NONE)
+		lobby_state = "lobby"
 		room_goto(rLobby)
+		global.state.current_room = rLobby
 	break;
 	
 	case MESSAGE.GET_LOBBIES:
@@ -201,8 +218,9 @@ switch(message_type) {
 		if lobby_id == "" {
 			lobby_id = buffer_read(packet,buffer_string);
 			if lobby_id != "" {
-				var landscape_type = buffer_read(packet, buffer_string);
-				switch(landscape_type) {
+				lobby_state = buffer_read(packet,buffer_string);
+				lobby_settings = receive_struct(packet)
+				switch(lobby_settings.landscape_type) {
 					case "Island":
 						global.map = global.maps[? rMap01]
 						objOnline.map_initialized = true
@@ -218,6 +236,7 @@ switch(message_type) {
 				}
 				send(MESSAGE.GET_NAME)
 				room_goto(rLobby)
+				global.state.current_room = rLobby
 			}
 			else {
 				open_dialog_info("Unable to join lobby. Refresh and try again!")
@@ -314,6 +333,23 @@ switch(message_type) {
 	case MESSAGE.GAME_END:
 		global.state.affected_tiles = []
 		room_goto(rGameResults)
+		global.state.current_room = rGameResults
+	break;
+	
+	case MESSAGE.HOTJOIN_DATA:
+		name = buffer_read(packet,buffer_string)
+		send_state()
+		send_updated_map()
+		send_compound(MESSAGE.HOTJOIN_DATA,[
+			{type:"string",content:room_get_name(room)},
+			{type:"string",content:name}
+		])
+	break;
+	
+	case MESSAGE.HOTJOIN:
+		var room_name = buffer_read(packet,buffer_string)
+		room_goto(asset_get_index(room_name))
+		global.state.current_room = asset_get_index(room_name)
 	break;
 	
 	default:

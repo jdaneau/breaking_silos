@@ -24,11 +24,14 @@ enum MESSAGE {
 	BUDGET = 28,
 	MAP_CHANGE = 29,
 	REQUEST_MAP = 30,
+	REQUEST_STATE = 31,
 	END_ROUND = 32,
 	PROGRESS_ROUND = 33,
 	NEW_ROUND = 34,
 	GAME_END = 35,
-	CHECK_ONLINE = 40
+	CHECK_ONLINE = 40,
+	HOTJOIN = 41,
+	HOTJOIN_DATA = 42
 }
 
 var socket_type = network_socket_ws;
@@ -49,6 +52,7 @@ client_buffer = buffer_create(4096,buffer_fixed,1)
 connected = false
 lobby_id = ""
 lobby_settings = {}
+lobby_state = ""
 players = ds_map_create()
 
 map_initialized = false
@@ -64,8 +68,8 @@ function get_role_player(role_id) {
 }
 
 game_fps = floor(game_get_speed(gamespeed_fps))
-timeout_interval = game_fps * 10
-timeout_time = game_fps
+timeout_interval = game_fps * 12
+timeout_time = game_fps * 3
 timeout_attempts = 0
 alarm[0] = timeout_interval
 timeout = false

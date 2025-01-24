@@ -43,11 +43,18 @@ switch(type_event){
 	case network_type_data:
 		buffer = async_load[? "buffer"]
 		socket = async_load[? "id"]
+		
+		if !ds_map_exists(sockets,socket) {
+			exit;
+		}
+		
 		buffer_seek(buffer,buffer_seek_start,0)
 		message_id = buffer_read(buffer,buffer_u8)
 		switch(message_id) {
 			case MESSAGE.PING:
-				send_id(socket,MESSAGE.PING)
+				if ds_map_exists(sockets, socket) {
+					send_id(socket,MESSAGE.PING)
+				}
 			break;
 			
 			case MESSAGE.CHECK_ONLINE:
@@ -81,6 +88,7 @@ switch(type_event){
 			break;
 			
 			case MESSAGE.REQUEST_MAP:
+			case MESSAGE.REQUEST_STATE:
 				lobby_id = sockets[? socket]
 				name = ds_map_find_value(lobbies[? lobby_id].players, socket).name
 				lobby_sockets = ds_map_keys_to_array(lobbies[? lobby_id].players)
@@ -91,7 +99,7 @@ switch(type_event){
 						break;
 					}
 				}
-				send(president_socket,MESSAGE.REQUEST_MAP,buffer_string,name)
+				send(president_socket,message_id,buffer_string,name)
 			break;
 			
 			case MESSAGE.MAP:
@@ -156,14 +164,15 @@ switch(type_event){
 			case MESSAGE.JOIN_GAME:
 				lobby_id = buffer_read(buffer,buffer_string)
 				var n_players = num_players(lobby_id);
-				if n_players > 0 and n_players < max_per_lobby and lobbies[? lobby_id].state == "lobby" {
+				if n_players > 0 and n_players < max_per_lobby {
 					name = string("player{0}",n_players+1)
 					sockets[? socket] = lobby_id
 					ds_map_add(lobbies[? lobby_id].players, socket, {name:name,role:""})
 					var _players = ds_map_values_to_array(lobbies[? lobby_id].players);
 					send_compound(socket,MESSAGE.JOIN_GAME,[
 						{type:"string", content:lobby_id},
-						{type:"string", content:lobbies[? lobby_id].settings.landscape_type}
+						{type:"string", content:lobbies[? lobby_id].state},
+						{type:"struct", content:lobbies[? lobby_id].settings}
 					])
 					send_to_others(socket,MESSAGE.JOIN_GAME,buffer_string,name)
 					send_array(socket,MESSAGE.GET_PLAYERS,"struct",_players)
@@ -290,6 +299,35 @@ switch(type_event){
 			case MESSAGE.LOBBY_INFO:
 				lobby_id = sockets[? socket]
 				send(socket, MESSAGE.LOBBY_INFO, buffer_string, json_stringify(lobbies[? lobby_id].settings))
+			break;
+			
+			case MESSAGE.HOTJOIN:
+				lobby_id = sockets[? socket]
+				name = ds_map_find_value(lobbies[? lobby_id].players, socket).name
+				lobby_sockets = ds_map_keys_to_array(lobbies[? lobby_id].players)
+				var president_socket;
+				for(var i=0; i<array_length(lobby_sockets); i++) {
+					if ds_map_find_value(lobbies[? lobby_id].players, lobby_sockets[i]).role == "President" {
+						president_socket = lobby_sockets[i]
+						break;
+					}
+				}
+				send(president_socket,MESSAGE.HOTJOIN_DATA,buffer_string,name)
+			break;
+			
+			case MESSAGE.HOTJOIN_DATA:
+				var room_name = buffer_read(buffer, buffer_string);
+				name = buffer_read(buffer, buffer_string)
+				lobby_id = sockets[? socket]
+				lobby_sockets = ds_map_keys_to_array(lobbies[? lobby_id].players)
+				var find_socket;
+				for(var i=0; i<array_length(lobby_sockets); i++) {
+					if ds_map_find_value(lobbies[? lobby_id].players, lobby_sockets[i]).name == name {
+						find_socket = lobby_sockets[i]
+						break;
+					}
+				}
+				send(find_socket,MESSAGE.HOTJOIN,buffer_string,room_name)
 			break;
 			
 			default:
