@@ -19,6 +19,9 @@ mouse_last_x = -1
 mouse_last_y = -1
 tooltip = ""
 
+pulse_timer = 0
+pulse_length = game_get_speed(gamespeed_fps) * 3
+
 map_surface = surface_create(global.map.width,global.map.height)
 
 //information layers

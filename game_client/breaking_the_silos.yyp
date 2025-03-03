@@ -129,6 +129,7 @@
     {"id":{"name":"objSlideSelector","path":"objects/objSlideSelector/objSlideSelector.yy",},},
     {"id":{"name":"objTextInput","path":"objects/objTextInput/objTextInput.yy",},},
     {"id":{"name":"objTitleDebug","path":"objects/objTitleDebug/objTitleDebug.yy",},},
+    {"id":{"name":"objTutorialPopup","path":"objects/objTutorialPopup/objTutorialPopup.yy",},},
     {"id":{"name":"rCreateGame","path":"rooms/rCreateGame/rCreateGame.yy",},},
     {"id":{"name":"rGameResults","path":"rooms/rGameResults/rGameResults.yy",},},
     {"id":{"name":"rInGame","path":"rooms/rInGame/rInGame.yy",},},

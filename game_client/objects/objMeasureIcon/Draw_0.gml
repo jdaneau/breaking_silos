@@ -23,7 +23,7 @@ if h > 1 and w > 1 and surface_exists(surf) {
 	draw_text(max_w/2,8,name)
 	draw_set_font(fTooltipBold)
 	draw_text(max_w/4,48,string("Time: {0}",capitalize(time)))
-	draw_text(max_w*(3/4),48,string("Cost: {0} coins{1}",cost,unit))
+	draw_text(max_w*(3/4),48,string("Cost: {0} coins/{1}",cost,unit))
 	draw_set_halign(fa_left)
 	draw_set_valign(fa_top)
 	draw_set_font(fDescription)

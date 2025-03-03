@@ -196,6 +196,15 @@ function get_next_disaster(){
 		if next_disaster == "drought" {
 			if objOnline.lobby_settings.landscape_type == "Continental"
 				intensity = choose("medium","medium","high")
+			// add drought penalty for having too much agriculture
+			var agri_surplus = get_total_agriculture() - global.map.starting_agriculture;
+			if agri_surplus > 0 {
+				rand_value = random(10)
+				if rand_value <= agri_surplus { 
+					if intensity == "low" intensity = "medium"
+					else intensity = "high"
+				}
+			}
 		}
 		
 		return {

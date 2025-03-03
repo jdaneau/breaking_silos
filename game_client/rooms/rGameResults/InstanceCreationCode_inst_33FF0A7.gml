@@ -34,3 +34,4 @@ manual_update = function() {
 	text += string("Estimated lives saved: {0}\n",global.map.lives_saved)
 	text += string("Total money spent: {0} coins\n",global.map.money_spent)
 }
+manual_update()

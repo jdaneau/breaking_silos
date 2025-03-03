@@ -1,5 +1,6 @@
 //init globals
 global.mouse_depth = 10
+global.tutorial_enabled = false
 
 //global constants and enums
 enum ROLE {
@@ -33,6 +34,29 @@ enum MEASURE {
 }
 global.N_MEASURES = 15
 
+enum TUTORIAL {
+	CHARACTER_INFO,
+	BUDGET,
+	MAP_CONTROLS,
+	MAP_LEGEND,
+	MAP_LAYERS,
+	PLACE_MEASURES,
+	TIME_LIMIT,
+	MULTI_HAZARD,
+	PROJECT_TIME,
+	OPEN_CALCULATOR,
+	USE_CALCULATOR,
+	COLLABORATION,
+	LAYER_POPULATION,
+	LAYER_HAZARD,
+	LAYER_WATERSHEDS,
+	LAYER_HISTORY,
+	LAYER_AGRICULTURE,
+	MEASURE_RELOCATE,
+	MEASURE_DAM,
+	MEASURE_EVACUATE
+}
+
 global.colors = {
 	myriad_light_blue : make_color_rgb(55,76,255),
 	myriad_dark_blue : make_color_rgb(0,0,145),
@@ -44,7 +68,7 @@ global.colors = {
 }
 
 global.time_limits = {
-	discussion: 1200 //15 minutes per round
+	discussion: 1200 //20 minutes per round
 }
 
 //state of the game
@@ -235,7 +259,7 @@ ds_map_add(global.measures, MEASURE.RELOCATION, {
 	unit:"cell",
 	time: "years",
 	icon: sprMeasure_relocation,
-	description: "The World Bank defines planned population relocation as \"a process whereby a community's housing, assets and public infrastructure are rebuilt in another location.\" This disaster risk reduction measure provides financial incentives to move the targeted community to a new, lower-risk location.\n\nTo implement this measure, put the symbol on the cells from which you wish to move the population from. This will create incentives to move 30% of the population from these cells to the rest of the country."
+	description: "NOTE: Place this measure on the tile(s) you want to move population AWAY from.\n\nThe World Bank defines planned population relocation as \"a process whereby a community's housing, assets and public infrastructure are rebuilt in another location.\" This disaster risk reduction measure provides financial incentives to move the targeted community to a new, lower-risk location.\n\nTo implement this measure, put the symbol on the cells from which you wish to move the population. This will create incentives to move 30% of the population from these cells to the rest of the country."
 })
 ds_map_add(global.measures, MEASURE.DAM, {
 	name:"Build Dam", 
@@ -255,7 +279,7 @@ ds_map_add(global.measures, MEASURE.EVACUATE, {
 	unit:"cell",
 	time: "instant",
 	icon: sprMeasure_evacuate,
-	description: "Rapid emergency evacuation to temporary shelters is very important to provide immediate relief for population affected by a disaster. These facilities provide a safe access to water, toilets, communal kitchens, medicine and basic shelter. This measure is not preventative and is not sufficient in the long term in cases where people need to be relocated out of high risk areas.\n\nTo implement this measure, place the icon in the cells where you want to move the impacted population to."
+	description: "NOTE: Place this measure on the tile(s) you want the population to evacuate to. This is where the temporary shelters will be built.\n\nRapid emergency evacuation to temporary shelters is very important to provide immediate relief for population affected by a disaster. These facilities provide a safe access to water, toilets, communal kitchens, medicine and basic shelter. This measure is not preventative and is not sufficient in the long term in cases where people need to be relocated out of high risk areas.\n\nTo implement this measure, place the icon in the cells where you want to move the impacted population to."
 })
 ds_map_add(global.measures, MEASURE.FLOOD_BUILDINGS, {
 	name:"Buildings Upgrade: Flood Resistance", 

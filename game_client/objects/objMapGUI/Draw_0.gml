@@ -40,16 +40,6 @@ for(i=0; i<array_length(global.map.river_tiles); i++) {
 	var _river = global.map.river_tiles[i];
 	draw_sprite(_river.spr,0,_river.x,_river.y)
 }
-for(i=0; i<array_length(global.map.hospitals); i++) {
-	var _hosp = global.map.hospitals[i];
-	var _draw_index = is_damaged(_hosp,global.map.hospital_grid) ? 1 : 0;
-	draw_sprite(sprHospital,_draw_index,_hosp.x,_hosp.y)
-}
-for(i=0; i<array_length(global.map.airports); i++) {
-	var _airp = global.map.airports[i];
-	var _draw_index = is_damaged(_airp,global.map.airport_grid) ? 1 : 0;
-	draw_sprite(sprAirport,_draw_index,_airp.x,_airp.y)
-}
 
 //draw extra information layers
 for(i=0; i<array_length(global.map.land_tiles); i++) {
@@ -179,6 +169,28 @@ if array_length(global.state.affected_tiles) > 0 {
 		var _square = global.state.affected_tiles[i];
 		var _coords = grid_to_coords(_square);
 		draw_sprite_ext(sprX,0,_coords[0],_coords[1],1,1,0,c_white,150/255)
+	}
+}
+
+//draw hospitals/airports
+pulse_timer++
+if pulse_timer > pulse_length { pulse_timer = 0 }
+var sat = 125 + 125*sin(2*pi/pulse_length * pulse_timer);
+var pulse_color = make_color_hsv(color_get_hue(c_red), sat, 255)
+for(i=0; i<array_length(global.map.hospitals); i++) {
+	var _hosp = global.map.hospitals[i];
+	if is_damaged(_hosp,global.map.hospital_grid) {
+		draw_sprite(sprHospital,0,_hosp.x,_hosp.y)
+	} else {
+		draw_sprite_ext(sprHospital,1,_hosp.x,_hosp.y,1,1,0,pulse_color,1)
+	}
+}
+for(i=0; i<array_length(global.map.airports); i++) {
+	var _airp = global.map.airports[i];
+	if is_damaged(_airp,global.map.airport_grid) {
+		draw_sprite(sprAirport,0,_airp.x,_airp.y)
+	} else {
+		draw_sprite_ext(sprAirport,1,_airp.x,_airp.y,1,1,0,pulse_color,1)
 	}
 }
 
