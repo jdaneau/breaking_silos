@@ -55,7 +55,7 @@ function get_ai_messages(){
 								}
 							}
 							if msg {
-								var square = coords_to_grid(t.x,t.y);
+								var square = coords_to_grid(tile.x,tile.y);
 								array_push(messages, string("Citizen Representative: 'The people around cell {0} are complaining that nothing has been done to protect them against floods. I recommend implementing NBS to help them out.'",square))
 								break;
 							}
@@ -70,7 +70,7 @@ function get_ai_messages(){
 						var tile = tiles[t];
 						if tile.metrics.observed_drought {
 							if tile.metrics.agriculture <= 0 and !is_implementing(tile,MEASURE.NORMAL_CROPS) and !is_implementing(tile,MEASURE.RESISTANT_CROPS) {
-								var square = coords_to_grid(t.x,t.y);
+								var square = coords_to_grid(tile.x,tile.y);
 								array_push(messages, string("Citizen Representative: 'The people around cell {0} are complaining that nothing has been done to protect them against droughts. I recommend planting drought-resistant crops in the area.'",square))
 								break;
 							}
@@ -121,18 +121,18 @@ function get_ai_messages(){
 					var tile = affected_tiles[t];
 					var tx = tile.x div 64; var ty = tile.y div 64;
 					if global.map.buildings_grid[tx,ty] == -1 {
-						money += global.measures[MEASURE.BUILDINGS].cost	
+						money += global.measures[? MEASURE.BUILDINGS].cost	
 					} else {
-						money += global.measures[MEASURE.EVACUATE].cost	
+						money += global.measures[? MEASURE.EVACUATE].cost	
 					}
 					if tile.metrics.agriculture == -1 {
-						money += global.measures[MEASURE.NORMAL_CROPS].cost	
+						money += global.measures[? MEASURE.NORMAL_CROPS].cost	
 					}
 					if global.map.hospital_grid[tx,ty] == -1 {
-						money += global.measures[MEASURE.HOSPITAL].cost	
+						money += global.measures[? MEASURE.HOSPITAL].cost	
 					}
 					if global.map.airport_grid[tx,ty] == -1 and !airport {
-						money += global.measures[MEASURE.AIRPORT].cost	
+						money += global.measures[? MEASURE.AIRPORT].cost	
 						airport = true
 					}
 				}
@@ -189,12 +189,13 @@ function get_ai_messages(){
 				var tasks = "";
 				if airport { tasks += "Repair the airport with the highest population, " }
 				if hospital { tasks += "Repair all damaged hospitals, " }
-				if agriculture { takss += "Replant any destroyed crops, " }
+				if agriculture { tasks += "Replant any destroyed crops, " }
 				if buildings { tasks += "Evacuate population or repair buildings for every damaged cell"}
 				else { tasks += "Evacuate population for every damaged cell" }
-				array_push(messages, string("In order to get international aid funding we need to make sure we do the following: {0}",tasks)) 
+				array_push(messages, string("International Aid Representative: In order to get international aid funding we need to make sure we do the following: {0}",tasks)) 
 			break;
 		}
 	}
+	messages = array_shuffle(messages)
 	return messages
 }

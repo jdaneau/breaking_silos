@@ -8,6 +8,6 @@ global.mouse_depth = 0;
 if room == rInGame {
 	global.ai_messages = get_ai_messages()	
 	if array_length(global.ai_messages) > 0 {
-		alarm[0] = irandom_range(game_get_speed(gamespeed_fps)*10,game_get_speed(gamespeed_fps)*20)
+		alarm[0] = game_get_speed(gamespeed_fps)*60 //1 minute until AI chimes in
 	}
 }

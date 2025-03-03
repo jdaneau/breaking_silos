@@ -36,14 +36,15 @@ enum MESSAGE {
 
 var socket_type = network_socket_ws;
 var server_url = "wss://game-server.myriadproject.eu";
+port = 443
 
 if os_browser == browser_not_a_browser {
 	socket_type = network_socket_tcp
 	server_url = "127.0.0.1"
+	port = 20002
 }
 
 ping = 0
-port = 443
 socket = network_create_socket(socket_type)
 
 network_connect_async(socket,server_url,port)
