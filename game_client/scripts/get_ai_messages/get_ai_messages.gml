@@ -139,14 +139,62 @@ function get_ai_messages(){
 				array_push(messages, string("Finance Minister: 'I estimate that we would have to spend at least {0} coins this round to properly address the disaster.'",money))
 			break;
 			case ROLE.FLOOD:
-			
+				problem_tile = ""
+				for(var t=0; t<array_length(global.map.land_tiles); t++) {
+					var tile = global.map.land_tiles[t];	
+					if tile.metrics.flood_risk == 3 && tile.metrics.population > 500{
+						if !has_implemented(tile, MEASURE.FLOOD_BUILDINGS, []) && !has_implemented(tile, MEASURE.EWS_FLOOD, []) && !tile.dammed && !has_implemented(tile, MEASURE.DIKE, []) {
+							problem_tile = coords_to_grid(tile.x, tile.y, true)
+						}
+					}
+				}
+				if problem_tile != "" {
+					array_push(messages, string("Flood Coordinator: The area around cell {0} is unprotected from floods, despite its high population. We should add an early warning system or a dike in the area.",problem_tile))
+				} else {
+					array_push(messages, "Flood Coordinator: All our high-population cells with high flood hazard appear to be protected. Make sure to also protect the low-population tiles too!")
+				}
 			break;
 			case ROLE.HOUSING:
-			
+				damaged_tile = ""
+				for(var t=0; t<array_length(affected_tiles); t++) {
+					var tile = affected_tiles[t];
+					if is_damaged(tile,global.map.buildings_grid) {
+						damaged_tile = coords_to_grid(tile.x,tile.y,true)	
+					}
+				}
+				if damaged_tile == "" {
+					var mode = choose("upgrade","relocate");
+					if mode == "upgrade" {
+						array_push(messages, "Housing Chief: Looks like all our housing is still intact. Perhaps we could focus on upgrading the homes in some cells to be flood or cyclone resistant?")
+					}else{
+						array_push(messages, "Housing Chief: Looks like all our housing is still intact. Perhaps we could try to initiate a relocation incentive to move some groups away from high risk areas?")
+					}
+				}
+				else {
+					array_push(messages, string("Housing chief: There are some cells like {0} with damaged housing. We need to repair them fast!",damaged_tile))
+				}
 			break;
 			case ROLE.INTERNATIONAL:
-			
+				var airport = false;
+				var hospital = false;
+				var agriculture = false;
+				var buildings = false;
+				for(var t=0; t<array_length(affected_tiles); t++) {
+					var tile = affected_tiles[t];
+					if is_damaged(tile,global.map.airport_grid) { airport = true }
+					if is_damaged(tile,global.map.hospital_grid) { hospital = true }
+					if is_damaged(tile,global.map.buildings_grid) { buildings = true }
+					if tile.metrics.agriculture == -1 { agriculture = true }
+				}
+				var tasks = "";
+				if airport { tasks += "Repair the airport with the highest population, " }
+				if hospital { tasks += "Repair all damaged hospitals, " }
+				if agriculture { takss += "Replant any destroyed crops, " }
+				if buildings { tasks += "Evacuate population or repair buildings for every damaged cell"}
+				else { tasks += "Evacuate population for every damaged cell" }
+				array_push(messages, string("In order to get international aid funding we need to make sure we do the following: {0}",tasks)) 
 			break;
 		}
 	}
+	return messages
 }

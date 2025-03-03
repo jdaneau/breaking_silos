@@ -278,6 +278,8 @@ ds_map_add(global.measures, MEASURE.CYCLONE_BUILDINGS, {
 	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Cyclone-proofing can be achieved through wind-resistant roof designs, using strong and durable building materials, and reinforcing infrastructure (such as streetlamps and poles) in the area.\n\nThis measure can only be placed on cells with damaged buildings. Future cyclones will no longer damage the buildings on this cell."
 })
 
+global.ai_messages = []
+
 //used by the text objects in the roundresults screen
 global.state.n_tiles_damaged = 0
 global.state.n_hospitals_damaged = 0

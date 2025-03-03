@@ -35,18 +35,18 @@ enum MESSAGE {
 }
 
 var socket_type = network_socket_ws;
-var server_ip = "98.71.249.250";
+var server_url = "wss://game-server.myriadproject.eu";
 
 if os_browser == browser_not_a_browser {
 	socket_type = network_socket_tcp
-	server_ip = "127.0.0.1"
+	server_url = "127.0.0.1"
 }
 
 ping = 0
-port = 20002
+port = 443
 socket = network_create_socket(socket_type)
 
-network_connect_async(socket,server_ip,port)
+network_connect_async(socket,server_url,port)
 client_buffer = buffer_create(4096,buffer_fixed,1) 
 
 connected = false
