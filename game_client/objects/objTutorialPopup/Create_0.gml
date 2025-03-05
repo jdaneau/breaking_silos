@@ -2,9 +2,10 @@ text = "This is a tutorial popup window!"
 
 /*
 BEGINNING
-
+- welcome
 - check character info
 - budget
+- chat
 - map controls 
 - map legend
 - map layers
@@ -12,6 +13,7 @@ BEGINNING
 - multi hazard
 - time limit
 - project time (after first placing a measure on the map)
+- in progress project (after first hovering over a space with an in-progress project)
 
 finance
 - open calculator
@@ -19,6 +21,8 @@ finance
 
 all others
 - collaboration
+
+
 
 LAYER TUTORIALS
 - population 
@@ -33,8 +37,10 @@ MEASURE TUTORIALS
 - evacuate
 
 enum TUTORIAL {
+	WELCOME,
 	CHARACTER_INFO,
 	BUDGET,
+	CHAT,
 	MAP_CONTROLS,
 	MAP_LEGEND,
 	MAP_LAYERS,
@@ -45,6 +51,7 @@ enum TUTORIAL {
 	OPEN_CALCULATOR,
 	USE_CALCULATOR,
 	COLLABORATION,
+	IN_PROGRESS_PROJECTS,
 	LAYER_POPULATION,
 	LAYER_HAZARD,
 	LAYER_WATERSHEDS,

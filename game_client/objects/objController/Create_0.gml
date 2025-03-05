@@ -1,6 +1,8 @@
 //init globals
 global.mouse_depth = 10
 global.tutorial_enabled = false
+global.tutorial_queue = []
+global.tutorial_seen = []
 
 //global constants and enums
 enum ROLE {
@@ -35,8 +37,10 @@ enum MEASURE {
 global.N_MEASURES = 15
 
 enum TUTORIAL {
+	WELCOME,
 	CHARACTER_INFO,
 	BUDGET,
+	CHAT,
 	MAP_CONTROLS,
 	MAP_LEGEND,
 	MAP_LAYERS,
@@ -47,6 +51,7 @@ enum TUTORIAL {
 	OPEN_CALCULATOR,
 	USE_CALCULATOR,
 	COLLABORATION,
+	IN_PROGRESS_PROJECTS,
 	LAYER_POPULATION,
 	LAYER_HAZARD,
 	LAYER_WATERSHEDS,

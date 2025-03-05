@@ -87,10 +87,10 @@ function string_chunk(str, chunk_size) {
 	return chunks
 }
 
-/// @function create(_x, _y, obj)
+/// @function create(x, y, obj, [depth])
 /// @description shorthand for instance_create_depth
 function create(_x, _y, _obj, _depth=0) {
-	instance_create_depth(_x, _y, _depth, _obj)	
+	return instance_create_depth(_x, _y, _depth, _obj)	
 }
 
 //mouse functions (with layers)

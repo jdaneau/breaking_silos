@@ -172,6 +172,7 @@
     {"id":{"name":"rot_vec_","path":"scripts/rot_vec_/rot_vec_.yy",},},
     {"id":{"name":"round_to","path":"scripts/round_to/round_to.yy",},},
     {"id":{"name":"start_round","path":"scripts/start_round/start_round.yy",},},
+    {"id":{"name":"tutorial_popup","path":"scripts/tutorial_popup/tutorial_popup.yy",},},
     {"id":{"name":"utility_functions","path":"scripts/utility_functions/utility_functions.yy",},},
     {"id":{"name":"xtend_config","path":"scripts/xtend_config/xtend_config.yy",},},
     {"id":{"name":"xtend","path":"scripts/xtend/xtend.yy",},},

@@ -62,6 +62,7 @@ if mouse_in_map and placing and selected_measure >= 0 {
 				if error_status == "OK" {
 					send_struct(MESSAGE.PLACE_MEASURE, {measure:selected_measure, x:_mouse_i, y:_mouse_j})
 					send_int(MESSAGE.BUDGET, global.state.state_budget)
+					tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.PROJECT_TIME)
 				} else {
 					array_pop(_tile.measures)
 					global.state.state_budget += _measure.cost

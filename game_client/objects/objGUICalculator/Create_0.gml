@@ -1,3 +1,5 @@
+tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.USE_CALCULATOR)
+
 calc_width = room_width * (3/4)
 calc_height = room_height * (3/4)
 

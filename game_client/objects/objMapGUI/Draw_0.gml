@@ -233,6 +233,9 @@ if global.mouse_depth >= depth and mouse_map_x != -1{
 		draw_sprite_ext(sprWhiteTile,0,_mouse_i*64,_mouse_j*64,1,1,0,c_white,1)
 		tooltip = coords_to_grid(mouse_map_x,mouse_map_y)
 		var projects = tile_projects[$ tooltip];
+		if array_length(projects) > 0 and room == rInGame {
+			tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.IN_PROGRESS_PROJECTS)	
+		}
 		for(var p=0; p<array_length(projects); p++) {
 			tooltip += "\n" + projects[p];
 		}
