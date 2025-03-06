@@ -37,7 +37,8 @@ for (n=0; n<instance_number(objMapTile); ++n;) {
 	}
 	array_push(struct.land_tiles,{
 		x:_tile.x, y:_tile.y, index:_tile.image_index, metrics:_tile.metrics, capital:_capital,
-		measures:[], in_progress:[], implemented:[], evacuated_population:[], dammed:false})
+		starting_population:_tile.metrics.population, measures:[], in_progress:[], implemented:[], 
+		evacuated_population:[], dammed:false})
 	struct.land_grid[_x,_y] = 1
 	struct.buildings_grid[_x,_y] = 1
 	if _tile.metrics.agriculture > 0 { struct.starting_agriculture += 1 }

@@ -57,7 +57,10 @@ function end_round(){
 		global.state.aid_objectives.airport = false 
 	}
 	if n_evacuate + n_buildings < array_length(global.state.affected_tiles) {
-		global.state.aid_objectives.buildings = false	
+		//dont bother evacuating in the case of a low-intensity drought
+		if global.state.disaster != "drought" or global.state.disaster_intensity != "low" {
+			global.state.aid_objectives.buildings = false	
+		}
 	}
 	if n_agriculture + n_remaining_agriculture < global.map.starting_agriculture {
 		global.state.aid_objectives.agriculture = false	
@@ -174,25 +177,21 @@ function update_buildings(finished_projects) {
 		var tx = _tile.x div 64;
 		var ty = _tile.y div 64;
 
+		//repairing buildings that were damaged before
 		if just_completed(_tile, MEASURE.BUILDINGS, finished_projects) {
-			//repairing buildings that were damaged before
 			global.map.buildings_grid[tx, ty] = 1
 		}
 		if just_completed(_tile, MEASURE.FLOOD_BUILDINGS, finished_projects) {
-			//repairing buildings that were damaged before
 			global.map.buildings_grid[tx, ty] = 2
 		}
 		if just_completed(_tile, MEASURE.CYCLONE_BUILDINGS, finished_projects) {
-			//repairing buildings that were damaged before
 			global.map.buildings_grid[tx, ty] = 3
 		}
 		if just_completed(_tile, MEASURE.HOSPITAL, finished_projects) {
-			//repairing hospitals that were damaged before
 			global.map.hospital_grid[tx, ty] = 1
 			global.map.hospitals_repaired++
 		}
 		if just_completed(_tile, MEASURE.AIRPORT, finished_projects) {
-			//repairing airports that were damaged before
 			global.map.airport_grid[tx, ty] = 1
 			global.map.airports_repaired++
 		}
@@ -275,7 +274,7 @@ function update_population_loss(finished_projects) {
 	var starting_populations = ds_map_create();
 	for(var i=0; i<array_length(global.state.affected_tiles); i++) {
 		var tile = tile_from_square(global.state.affected_tiles[i]);
-		starting_populations[? global.state.affected_tiles[i]] = tile.metrics.population
+		starting_populations[? global.state.affected_tiles[i]] = get_population(tile)
 	}
 	//evacuate population from affected tiles
 	var evacuateList = [];
@@ -289,8 +288,8 @@ function update_population_loss(finished_projects) {
 	array_sort(global.state.affected_tiles, function(x1,x2) {
 		//sort based on population, prioritize tiles with greatest population
 		var t1 = tile_from_square(x1); var t2 = tile_from_square(x2);
-		var p1 = t1.metrics.population;
-		var p2 = t2.metrics.population;
+		var p1 = get_population(t1);
+		var p2 = get_population(t2);
 		if p1 == p2 return 0
 		else if p1 > p2 return -1
 		else return 1
@@ -317,6 +316,7 @@ function update_population_loss(finished_projects) {
 			if global.state.disaster_intensity == "medium" disaster_multiplier = 0.2
 			if global.state.disaster_intensity == "high" disaster_multiplier = 0.7
 		}
+		
 		var movePopulation = round(fromTile.metrics.population * disaster_multiplier * random_range(0.6, 0.9));
 		movePopulation = clamp(movePopulation, 0, 500);
 		evacuatedPopulation += movePopulation
@@ -325,6 +325,17 @@ function update_population_loss(finished_projects) {
 			population: movePopulation
 		})
 		fromTile.metrics.population -= movePopulation
+		
+		//move all pre-existing evacuated population to the other one
+		for(var j = 0; j<array_length(fromTile.evacuated_population); j++) {
+			var evac = fromTile.evacuated_population[j];
+			array_push(toTile.evacuated_population, {
+				origin: evac.origin,
+				population: evac.population
+			})
+			evacuatedPopulation += evac.population
+		}
+		fromTile.evacuated_population = []
 	}
 	add_report(string("{0} citizens were evacuated to {1} cells",evacuatedPopulation*1000,array_length(evacuateList)))
 	
@@ -481,10 +492,14 @@ function update_population_loss(finished_projects) {
 		}
 		
 		var lost_population = round(tile.metrics.population * loss_rate);
+		var lost_evacuated = round(get_evacuated_population(tile) * loss_rate);
 		potential_population_lost += round(starting_populations[? global.state.affected_tiles[i]] * base_loss_rate);
 		tile.metrics.population -= lost_population
-		if lost_population > 0 {
-			total_population_lost += lost_population
+		for(var j=0; j<array_length(tile.evacuated_population); j++) {
+			tile.evacuated_population[j].population -= round(tile.evacuated_population[j].population * loss_rate)
+		}
+		if lost_population + lost_evacuated > 0 {
+			total_population_lost += lost_population + lost_evacuated
 			number_tiles_pop_lost += 1
 		}
 	}
@@ -493,6 +508,27 @@ function update_population_loss(finished_projects) {
 	global.map.deaths += floor(total_population_lost)
 	global.map.lives_saved += floor(potential_population_lost - total_population_lost)
 	var pop_string = string_format(total_population_lost, floor(log10(total_population_lost)), 0);
-	add_report(string("{0} total people died over {1} cells due to the disaster.",pop_string,number_tiles_pop_lost))
+	add_report(string("A population of {0} people was lost over {1} cells due to the disaster.",pop_string,number_tiles_pop_lost))
 	ds_map_destroy(starting_populations)
+	
+	//loop through non-affected tiles and remove population if there are damaged buildings
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tile = global.map.land_tiles[i];	
+		var lost_population = 0;
+		var lost_population_tiles = 0;
+		
+		if !array_contains(global.state.affected_tiles, coords_to_grid(tile.x,tile.y)) {
+			if global.map.buildings_grid[tile.x div 64, tile.y div 64] == -1 and not is_implementing(tile,MEASURE.FLOOD_BUILDINGS) and not is_implementing(tile,MEASURE.CYCLONE_BUILDINGS) {
+				// remove 25% of population from damaged buildings
+				var loss_amt = round(tile.metrics.population * 0.25);
+				lost_population += loss_amt * 1000
+				lost_population_tiles++
+				tile.metrics.population -= loss_amt
+			}
+		}
+		
+		if lost_population > 0 {
+			add_report(string("{0} people have moved out of the country due to unrepaired damaged buildings on {1} tile(s).",lost_population,lost_population_tiles))
+		}
+	}
 }

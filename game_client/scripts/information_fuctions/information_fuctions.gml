@@ -23,6 +23,13 @@ function get_population(_tile,include_evacuated=true) {
 	}
 	return _pop
 }
+function get_evacuated_population(_tile) {
+	var _pop = 0;
+	for(var i=0; i<array_length(_tile.evacuated_population); i++) {
+		_pop += _tile.evacuated_population[i].population;
+	}
+	return _pop
+}
 
 /// @function get_total_agriculture()
 /// @description returns the total number of agricultural cells on the map

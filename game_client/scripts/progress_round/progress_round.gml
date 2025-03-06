@@ -271,7 +271,7 @@ function relocate_and_grow_population(finished_projects) {
 	//relocation incentive
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var tile = global.map.land_tiles[i];
-		if just_completed(tile,MEASURE.RELOCATION,finished_projects) {
+		if is_implementing(tile,MEASURE.RELOCATION) or just_completed(tile,MEASURE.RELOCATION,finished_projects) {
 			var candidate_tiles = [];
 			for(var j=0; j<array_length(global.map.land_tiles); j++) {
 				var _candidate = global.map.land_tiles[j];
@@ -288,7 +288,8 @@ function relocate_and_grow_population(finished_projects) {
 				else if elm1.appeal > elm2.appeal return -1
 				else return 1
 			})
-			var population_to_move = tile.metrics.population * 0.3;
+			var amt_time_passed = global.state.next_disaster.days_since_last_disaster / get_implementing(tile,MEASURE.RELOCATION).days_remaining;
+			var population_to_move = round(tile.starting_population * 0.3 * amt_time_passed);
 			tile.metrics.population -= population_to_move
 			var index = 0;
 			var amount_per_step = population_to_move/10;
@@ -300,7 +301,9 @@ function relocate_and_grow_population(finished_projects) {
 				index += choose(1,2,3)
 			}
 			
-			add_report(string("A relocation incentive has finished on cell {0}, with {1} people moving away!",coords_to_grid(tile.x,tile.y),population_to_move*1000))
+			just_completed(tile,MEASURE.RELOCATION,finished_projects) {
+				add_report(string("A relocation incentive has finished on cell {0}, with {1} total people moving away!",coords_to_grid(tile.x,tile.y),round(tile.starting_population*0.3)*1000))
+			}
 		}
 	}
 	

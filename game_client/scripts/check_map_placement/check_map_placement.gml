@@ -54,8 +54,8 @@ function check_map_placement(measure,tile) {
 			if is_implementing(tile,MEASURE.CYCLONE_BUILDINGS) {
 				return "You are already reconstructing the buildings on this cell."	
 			}
-			if global.map.buildings_grid[tx,ty] >= 1 {
-				return "The buildings in this sqaure are not damaged."
+			if global.map.buildings_grid[tx,ty] > 1 {
+				return "The buildings in this cell are already upgraded."
 			}
 		break;
 		
@@ -66,8 +66,8 @@ function check_map_placement(measure,tile) {
 			if is_implementing(tile,MEASURE.FLOOD_BUILDINGS) {
 				return "You are already reconstructing the buildings on this cell."	
 			}
-			if global.map.buildings_grid[tx,ty] >= 1 {
-				return "The buildings in this sqaure are not damaged."
+			if global.map.buildings_grid[tx,ty] > 1 {
+				return "The buildings in this cell are already upgraded."
 			}
 		break;
 				
