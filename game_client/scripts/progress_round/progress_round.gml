@@ -301,7 +301,7 @@ function relocate_and_grow_population(finished_projects) {
 				index += choose(1,2,3)
 			}
 			
-			just_completed(tile,MEASURE.RELOCATION,finished_projects) {
+			if just_completed(tile,MEASURE.RELOCATION,finished_projects) {
 				add_report(string("A relocation incentive has finished on cell {0}, with {1} total people moving away!",coords_to_grid(tile.x,tile.y),round(tile.starting_population*0.3)*1000))
 			}
 		}
