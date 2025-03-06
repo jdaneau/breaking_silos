@@ -78,6 +78,14 @@ if room == rInGame {
 	}
 	array_push(chat, "(For more information, hover over the [?] icon next to your character.)")
 }
+else if room == rGameResults {
+	array_push(chat, "The last round has finished! Now is the time to reflect on the decisions made during the game and determine what went right and what went wrong.")
+	array_push(chat, "Here are some possible discussion points:")
+	array_push(chat, "What role-specific challenges did you face and how did you overcome them?")
+	array_push(chat, "How did you deal with the budget limitation? Was there enough emphasis placed on long-term solutions?")
+	array_push(chat, "Would your strategy have worked better/worse under different circumstances?")
+	array_push(chat, "What other multi-hazard interactions can you image that aren't represented in this game, and how could they change the DRR strategy?")
+}
 
 chat_surface = surface_create(sprite_width,sprite_height*2)
 chat_message = noone

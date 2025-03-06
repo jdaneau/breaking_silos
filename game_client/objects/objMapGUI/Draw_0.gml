@@ -134,7 +134,7 @@ for(i=0; i<array_length(global.map.land_tiles); i++) {
 			draw_text(_x1+32,_y1+32,string(round(_pop)))
 		} else {
 			draw_text(_x1+32,_y1+16,string(round(_pop)))
-			draw_set_color(c_fuchsia)
+			draw_set_color(c_yellow)
 			draw_text(_x1+32,_y1+48,string(round(_evacuated_pop)))
 		}
 		draw_set_color(c_white)
@@ -180,17 +180,17 @@ var pulse_color = make_color_hsv(color_get_hue(c_red), sat, 255)
 for(i=0; i<array_length(global.map.hospitals); i++) {
 	var _hosp = global.map.hospitals[i];
 	if is_damaged(_hosp,global.map.hospital_grid) {
-		draw_sprite(sprHospital,0,_hosp.x,_hosp.y)
-	} else {
 		draw_sprite_ext(sprHospital,1,_hosp.x,_hosp.y,1,1,0,pulse_color,1)
+	} else {
+		draw_sprite(sprHospital,0,_hosp.x,_hosp.y)
 	}
 }
 for(i=0; i<array_length(global.map.airports); i++) {
 	var _airp = global.map.airports[i];
 	if is_damaged(_airp,global.map.airport_grid) {
-		draw_sprite(sprAirport,0,_airp.x,_airp.y)
-	} else {
 		draw_sprite_ext(sprAirport,1,_airp.x,_airp.y,1,1,0,pulse_color,1)
+	} else {
+		draw_sprite(sprAirport,0,_airp.x,_airp.y)
 	}
 }
 

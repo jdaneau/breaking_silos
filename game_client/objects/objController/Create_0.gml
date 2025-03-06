@@ -294,7 +294,7 @@ ds_map_add(global.measures, MEASURE.FLOOD_BUILDINGS, {
 	unit:"cell",
 	time: "months",
 	icon: sprMeasure_floodbuildings,
-	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Flood-proofing can be achieved through elevation of structures above the flood line, using flood-resistant building materials, and making drainage systems more efficient.\n\nThis measure can only be placed on cells with damaged buildings. Future floods will no longer damage the buildings on this cell."
+	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Flood-proofing can be achieved through elevation of structures above the flood line, using flood-resistant building materials, and making drainage systems more efficient.\n\nThis measure can be placed on both damaged or undamaged cells. Future floods will no longer damage the buildings on this cell."
 })
 ds_map_add(global.measures, MEASURE.CYCLONE_BUILDINGS, {
 	name:"Buildings Upgrade: Cyclone Resistance", 
@@ -304,7 +304,7 @@ ds_map_add(global.measures, MEASURE.CYCLONE_BUILDINGS, {
 	unit:"cell",
 	time: "months",
 	icon: sprMeasure_cyclonebuildings,
-	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Cyclone-proofing can be achieved through wind-resistant roof designs, using strong and durable building materials, and reinforcing infrastructure (such as streetlamps and poles) in the area.\n\nThis measure can only be placed on cells with damaged buildings. Future cyclones will no longer damage the buildings on this cell."
+	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Cyclone-proofing can be achieved through wind-resistant roof designs, using strong and durable building materials, and reinforcing infrastructure (such as streetlamps and poles) in the area.\n\nThis measure can be placed on both damaged or undamaged cells. Future cyclones will no longer damage the buildings on this cell."
 })
 
 global.ai_messages = []

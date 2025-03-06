@@ -12,7 +12,7 @@ var h = text_h + 128;
 var text_x = round(x + (w/2));
 var text_y = round(y + 16 + (text_h / 2));
 
-draw_sprite_ext(sprite_index,0,x,y,w/sprite_get_width(sprite_index),h/sprite_get_height(sprite_index),0,c_white,0.75)
+draw_sprite_ext(sprite_index,0,x,y,w/sprite_get_width(sprite_index),h/sprite_get_height(sprite_index),0,c_white,0.85)
 draw_set_color(c_black)
 draw_text_ext(text_x,text_y,text,sep,max_w)
 draw_set_color(c_white)

@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprMyriadLogoWhite",
-    "path":"sprites/sprMyriadLogoWhite/sprMyriadLogoWhite.yy",
+    "name":"sprMyriadLogoWhite2",
+    "path":"sprites/sprMyriadLogoWhite2/sprMyriadLogoWhite2.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -19,7 +19,7 @@ function check_map_placement(measure,tile) {
 	switch(measure) {
 		case MEASURE.HOSPITAL:
 			if global.map.hospital_grid[tx,ty] == 0 {
-				return "No hospital exists on this sqaure."
+				return "No hospital exists on this cell."
 			}
 			else if global.map.hospital_grid[tx,ty] == 1 {
 				return "Hospital is not damaged."
@@ -28,7 +28,7 @@ function check_map_placement(measure,tile) {
 				
 		case MEASURE.AIRPORT:
 			if global.map.airport_grid[tx,ty] == 0 {
-				return "No airport exists on this sqaure."
+				return "No airport exists on this cell."
 			}
 			else if global.map.airport_grid[tx,ty] == 1 {
 				return "Airport is not damaged."
@@ -146,6 +146,19 @@ function check_map_placement(measure,tile) {
 		break;
 		
 		case MEASURE.RELOCATION:
+			var num_relocation = 0;
+			for(var _t=0; _t<array_length(global.map.land_tiles); _t++) {
+				var _tile = global.map.land_tiles[_t];
+				if _tile.x == tile.x and _tile.y == tile.y { continue }
+				if array_contains(_tile.measures,MEASURE.RELOCATION) or is_implementing(_tile,MEASURE.RELOCATION) {
+					num_relocation++	
+				}
+			}
+			if num_relocation >= 5 {
+				return "You can only implement five relocation incentives at a time."	
+			}
+		break;
+		
 		case MEASURE.EWS_FLOOD:
 		case MEASURE.EWS_CYCLONE:
 			//nothing

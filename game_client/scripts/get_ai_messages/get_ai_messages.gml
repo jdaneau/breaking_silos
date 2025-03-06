@@ -191,7 +191,7 @@ function get_ai_messages(){
 				if hospital { tasks += "Repair all damaged hospitals, " }
 				if agriculture { tasks += "Replant any destroyed crops, " }
 				if buildings { tasks += "Evacuate population or repair buildings for every damaged cell"}
-				else { tasks += "Evacuate population for every damaged cell" }
+				else if global.state.disaster_intensity != "low" { tasks += "Evacuate population for every damaged cell" }
 				array_push(messages, string("International Aid Representative: In order to get international aid funding we need to make sure we do the following: {0}",tasks)) 
 			break;
 		}

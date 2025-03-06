@@ -30,6 +30,7 @@ function end_round(){
 				measure: _measure	
 			};
 			new_struct.days_remaining = get_project_days(_measure)
+			new_struct.original_days_remaining = new_struct.days_remaining
 			array_push(_tile.in_progress, new_struct)
 			global.map.measures_implemented++
 		}
@@ -139,9 +140,11 @@ function progress_projects(days) {
 		var tile = global.map.land_tiles[i];
 		while(array_length(tile.in_progress) > 0) {
 			var struct = array_pop(tile.in_progress);
+			var days_remaining = struct.days_remaining;
+			var original_days_remaining = struct.original_days_remaining;
 			struct.days_remaining -= days;
 			if struct.days_remaining <= 0 {
-				array_push(finished,{tile:tile,measure:struct.measure})
+				array_push(finished,{tile:tile,measure:struct.measure,days_remaining:days_remaining,original_days_remaining:original_days_remaining})
 			} else {
 				array_push(unfinished,struct)
 			}
@@ -511,24 +514,22 @@ function update_population_loss(finished_projects) {
 	add_report(string("A population of {0} people was lost over {1} cells due to the disaster.",pop_string,number_tiles_pop_lost))
 	ds_map_destroy(starting_populations)
 	
+	var lost_population = 0;
+	var lost_population_tiles = 0;
 	//loop through non-affected tiles and remove population if there are damaged buildings
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		var tile = global.map.land_tiles[i];	
-		var lost_population = 0;
-		var lost_population_tiles = 0;
-		
 		if !array_contains(global.state.affected_tiles, coords_to_grid(tile.x,tile.y)) {
 			if global.map.buildings_grid[tile.x div 64, tile.y div 64] == -1 and not is_implementing(tile,MEASURE.FLOOD_BUILDINGS) and not is_implementing(tile,MEASURE.CYCLONE_BUILDINGS) {
-				// remove 25% of population from damaged buildings
-				var loss_amt = round(tile.metrics.population * 0.25);
+				// remove 20% of population from damaged buildings
+				var loss_amt = round(tile.metrics.population * 0.2);
 				lost_population += loss_amt * 1000
 				lost_population_tiles++
 				tile.metrics.population -= loss_amt
 			}
 		}
-		
-		if lost_population > 0 {
-			add_report(string("{0} people have moved out of the country due to unrepaired damaged buildings on {1} tile(s).",lost_population,lost_population_tiles))
-		}
+	}
+	if lost_population > 0 {
+		add_report(string("{0} people have moved out of the country due to unrepaired damaged buildings on {1} tile(s).",lost_population,lost_population_tiles))
 	}
 }

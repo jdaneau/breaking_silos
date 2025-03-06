@@ -34,6 +34,15 @@ function array_index(_array,_val) {
 	return -1
 }
 
+/// @function array_find(array,func)
+/// @description returns the first value in an array for which the provided function returns true, or -1 if none are found
+function array_find(_array,_func) {
+	for(var _i=0; _i<array_length(_array); _i++) {
+		if _func(_array[_i]) { return _array }	
+	}
+	return -1
+}
+
 function round_nearest(val,factor) {
 	return round(val / factor) * factor;
 }

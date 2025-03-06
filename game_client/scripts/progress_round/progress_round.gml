@@ -277,6 +277,7 @@ function relocate_and_grow_population(finished_projects) {
 				var _candidate = global.map.land_tiles[j];
 				if _candidate.x == tile.x and _candidate.y == tile.y { continue }
 				if array_contains(global.state.affected_tiles, coords_to_grid(_candidate.x,_candidate.y)) { continue }
+				if _candidate.metrics.population > 500 { continue } //only allow low-population tiles
 				array_push(candidate_tiles,_candidate)
 			}
 			var candidates_and_appeal = [];
@@ -288,17 +289,34 @@ function relocate_and_grow_population(finished_projects) {
 				else if elm1.appeal > elm2.appeal return -1
 				else return 1
 			})
-			var amt_time_passed = global.state.next_disaster.days_since_last_disaster / get_implementing(tile,MEASURE.RELOCATION).days_remaining;
+			var amt_time_passed=0;
+			if just_completed(tile,MEASURE.RELOCATION,finished_projects){
+				for(var j=0; j<array_length(finished_projects); j++) {
+					var struct = finished_projects[j];
+					if struct.measure == MEASURE.RELOCATION and struct.tile.x == tile.x and struct.tile.y == tile.y {
+						amt_time_passed = struct.days_remaining / struct.original_days_remaining 	
+						break;
+					}
+				}
+			} else amt_time_passed = global.state.next_disaster.days_since_last_disaster / get_implementing(tile,MEASURE.RELOCATION).original_days_remaining;
+			
 			var population_to_move = round(tile.starting_population * 0.3 * amt_time_passed);
 			tile.metrics.population -= population_to_move
 			var index = 0;
-			var amount_per_step = population_to_move/10;
-			while(population_to_move > 0) {
-				var moving = clamp(round(amount_per_step * random_range(0.8,1.2)),0,population_to_move);
+			var division_factor = min(10, array_length(candidates_and_appeal));
+			var amount_per_step = population_to_move/division_factor;
+			var tilesMovedTo = [];
+			while(population_to_move >= 1) {
 				var tileMovingTo = candidates_and_appeal[index].tile;
-				tileMovingTo.metrics.population += moving
-				population_to_move -= moving
+				if array_contains(tilesMovedTo,coords_to_grid(tileMovingTo.x,tileMovingTo.y)) {
+					index += 1
+					continue
+				}
+				tileMovingTo.metrics.population += round(amount_per_step)
+				array_push(tilesMovedTo, coords_to_grid(tileMovingTo.x,tileMovingTo.y))
+				population_to_move -= amount_per_step
 				index += choose(1,2,3)
+				if index > array_length(candidates_and_appeal) index = 0
 			}
 			
 			if just_completed(tile,MEASURE.RELOCATION,finished_projects) {

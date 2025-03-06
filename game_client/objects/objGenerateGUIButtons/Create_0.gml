@@ -44,7 +44,7 @@ btn_show_population_map = {
 						layer_caption=string("In thousands (total = {0} million)",total_pop) 
 						var pop_diff = total_pop - get_total_population("millions",false)
 						if pop_diff != 0 {
-							layer_caption += "\nPink values = Evacuated population"	
+							layer_caption += "\nYellow values = Evacuated population"	
 						}
 					}
 					tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.LAYER_POPULATION)
