@@ -166,7 +166,17 @@ switch(type_event){
 				lobby_id = buffer_read(buffer,buffer_string)
 				var n_players = num_players(lobby_id);
 				if n_players > 0 and n_players < max_per_lobby {
-					name = string("player{0}",n_players+1)
+					var valid_name = false;
+					while !valid_name {
+						name = string("player{0}",n_players+1)
+						lobby_players = ds_map_values_to_array(lobbies[? lobby_id].players);
+						var found = false;
+						for(var i=0; i<array_length(lobby_players); i++) {
+							if lobby_players[i].name == name { found = true }	
+						}
+						if found { n_players++; continue }
+						valid_name=true
+					}
 					sockets[? socket] = lobby_id
 					ds_map_add(lobbies[? lobby_id].players, socket, {name:name,role:""})
 					var _players = ds_map_values_to_array(lobbies[? lobby_id].players);
