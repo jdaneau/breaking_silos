@@ -1,2 +1,2 @@
 role = ROLE.CITIZEN
-icon = sprCharacterPortrait
+icon = sprCitizenRep

@@ -1,2 +1,2 @@
 role = ROLE.FLOOD
-icon = sprCharacterPortrait
+icon = sprFloodCoordinator

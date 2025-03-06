@@ -1,2 +1,2 @@
 role = ROLE.ENGINEER
-icon = sprCharacterPortrait
+icon = sprEngineer

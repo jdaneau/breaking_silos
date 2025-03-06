@@ -1,6 +1,7 @@
-var icon_size = sprite_height * (3/4);
+var icon_size = sprite_height * (3/4) - 4;
 var icon_scale = icon_size / sprite_get_width(icon);
-draw_sprite_ext(icon,0,x,y,icon_scale,icon_scale,0,c_white,1)
+draw_color_rectangle(x,y,x+icon_size+4,y+icon_size+4,c_black,false)
+draw_sprite_ext(icon,0,x+2,y+2,icon_scale,icon_scale,0,c_white,1)
 
 draw_set_font(fTooltip)
 draw_set_color(c_black)
