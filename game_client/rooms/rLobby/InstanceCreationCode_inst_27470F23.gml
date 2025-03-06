@@ -1,2 +1,2 @@
 role = ROLE.FINANCE
-icon = sprCharacterPortrait
+icon = sprFinanceMinister

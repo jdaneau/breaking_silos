@@ -27,7 +27,7 @@ buffer_seek(packet,buffer_seek_start,0)
 try {
 	
 //DEBUG REMOVE
-if keyboard_check(vk_escape) throw("Network packet blocked by debug key")
+if keyboard_check(vk_delete) throw("Network packet blocked by debug key")
 
 var message_type = buffer_read(packet,buffer_u8);
 

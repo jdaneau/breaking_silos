@@ -1,2 +1,2 @@
 role = ROLE.AGRICULTURE
-icon = sprCharacterPortrait
+icon = sprAgriculturalRep

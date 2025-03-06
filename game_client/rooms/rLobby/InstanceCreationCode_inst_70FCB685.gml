@@ -1,2 +1,2 @@
 role = ROLE.HOUSING
-icon = sprCharacterPortrait
+icon = sprHousingMinister

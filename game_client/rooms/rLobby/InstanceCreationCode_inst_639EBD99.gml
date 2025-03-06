@@ -1,2 +1,2 @@
 role = ROLE.INTERNATIONAL
-icon = sprCharacterPortrait
+icon = sprInternationalRep

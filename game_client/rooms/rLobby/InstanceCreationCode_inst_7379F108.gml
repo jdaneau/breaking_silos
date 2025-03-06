@@ -1,2 +1,2 @@
 role = ROLE.PRESIDENT
-icon = sprCharacterPortrait
+icon = sprPresident
