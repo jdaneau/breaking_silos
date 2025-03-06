@@ -270,15 +270,15 @@ switch(message_type) {
 		}
 		if room == rInGame {
 			//reset the display for the new character
-			with objMeasureIcon instance_destroy()
-			with objGUIButton instance_destroy()
-			with objDropdownButton instance_destroy()
-			with objGenerateGUIButtons event_user(0) //generate new buttons
-			with objGUIMesaures event_user(1) //generate new measure icons
-			with objGUIMesaures event_user(0) //create the measure icons
-			with objGUIText manual_update()
-			with objCharacterPortrait event_user(0)
-			with objCharacterInfo event_user(0)
+			with objMeasureIcon { instance_destroy() }
+			with objGUIButton { instance_destroy() }
+			with objDropdownButton { instance_destroy() }
+			with objGenerateGUIButtons { event_user(0) } //generate new buttons
+			with objGUIMeasures { event_user(1) } //generate new measure icons
+			with objGUIMeasures { event_user(0) } //create the measure icons
+			with objGUIText { event_user(0) }
+			with objCharacterPortrait { event_user(0) }
+			with objCharacterInfo { event_user(0) }
 		}
 	break;
 	
@@ -355,8 +355,8 @@ switch(message_type) {
 	
 	case MESSAGE.HOTJOIN:
 		var room_name = buffer_read(packet,buffer_string)
-		room_goto(asset_get_index(room_name))
 		global.state.current_room = asset_get_index(room_name)
+		room_goto(asset_get_index(room_name))
 	break;
 	
 	default:

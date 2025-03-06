@@ -24,6 +24,8 @@ if objOnline.lobby_state == "lobby" {
 	text = "Join in-progress"
 	
 	on_click = function(on) {
-		with objOnline send(MESSAGE.HOTJOIN)
+		if global.state.role != ROLE.NONE {
+			with objOnline send(MESSAGE.HOTJOIN)
+		}
 	}
 }

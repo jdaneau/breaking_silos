@@ -97,7 +97,7 @@
     {"id":{"name":"objGUICalculator","path":"objects/objGUICalculator/objGUICalculator.yy",},},
     {"id":{"name":"objGUILineH","path":"objects/objGUILineH/objGUILineH.yy",},},
     {"id":{"name":"objGUILineV","path":"objects/objGUILineV/objGUILineV.yy",},},
-    {"id":{"name":"objGUIMesaures","path":"objects/objGUIMesaures/objGUIMesaures.yy",},},
+    {"id":{"name":"objGUIMeasures","path":"objects/objGUIMeasures/objGUIMeasures.yy",},},
     {"id":{"name":"objGUIText","path":"objects/objGUIText/objGUIText.yy",},},
     {"id":{"name":"objGUITime","path":"objects/objGUITime/objGUITime.yy",},},
     {"id":{"name":"objHospital","path":"objects/objHospital/objHospital.yy",},},
