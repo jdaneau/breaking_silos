@@ -59,6 +59,7 @@ switch(message_type) {
 	
 	case MESSAGE.TIME: //host sends time
 		global.state.seconds_remaining = buffer_read(packet,buffer_u32);
+		global.state.time_remaining = global.state.seconds_remaining * game_get_speed(gamespeed_fps);
 	break;
 	
 	case MESSAGE.BUDGET: //host sends state budget update
