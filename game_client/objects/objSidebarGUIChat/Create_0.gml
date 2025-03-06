@@ -72,7 +72,7 @@ if room == rInGame {
 				"Add markers to the map to indicate where you think certain measures should be implemented!"
 			)
 			if global.state.disaster == "drought" and global.state.disaster_intensity == "low" {
-				array_push(chat, "NOTE: As we are currently facing a low-intensity drought, evacuation will not be necessary to secure international aid."	
+				array_push(chat, "NOTE: As we are currently facing a low-intensity drought, evacuation will not be necessary to secure international aid.")
 			}
 		break;
 	}
