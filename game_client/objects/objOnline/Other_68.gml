@@ -153,7 +153,10 @@ switch(message_type) {
 			global.state[$ keys[i]] = state_struct[$ keys[i]]	
 		}
 		
-		if room == rLobby and array_length(keys) > 1 {
+		if room == rLobby and lobby_state != "lobby" {
+			//dont change room if hotjoining
+		}
+		else if room == rLobby and array_length(keys) > 1 {
 			room_goto(rInGame) //start game after receiving game state	
 			global.state.current_room = rInGame
 		} else {
@@ -259,22 +262,23 @@ switch(message_type) {
 	case MESSAGE.JOIN_ROLE:
 		var role = buffer_read(packet,buffer_string);
 		global.state.role = get_role_id(role)
-		if role == "President" {
-			if room == rRoundResults {
-				with objGUIButton {
-					visible = true
-					clickable = true
-				}
+		if role == "President" and room == rRoundResults{
+			with objGUIButton {
+				visible = true
+				clickable = true
 			}
 		}
 		if room == rInGame {
+			//reset the display for the new character
 			with objMeasureIcon instance_destroy()
 			with objGUIButton instance_destroy()
 			with objDropdownButton instance_destroy()
 			with objGenerateGUIButtons event_user(0) //generate new buttons
 			with objGUIMesaures event_user(1) //generate new measure icons
 			with objGUIMesaures event_user(0) //create the measure icons
-			with obj
+			with objGUIText manual_update()
+			with objCharacterPortrait event_user(0)
+			with objCharacterInfo event_user(0)
 		}
 	break;
 	

@@ -1,5 +1,3 @@
-tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.USE_CALCULATOR)
-
 calc_width = room_width * (3/4)
 calc_height = room_height * (3/4)
 
@@ -15,7 +13,7 @@ calc_surface = surface_create(calc_width,calc_height)
 
 selected = array_create(ds_map_size(global.measures), 0)
 total = 0
-budget = global.state.state_budget
+budget = global.starting_budget
 
 mouse_calc_x = -1
 mouse_calc_y = -1

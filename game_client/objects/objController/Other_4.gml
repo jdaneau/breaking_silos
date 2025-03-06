@@ -5,8 +5,8 @@ if room == rInit {
 
 global.mouse_depth = 0;
 
-//setup tutorial messages
 if room == rInGame {
+	global.starting_budget = global.state.state_budget
 	global.ai_messages = get_ai_messages()	
 	if array_length(global.ai_messages) > 0 {
 		alarm[0] = game_get_speed(gamespeed_fps)*60 //1 minute until AI chimes in

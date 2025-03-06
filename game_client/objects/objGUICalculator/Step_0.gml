@@ -30,7 +30,7 @@ if open {
 			// add button
 			if coords_in(mouse_calc_x,mouse_calc_y,_select_col_x+column_widths[3]-32,_select_row_y,_select_col_x+column_widths[3],_select_row_y+row_height) {
 				var _cost = ds_map_find_value(global.measures,i).cost;
-				if total+_cost <= global.state.state_budget {
+				if total+_cost <= budget {
 					selected[i] += 1
 					total += _cost 
 				}

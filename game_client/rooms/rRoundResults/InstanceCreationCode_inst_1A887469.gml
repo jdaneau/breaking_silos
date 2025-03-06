@@ -18,7 +18,11 @@ on_click = function(on) {
 		create(0,0,objMoveCameraDown)
 		clickable = false
 	} else {
-		send(MESSAGE.GAME_END)
+		with objOnline {
+			send_state()
+			send_updated_map()
+			send(MESSAGE.GAME_END)
+		}
 		global.state.affected_tiles = []
 		room_goto(rGameResults)
 		global.state.current_room = rGameResults

@@ -3,6 +3,7 @@ global.mouse_depth = 10
 global.tutorial_enabled = false
 global.tutorial_queue = []
 global.tutorial_seen = []
+global.starting_budget = 0
 
 //global constants and enums
 enum ROLE {

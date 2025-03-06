@@ -135,6 +135,16 @@ function send_updated_map() {
 			dammed: tile.dammed
 		})		
 	}
+	array_push(updates, {
+		type: "stats",
+		measures_implemented: global.map.measures_implemented,
+		hospitals_repaired: global.map.hospitals_repaired,
+		airports_repaired: global.map.airports_repaired,
+		crops_planted: global.map.crops_planted,
+		deaths: global.map.deaths,
+		lives_saved: global.map.lives_saved,
+		money_spent: global.map.money_spent
+	})
 	for(var i=0; i<array_length(updates); i++){
 		send_struct(MESSAGE.MAP_CHANGE,updates[i])	
 	}
