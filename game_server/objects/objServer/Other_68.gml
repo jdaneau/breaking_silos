@@ -28,6 +28,7 @@ switch(type_event){
 					if role == "President" and lobby.state == "started" {
 						var new_president = array_first(ds_map_keys_to_array(lobby.players));
 						var new_president_name = lobby.players[? new_president].name;
+						lobby.players[? new_president].role = "President"
 						send(new_president, MESSAGE.JOIN_ROLE,buffer_string,"President")
 						send_to_all(new_president, MESSAGE.ANNOUNCEMENT, buffer_string, string("{0} has replaced {1} as President.",new_president_name,name))
 					}
@@ -196,6 +197,7 @@ switch(type_event){
 						if role == "President" and lobby.state == "started" {
 							var new_president = array_first(ds_map_keys_to_array(lobby.players));
 							var new_president_name = lobby.players[? new_president].name;
+							lobby.players[? new_president].role = "President"
 							send(new_president, MESSAGE.JOIN_ROLE,buffer_string,"President")
 							send_to_all(new_president, MESSAGE.ANNOUNCEMENT, buffer_string, string("{0} has replaced {1} as President.",new_president_name,name))
 						}

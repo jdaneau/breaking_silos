@@ -12,7 +12,7 @@ function tutorial_popup(_x,_y,tutorial_id){
 			tut.text = "First, to get acquainted with your character and your role in the game, you should hover over the question mark box next to your character portrait. This will give some context on what you should focus on during the game's discussion!"
 		break;
 		case TUTORIAL.BUDGET:
-			tut.text = "The state budget represents the amount of money available to spend on projects. This can be replenished in future rounds via tax income or international aid funding. Note that tax income is only applied when the in-game calendar passes a new year. If not enough time passes between disasters, then you won't have any tax money for the next round! Spend your money carefully :)"
+			tut.text = "The national budget represents the amount of money available to spend on projects. This can be replenished in future rounds via tax income or international aid funding. Note that tax income is only applied when the in-game calendar passes a new year. If not enough time passes between disasters, then you won't have any tax money for the next round! Spend your money carefully :)"
 		break;
 		case TUTORIAL.CHAT:
 			tut.text = "The chat window contains briefing information for the current situation and your role. Make sure to read it! You can scroll the chat up/down with the mouse wheel. You can also send a chat message to the rest of the players via the ENTER key."

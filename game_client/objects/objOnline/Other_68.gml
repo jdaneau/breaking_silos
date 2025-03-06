@@ -25,9 +25,6 @@ var _name, _msg, struct, tile, result;
 buffer_seek(packet,buffer_seek_start,0)
 
 try {
-	
-//DEBUG REMOVE
-if keyboard_check(vk_escape) throw("Network packet blocked by debug key")
 
 var message_type = buffer_read(packet,buffer_u8);
 
@@ -269,9 +266,15 @@ switch(message_type) {
 					clickable = true
 				}
 			}
-			if room == rInGame {
-				room_restart()
-			}
+		}
+		if room == rInGame {
+			with objMeasureIcon instance_destroy()
+			with objGUIButton instance_destroy()
+			with objDropdownButton instance_destroy()
+			with objGenerateGUIButtons event_user(0) //generate new buttons
+			with objGUIMesaures event_user(1) //generate new measure icons
+			with objGUIMesaures event_user(0) //create the measure icons
+			with obj
 		}
 	break;
 	
