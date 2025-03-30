@@ -9,15 +9,16 @@ if room == rInGame {
 	else if global.state.disaster_intensity == "high" qualifier = "massive"
 	switch(global.state.disaster) {
 		case "flood":
-			opening_line = string("A {0} flood has just happened in our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event!",qualifier);
+			opening_line = string("A {0} flood is about to happen in our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event.",qualifier);
 		break;
 		case "drought":
-			opening_line = string("A {0} drought is happening in our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event!",qualifier);
+			opening_line = string("A {0} drought is happening in our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event.",qualifier);
 		break;
 		case "cyclone":
-			opening_line = string("A {0} tropical cyclone just passed through our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event!",qualifier);
+			opening_line = string("A {0} tropical cyclone is about to pass through our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event.",qualifier);
 		break;
 	}
+	opening_line += " The map shows the cells will be affected by the disaster, as well as what buildings will be damaged (see legend). Use this to plan ahead and implement the best measures."
 	array_push(chat,opening_line)
 
 	switch(global.state.role) {

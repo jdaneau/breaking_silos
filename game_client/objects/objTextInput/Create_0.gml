@@ -1,5 +1,6 @@
 textbox_id = "nothing"
 text = ""
+text_color = c_white
 
 active = false
 line_flash = false

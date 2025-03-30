@@ -63,7 +63,7 @@ function end_round(){
 			global.state.aid_objectives.buildings = false	
 		}
 	}
-	if n_agriculture + n_remaining_agriculture < global.map.starting_agriculture {
+	if n_agriculture + n_remaining_agriculture < get_minimum_agriculture() {
 		global.state.aid_objectives.agriculture = false	
 	}
 		
@@ -155,6 +155,20 @@ function progress_projects(days) {
 	}
 	return finished
 }	
+
+// to be used at the end of the game
+function finish_all_projects() {
+	var finished = [];
+	for(var i=0; i<array_length(global.map.land_tiles); i++) {
+		var tile = global.map.land_tiles[i];
+		while(array_length(tile.in_progress) > 0) {
+			var struct = array_pop(tile.in_progress);
+			array_push(finished,{tile:tile,measure:struct.measure})
+		}
+	}
+	update_buildings(finished)
+	update_map_measures(finished)
+}
 
 //functions to check for measures being completed/implemented on certain tiles (used below)
 function just_completed(tile,measure,finished_projects) {

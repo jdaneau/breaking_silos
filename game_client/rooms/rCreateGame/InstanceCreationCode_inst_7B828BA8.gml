@@ -1,3 +1,3 @@
-text = "HOST GAME"
-scale = 2
+text = "CREATE GAME"
 color = c_white
+font = fMyriadBold32

@@ -1,3 +1,5 @@
+image_speed=0
+
 info_spr = noone
 scale=1
 

@@ -254,7 +254,12 @@ function relocate_and_grow_population(finished_projects) {
 			var struct = array_pop(tile.evacuated_population);
 			var targetTile = tile_from_square(struct.origin);
 			var return_amount = struct.population * base_return_amount;
-			return_amount = round(clamp(return_amount * move_appeal(tile,targetTile),0,struct.population))
+			
+			//only 25% of people move back if the buildings arent restored
+			if is_damaged(targetTile, global.map.land_grid) { return_amount = round(return_amount * 0.25) } 
+			//only 75% of people move back if the hospital/airport isnt restored
+			else if is_damaged(targetTile, global.map.hospital_grid) or is_damaged(targetTile, global.map.airport_grid) { return_amount = round(return_amount * 0.75) }
+			
 			if return_amount == struct.population {
 				targetTile.metrics.population += struct.population;
 			} else {
@@ -266,7 +271,9 @@ function relocate_and_grow_population(finished_projects) {
 		}
 		tile.evacuated_population = remaining_evacuated
 	}
-	add_report(string("{0} citizens returned back home from their temporary shelters.",returned_population*1000))
+	if returned_population > 0 {
+		add_report(string("{0} citizens returned back home from their temporary shelters.",returned_population*1000))
+	}
 	
 	//relocation incentive
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
@@ -325,6 +332,8 @@ function relocate_and_grow_population(finished_projects) {
 		}
 	}
 	
+	var old_minimum_agri = get_minimum_agriculture();
+	
 	//natural population growth
 	var pop_growth = 0;
 	for(var i=0; i<array_length(global.map.land_tiles); i++) {
@@ -335,8 +344,14 @@ function relocate_and_grow_population(finished_projects) {
 		_tile.metrics.population = round(_tile.metrics.population * growth_factor)
 		pop_growth += (_tile.metrics.population - old_pop)
 	}
+	
+	var new_minimum_agri = get_minimum_agriculture();
+	
 	if pop_growth > 0 {
 		add_report(string("Natural population growth has increased our population by {0}.",round(pop_growth*1000)))
+		if new_minimum_agri > old_minimum_agri {
+			add_report(string("Due to population growth, we now require {0} agricultural cells to keep the country fed. (+{1} from before)",new_minimum_agri,new_minimum_agri-old_minimum_agri))
+		}
 	}
 }
 

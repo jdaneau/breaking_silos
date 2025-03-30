@@ -21,6 +21,6 @@ else {
 		text += "- Repair the airport with the highest cell population\n\n"
 	}
 	if !global.state.aid_objectives.agriculture {
-		text += string("- Ensure the number of agricultural cells is equal or more than the starting amount ({0})\n",global.map.starting_agriculture)
+		text += string("- Ensure the number of agricultural cells is equal or more than the required amount ({0})\n",get_minimum_agriculture())
 	}
 }

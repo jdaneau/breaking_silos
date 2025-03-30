@@ -194,52 +194,57 @@ for(i=0; i<array_length(global.map.airports); i++) {
 	}
 }
 
-//draw tiles with projects on them
-for(i=0; i<array_length(global.map.land_tiles); i++) {
-	var tile = global.map.land_tiles[i];
-	if array_length(tile.in_progress) > 0 || array_length(tile.implemented) > 0 {
-		draw_sprite(sprInProgress,0,tile.x+48,tile.y+48)
-	}
-}
+//don't do this stuff in the end-of-round map preview
+if room != rRoundResults {
 
-//draw added measures 
-for(i=0; i<array_length(global.map.land_tiles); i++) {
-	var _tile = global.map.land_tiles[i];
-	if array_length(_tile.measures) > 0 {
-		for(var j=0; j<array_length(_tile.measures); j++) {
-			var _x = _tile.x + (64 * (1/3)) * (j mod 3);
-			var _y = _tile.y + (64 * (1/3)) * (j div 3);
-			draw_sprite_ext(get_measure_sprite(_tile.measures[j]),0,_x,_y,1/3,1/3,0,c_white,1)
+	//draw tiles with projects on them
+	for(i=0; i<array_length(global.map.land_tiles); i++) {
+		var tile = global.map.land_tiles[i];
+		if array_length(tile.in_progress) > 0 || array_length(tile.implemented) > 0 {
+			draw_sprite(sprInProgress,0,tile.x+48,tile.y+48)
 		}
 	}
-}
 
-//draw markers
-if instance_number(objMarker) > 0 {
-	for(i=0; i<instance_number(objMarker); i++) {
-		var _mark = instance_find(objMarker,i);
-		var _x = _mark.x*64 + 32;
-		var _y = _mark.y*64 + 32;
-		draw_sprite_ext(sprMarker,0,_x,_y,_mark.scale,_mark.scale,0,_mark.color,_mark.alpha)
-	}
-}
-
-//get tooltip
-tooltip = "";
-if global.mouse_depth >= depth and mouse_map_x != -1{
-	var _mouse_i = clamp(mouse_map_x div 64,0,14);
-	var _mouse_j = clamp(mouse_map_y div 64,0,14);
-	if global.map.land_grid[_mouse_i,_mouse_j] == 1 {
-		draw_sprite_ext(sprWhiteTile,0,_mouse_i*64,_mouse_j*64,1,1,0,c_white,1)
-		tooltip = coords_to_grid(mouse_map_x,mouse_map_y)
-		var projects = tile_projects[$ tooltip];
-		if array_length(projects) > 0 and room == rInGame {
-			tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.IN_PROGRESS_PROJECTS)	
-		}
-		for(var p=0; p<array_length(projects); p++) {
-			tooltip += "\n" + projects[p];
+	//draw added measures 
+	for(i=0; i<array_length(global.map.land_tiles); i++) {
+		var _tile = global.map.land_tiles[i];
+		if array_length(_tile.measures) > 0 {
+			for(var j=0; j<array_length(_tile.measures); j++) {
+				var _x = _tile.x + (64 * (1/3)) * (j mod 3);
+				var _y = _tile.y + (64 * (1/3)) * (j div 3);
+				draw_sprite_ext(get_measure_sprite(_tile.measures[j]),0,_x,_y,1/3,1/3,0,c_white,1)
+			}
 		}
 	}
+
+	//draw markers
+	if instance_number(objMarker) > 0 {
+		for(i=0; i<instance_number(objMarker); i++) {
+			var _mark = instance_find(objMarker,i);
+			var _x = _mark.x*64 + 32;
+			var _y = _mark.y*64 + 32;
+			draw_sprite_ext(sprMarker,0,_x,_y,_mark.scale,_mark.scale,0,_mark.color,_mark.alpha)
+		}
+	}
+
+	//get tooltip
+	tooltip = "";
+	if global.mouse_depth >= depth and mouse_map_x != -1{
+		var _mouse_i = clamp(mouse_map_x div 64,0,14);
+		var _mouse_j = clamp(mouse_map_y div 64,0,14);
+		if global.map.land_grid[_mouse_i,_mouse_j] == 1 {
+			draw_sprite_ext(sprWhiteTile,0,_mouse_i*64,_mouse_j*64,1,1,0,c_white,1)
+			tooltip = coords_to_grid(mouse_map_x,mouse_map_y)
+			var projects = tile_projects[$ tooltip];
+			if array_length(projects) > 0 and room == rInGame {
+				tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.IN_PROGRESS_PROJECTS)	
+			}
+			for(var p=0; p<array_length(projects); p++) {
+				tooltip += "\n" + projects[p];
+			}
+		}
+	}
+
 }
 
 surface_reset_target()

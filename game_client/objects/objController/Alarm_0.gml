@@ -1,4 +1,4 @@
-if room == rInGame {
+if room == rInGame and global.state.role == ROLE.PRESIDENT {
 	var message = array_pop(global.ai_messages);
 	send_string(MESSAGE.ANNOUNCEMENT,message)
 	if array_length(global.ai_messages) > 0 {

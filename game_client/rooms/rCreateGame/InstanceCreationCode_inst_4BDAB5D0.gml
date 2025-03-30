@@ -1,4 +1,4 @@
-text = "Return to Title"
+text = "RETURN TO TITLE"
 
 on_click = function(on) {
 	room_goto(rTitle)

@@ -18,6 +18,9 @@ on_click = function(on) {
 		create(0,0,objMoveCameraDown)
 		clickable = false
 	} else {
+		with objController {
+			finish_all_projects()
+		}
 		with objOnline {
 			send_state()
 			send_updated_map()

@@ -26,8 +26,11 @@ if h > 1 and w > 1 and surface_exists(surf) {
 	draw_text(max_w*(3/4),48,string("Cost: {0} coins/{1}",cost,unit))
 	draw_set_halign(fa_left)
 	draw_set_valign(fa_top)
+	draw_set_font(fDescriptionBold)
+	draw_text_ext(8,80,key_info,16,max_w-16)
+	var info_height = string_height_ext(key_info,16,max_w-16);
 	draw_set_font(fDescription)
-	draw_text_ext(8,96,text,16,max_w-16)
+	draw_text_ext(8,80+info_height+16,text,16,max_w-16)
 	draw_set_color(c_white)
 	surface_reset_target()
 }

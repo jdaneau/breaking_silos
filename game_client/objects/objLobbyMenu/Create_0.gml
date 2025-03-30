@@ -1,7 +1,7 @@
 lobbies = []
 
-w = sprite_width - 72
-h = sprite_height - 32
+w = sprite_width
+h = sprite_height
 surf_h = round(sprite_height / 3 * 10)
 surf = surface_create(w,surf_h)
 

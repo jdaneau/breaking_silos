@@ -11,6 +11,7 @@ for(var i=0; i<array_length(measures); i++) {
 	_measure = ds_map_find_value(global.measures, measures[i])
 	_icon.name = _measure.name
 	_icon.text = _measure.description
+	_icon.key_info = _measure.key_use
 	_icon.cost = _measure.cost
 	_icon.time = _measure.time
 	_icon.unit = _measure.unit

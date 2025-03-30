@@ -1,4 +1,4 @@
-text = "Open Lobby"
+text = "OPEN LOBBY"
 
 on_click = function(on) {
 	if objTextInput.text != "" {

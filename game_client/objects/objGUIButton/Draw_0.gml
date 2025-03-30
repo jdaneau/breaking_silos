@@ -1,21 +1,16 @@
+var border_color, inside_color;
+
 if (!toggle and click) or (toggle and on) {
-	var light = make_color_hsv(0,0,150);
-	if hover {
-		draw_set_color(light)
-	} else draw_set_color(c_gray)
-	draw_button(x,y,x+sprite_width,y+sprite_height,false)
+	if hover { inside_color = global.colors.magenta_25 }
+	else inside_color = global.colors.light_blue_25 
 } else {
-	var light = make_color_hsv(0,0,220);
-	if hover {
-		draw_set_color(light)
-	} else draw_set_color(c_ltgray)
-	draw_button(x,y,x+sprite_width,y+sprite_height,true)
+	inside_color = c_white
 }
 
-draw_set_font(font)
-draw_set_color(color)
-draw_set_halign(fa_center)
-draw_set_valign(fa_middle)
-draw_text_ext(x+(sprite_width/2),y+(sprite_height/2),text,16,sprite_width-4)
+if hover {
+	border_color = global.colors.magenta
+} else border_color = global.colors.light_blue
 
-draw_set_color(c_white)
+if inverted {
+	draw_gui_button(x,y,x+sprite_width,y+sprite_height,inside_color,border_color,text,font)
+} else draw_gui_button(x,y,x+sprite_width,y+sprite_height,border_color,inside_color,text,font)

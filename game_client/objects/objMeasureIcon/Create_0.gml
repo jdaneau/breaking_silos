@@ -10,6 +10,7 @@ cost = 0
 unit = "/cell"
 time = "none"
 text = "none"
+key_info = "none"
 
 draw_x = x-16
 draw_y = y-32

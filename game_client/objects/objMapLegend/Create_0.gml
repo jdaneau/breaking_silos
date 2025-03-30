@@ -1,3 +1,5 @@
+image_speed=0
+
 depth = -1
 image_alpha = 0.5
 

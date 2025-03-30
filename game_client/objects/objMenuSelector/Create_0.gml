@@ -3,4 +3,5 @@ options = ["option1","option2"]
 index = 0
 selected = "nothing"
 
-font = fSidebar
+font = fMyriad12
+justify = 0 // 0 = center, -1 = left, 1 = right

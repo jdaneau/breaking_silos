@@ -41,6 +41,15 @@ function get_total_agriculture() {
 	return n_agriculture
 }
 
+/// @function get_minimum_agriculture()
+/// @description returns the minimum number of agricultural tiles needed to support the current population, based on the original ratio from the start of the game
+function get_minimum_agriculture() {
+	var agri = get_total_agriculture();
+	var agri_per_pop = global.map.starting_agriculture / global.state.starting_population;
+	var curr_pop = get_total_population("thousands",true);
+	return floor(curr_pop * agri_per_pop)
+}
+
 /// @function get_total_risk(hazard)
 /// @description returns the total amount of risk for a given hazard type on the map
 /// @param {string} hazard : one of either "flood", "drought", or "cyclone".
@@ -275,6 +284,17 @@ function get_implementing(tile,_measure) {
 	return noone
 }
 
+/// @function get_n_implementing(measure)
+/// @description Returns the total number of tiles that are currently implementing the given measure
+function get_n_implementing(_measure) {
+	var n = 0;
+	for(var t=0; t<array_length(global.map.land_tiles); t++) {
+		var tile = global.map.land_tiles[t];
+		if is_implementing(tile,_measure) { n++ }
+	}
+	return n
+}
+
 function role_in_game(role) {
 	return array_contains(ds_map_values_to_array(objOnline.players),role)	
 }
@@ -326,9 +346,10 @@ function hospital_availability(tile) {
 /// @description Calculates the "agriculture availability" for a tile, based on the global agriculture supply and distance to the nearest agricultural tile.
 function agricultural_availability(tile) {
 	var n_agriculture = get_total_agriculture();
-	if n_agriculture >= global.map.starting_agriculture { return 1 }
+	var min_agriculture = get_minimum_agriculture();
+	if n_agriculture >= min_agriculture { return 1 }
 	
-	var ratio = n_agriculture / global.map.starting_agriculture;
+	var ratio = n_agriculture / min_agriculture;
 	
 	var distance_to_agriculture = 0;
 	var found = false;
