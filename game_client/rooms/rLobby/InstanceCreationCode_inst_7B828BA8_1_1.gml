@@ -1,2 +1,2 @@
 text = "LOBBY"
-scale = 2
+font = fMyriadBold32

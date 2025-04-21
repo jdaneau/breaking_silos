@@ -208,9 +208,6 @@ switch(message_type) {
 			var player = receive_struct(packet);
 			ds_map_add(players,player.name,get_role_id(player.role))
 		}
-		with objGUIText {
-			if room == rLobby event_user(0) //update user list
-		}
 		send(MESSAGE.GET_NAME)
 	break;
 	
@@ -248,9 +245,6 @@ switch(message_type) {
 			var player_name = buffer_read(packet,buffer_string);
 			with objSidebarGUIChat chat_add(string("{0} has joined the game.",player_name))
 			ds_map_add(players, player_name, ROLE.NONE)
-			with objGUIText {
-				if room == rLobby event_user(0) //update user list
-			}
 		}
 	break;
 	

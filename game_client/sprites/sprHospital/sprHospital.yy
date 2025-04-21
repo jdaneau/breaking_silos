@@ -12,15 +12,15 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"dc993c17-4cd9-4f16-a951-4fdfcbace0cf","name":"dc993c17-4cd9-4f16-a951-4fdfcbace0cf","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"99f903ac-615d-42ce-b2d0-b717585b2c89","name":"99f903ac-615d-42ce-b2d0-b717585b2c89","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"2bbf689b-c4e4-4d2a-81c3-df3e4a41aef7","name":"2bbf689b-c4e4-4d2a-81c3-df3e4a41aef7","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"1d164268-a6d3-4e91-b797-c3873e28b4fb","name":"1d164268-a6d3-4e91-b797-c3873e28b4fb","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":16,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"1620410e-910a-4dcc-b2c6-7ed1e1bb2b55","blendMode":0,"displayName":"default","isLocked":false,"name":"1620410e-910a-4dcc-b2c6-7ed1e1bb2b55","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"7bc9ed02-d6a7-4ca3-aceb-9a0b6ad807a7","blendMode":0,"displayName":"default","isLocked":false,"name":"7bc9ed02-d6a7-4ca3-aceb-9a0b6ad807a7","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"sprHospital",
   "nineSlice":null,
@@ -33,7 +33,7 @@
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
-    "$GMSequence":"",
+    "$GMSequence":"v1",
     "%Name":"sprHospital",
     "autoRecord":true,
     "backdropHeight":768,
@@ -70,11 +70,11 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"dc993c17-4cd9-4f16-a951-4fdfcbace0cf","path":"sprites/sprHospital/sprHospital.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"48c1d221-eced-4200-aaaf-17819b00381f","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"2bbf689b-c4e4-4d2a-81c3-df3e4a41aef7","path":"sprites/sprHospital/sprHospital.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"b323ed72-4218-4eae-b644-ace9ae7a0e4f","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"99f903ac-615d-42ce-b2d0-b717585b2c89","path":"sprites/sprHospital/sprHospital.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"ebcd868e-36e9-4dfa-92a4-7b1aaeaa3947","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1d164268-a6d3-4e91-b797-c3873e28b4fb","path":"sprites/sprHospital/sprHospital.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"ba2719fa-6c6d-4feb-a5d2-c92c37cf62e3","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

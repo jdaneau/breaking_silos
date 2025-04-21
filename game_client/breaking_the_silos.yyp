@@ -1,5 +1,5 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"breaking_the_silos",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
@@ -53,13 +53,14 @@
     {"$GMFolder":"","%Name":"Drawing","folderPath":"folders/XGASOFT/Xtend/Scripts/Drawing.yy","name":"Drawing","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/XGASOFT/Xtend/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"xtend-reference-guide.pdf","CopyToMask":-1,"filePath":"datafiles","name":"xtend-reference-guide.pdf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.13.1.193",
   },
   "name":"breaking_the_silos",
   "resources":[
@@ -120,6 +121,7 @@
     {"id":{"name":"objInitMapData","path":"objects/objInitMapData/objInitMapData.yy",},},
     {"id":{"name":"objLobbyCharacterInfo","path":"objects/objLobbyCharacterInfo/objLobbyCharacterInfo.yy",},},
     {"id":{"name":"objLobbyMenu","path":"objects/objLobbyMenu/objLobbyMenu.yy",},},
+    {"id":{"name":"objLobbyPlayers","path":"objects/objLobbyPlayers/objLobbyPlayers.yy",},},
     {"id":{"name":"objLobbyRole","path":"objects/objLobbyRole/objLobbyRole.yy",},},
     {"id":{"name":"objMapGUI","path":"objects/objMapGUI/objMapGUI.yy",},},
     {"id":{"name":"objMapLegend","path":"objects/objMapLegend/objMapLegend.yy",},},
@@ -210,6 +212,7 @@
     {"id":{"name":"sprCharacterPortraitDefault","path":"sprites/sprCharacterPortraitDefault/sprCharacterPortraitDefault.yy",},},
     {"id":{"name":"sprCheckbox","path":"sprites/sprCheckbox/sprCheckbox.yy",},},
     {"id":{"name":"sprCitizenRep","path":"sprites/sprCitizenRep/sprCitizenRep.yy",},},
+    {"id":{"name":"sprColorPalette","path":"sprites/sprColorPalette/sprColorPalette.yy",},},
     {"id":{"name":"sprDialogWindow","path":"sprites/sprDialogWindow/sprDialogWindow.yy",},},
     {"id":{"name":"sprEngineer","path":"sprites/sprEngineer/sprEngineer.yy",},},
     {"id":{"name":"sprFinanceMinister","path":"sprites/sprFinanceMinister/sprFinanceMinister.yy",},},
@@ -274,6 +277,7 @@
     {"id":{"name":"sprRole_housing","path":"sprites/sprRole_housing/sprRole_housing.yy",},},
     {"id":{"name":"sprRole_international","path":"sprites/sprRole_international/sprRole_international.yy",},},
     {"id":{"name":"sprRole_president","path":"sprites/sprRole_president/sprRole_president.yy",},},
+    {"id":{"name":"sprRoleCircle","path":"sprites/sprRoleCircle/sprRoleCircle.yy",},},
     {"id":{"name":"sprSmallDownArrow","path":"sprites/sprSmallDownArrow/sprSmallDownArrow.yy",},},
     {"id":{"name":"sprWater","path":"sprites/sprWater/sprWater.yy",},},
     {"id":{"name":"sprWhiteTile","path":"sprites/sprWhiteTile/sprWhiteTile.yy",},},
