@@ -279,6 +279,7 @@
     {"id":{"name":"sprRole_president","path":"sprites/sprRole_president/sprRole_president.yy",},},
     {"id":{"name":"sprRoleCircle","path":"sprites/sprRoleCircle/sprRoleCircle.yy",},},
     {"id":{"name":"sprSmallDownArrow","path":"sprites/sprSmallDownArrow/sprSmallDownArrow.yy",},},
+    {"id":{"name":"sprSmallMeasureIcons","path":"sprites/sprSmallMeasureIcons/sprSmallMeasureIcons.yy",},},
     {"id":{"name":"sprWater","path":"sprites/sprWater/sprWater.yy",},},
     {"id":{"name":"sprWhiteTile","path":"sprites/sprWhiteTile/sprWhiteTile.yy",},},
     {"id":{"name":"sprX","path":"sprites/sprX/sprX.yy",},},

@@ -1,8 +1,8 @@
 var icon_size = sprite_height;
-var icon_scale = icon_size / sprite_get_width(icon);
+var icon_scale = (icon_size / sprite_get_width(icon)) * 1.2;
 var circle_scale = icon_size / sprite_get_width(sprRoleCircle);
-draw_sprite_ext(sprRoleCircle,0,x+4,y+4,circle_scale,circle_scale,0,c_white,1)
-draw_sprite_ext(icon,0,x+4+(icon_size/1.5),y+4+(icon_size/1.5),icon_scale,icon_scale,0,c_white,1)
+draw_sprite_ext(sprRoleCircle,0,x+4,y,circle_scale,circle_scale,0,c_white,1)
+draw_sprite_ext(icon,0,x+4+(icon_size * 0.8),y+(icon_size * 0.8),icon_scale,icon_scale,0,c_white,1)
 
 draw_set_font(fMyriad14)
 draw_set_halign(fa_left)
@@ -16,14 +16,17 @@ if !string_ends_with(player_caption,objOnline.get_role_player(role)) {
 }
 
 draw_set_color(global.colors.yellow)
-draw_text(x+icon_size+24, y+32, string_upper(global.roles[? role].name))
+if string_width(global.roles[? role].name) > (sprite_width * 0.5) {
+	draw_set_font(fMyriad12)
+}
+draw_text(x+icon_size+8, y+32, string_upper(global.roles[? role].name))
 
 draw_set_font(fMyriad12)
 draw_set_color(c_white)
-draw_text(x+icon_size+24, y+32+24, string_upper(global.roles[? role].description))
+draw_text(x+icon_size+8, y+32+24, string_upper(global.roles[? role].description))
 
 draw_set_font(fMyriadBold12)
-draw_text(x+icon_size+24, y+32+48, player_caption)
+draw_text(x+icon_size+8, y+32+48, player_caption)
 
 //draw button
 if role != global.state.role and objOnline.get_role_player(role) != "" { exit } // dont draw button if another player has the role

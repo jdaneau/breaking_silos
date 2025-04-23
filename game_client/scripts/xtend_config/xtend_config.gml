@@ -56,8 +56,8 @@ function xtend_config() {
 			gui: true,
 			mode: aspect,
 			view: 0,
-			//sample: 1,
-			//preserve: true,
+			sample: 1,
+			preserve: false,
 		},
 		
 		debug: {

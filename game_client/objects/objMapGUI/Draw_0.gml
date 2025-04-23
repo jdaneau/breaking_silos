@@ -212,7 +212,7 @@ if room != rRoundResults {
 			for(var j=0; j<array_length(_tile.measures); j++) {
 				var _x = _tile.x + (64 * (1/3)) * (j mod 3);
 				var _y = _tile.y + (64 * (1/3)) * (j div 3);
-				draw_sprite_ext(get_measure_sprite(_tile.measures[j]),0,_x,_y,1/3,1/3,0,c_white,1)
+				draw_sprite(sprSmallMeasureIcons,get_measure_sprite_index(_tile.measures[j]),_x,_y)
 			}
 		}
 	}
