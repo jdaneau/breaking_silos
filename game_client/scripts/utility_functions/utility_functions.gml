@@ -122,6 +122,7 @@ function mouse_check_released(button) {
 	return false
 }
 
+//function to get the id no. of a given role name
 function get_role_id(role_name) {
 	var roles = ds_map_keys_to_array(global.roles);
 	for(var i=0; i<array_length(roles); i++) {
@@ -130,4 +131,10 @@ function get_role_id(role_name) {
 		}
 	}
 	return ROLE.NONE
+}
+
+//function to resize any object to a given width and height
+function resize_object(obj,w,h) {
+	obj.image_xscale = w / sprite_get_width(obj.sprite_index)
+	obj.image_yscale = h / sprite_get_height(obj.sprite_index)
 }

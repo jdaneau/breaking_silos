@@ -12,7 +12,7 @@ function start_round() {
 	global.state.round_reports = []
 	global.state.measures_implemented = array_create(global.N_MEASURES, 0)
 	global.state.money_spent = 0
-	global.state.current_phase = "discussion"	
+	global.state.current_phase = "introduction"	//change to "discussion" after clicking away from the intro screen
 	global.state.seconds_remaining = global.time_limits.discussion
 	global.state.time_remaining = game_get_speed(gamespeed_fps) * global.time_limits.discussion
 	global.state.aid_objectives = {

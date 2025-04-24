@@ -1,0 +1,1 @@
+draw_sprite_ext(sprBottomBorder,0,x,y,room_width/sprite_get_width(sprBottomBorder),1,0,c_white, 1)

@@ -254,7 +254,6 @@ var _scale = map_w / map_camera_w;
 gpu_set_blendenable(false)
 draw_surface_part_ext(map_surface,map_camera_x,map_camera_y,map_camera_w,map_camera_h,map_x,map_y,_scale,_scale,c_white,1)
 gpu_set_blendenable(true)
-draw_gui_border(map_x,map_y,map_x+map_w,map_y+map_h)
 
 //draw layer caption
 if layer_caption != "" {

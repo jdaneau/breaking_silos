@@ -1,0 +1,1 @@
+money = global.state.state_budget

@@ -1,8 +1,8 @@
 var icon_size = sprite_height;
-var icon_scale = (icon_size / sprite_get_width(icon)) * 1.2;
+var icon_scale = (icon_size / sprite_get_width(icon)) * 0.65;
 var circle_scale = icon_size / sprite_get_width(sprRoleCircle);
 draw_sprite_ext(sprRoleCircle,0,x+4,y,circle_scale,circle_scale,0,c_white,1)
-draw_sprite_ext(icon,0,x+4+(icon_size * 0.8),y+(icon_size * 0.8),icon_scale,icon_scale,0,c_white,1)
+draw_sprite_ext(icon,0,x+4+(icon_size/2),y+(icon_size/2),icon_scale,icon_scale,0,c_white,1)
 
 draw_set_font(fMyriad14)
 draw_set_halign(fa_left)

@@ -1,1 +1,0 @@
-draw_gui_border(x,y,x+sprite_width,y+sprite_height)
