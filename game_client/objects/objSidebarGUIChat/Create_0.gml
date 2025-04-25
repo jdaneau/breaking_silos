@@ -27,12 +27,13 @@ else if room == rGameResults {
 }
 
 chat_surface = surface_create(chat_surface_w,chat_surface_h)
-chat_message = noone
-
-
 
 mouse_on = false
 
 chat_max_length = 500
 chat_typing = false
 chat_message = ""
+backspace_timer = floor(game_get_speed(gamespeed_fps) * 0.5);
+backspace_t = 0;
+line = false;
+line_t = 0;

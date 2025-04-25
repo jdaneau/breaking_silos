@@ -29,6 +29,22 @@ if chat_typing {
 	if keyboard_check_pressed(vk_backspace) {
 		if string_length(chat_message) > 1 {
 			chat_message = string_copy(chat_message,1,string_length(chat_message)-1)
-		} else chat_message = ""
+		} else chat_message = ""	
+	}
+	else if keyboard_check(vk_backspace) {
+		backspace_t += 1
+		if backspace_t >= backspace_timer {
+			backspace_t = 0
+			backspace_timer = 5
+			if string_length(chat_message) > 1 {
+				chat_message = string_copy(chat_message,1,string_length(chat_message)-1)
+			} else chat_message = ""
+		}
+	} else { backspace_t = 0; backspace_timer = floor(game_get_speed(gamespeed_fps)*0.5) }
+	
+	if chat_message != "" and  keyboard_check_pressed(vk_enter) {
+		send_string(MESSAGE.CHAT,chat_message)
+		chat_message=""
+		chat_typing=false
 	}
 }
