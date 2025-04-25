@@ -1,10 +1,16 @@
-var max_w = sprite_get_width(sprMapLegend);
-var max_h = sprite_get_height(sprMapLegend);
+if global.mouse_depth >= depth {
+	if coords_in(mouse_x,mouse_y,x,y-h-tab_h,x+sprite_width,y) {
+		mouse_on = true	
+	} else mouse_on = false
+} else mouse_on = false
 
 if mouse_on {
-	w = lerp(w,max_w,0.1)
-	h = lerp(h,max_h,0.1)
-} else {
-	w = lerp(w,0,0.1)
-	h = lerp(h,0,0.1)
+	if (sprite_height - h) > 1 {
+		h = lerp(h,sprite_height,0.1)
+	} else h = sprite_height
+}
+else {
+	if h > 1 {
+		h = lerp(h,0,0.1)
+	} else h = 0
 }

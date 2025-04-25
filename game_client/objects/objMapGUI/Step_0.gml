@@ -21,28 +21,23 @@ if instance_exists(objGUICalculator) and objGUICalculator.open {
 }
 
 //handle map zooming in/out
+function zoom(amt) {
+	map_zoom += amt
+	var _old_w = map_camera_w;
+	var _old_h = map_camera_h;
+	map_camera_w = global.map.width * (1/map_zoom)
+	map_camera_h = global.map.height * (1/map_zoom)
+	map_camera_x += (_old_w - map_camera_w) / 2
+	map_camera_y += (_old_w - map_camera_h) / 2
+	map_camera_x = clamp(map_camera_x,0,global.map.width-map_camera_w)
+	map_camera_y = clamp(map_camera_y,0,global.map.height-map_camera_h)
+}
 if global.mouse_depth >= depth {
 	if mouse_in_map and mouse_wheel_up() and map_zoom<3 {
-		map_zoom += 0.2
-		var _old_w = map_camera_w;
-		var _old_h = map_camera_h;
-		map_camera_w = global.map.width * (1/map_zoom)
-		map_camera_h = global.map.height * (1/map_zoom)
-		map_camera_x += (_old_w - map_camera_w) / 2
-		map_camera_y += (_old_w - map_camera_h) / 2
-		map_camera_x = clamp(map_camera_x,0,global.map.width-map_camera_w)
-		map_camera_y = clamp(map_camera_y,0,global.map.height-map_camera_h)
+		zoom(0.2)
 	}
 	else if mouse_in_map and mouse_wheel_down() and map_zoom>1 {
-		map_zoom -= 0.2
-		var _old_w = map_camera_w;
-		var _old_h = map_camera_h;
-		map_camera_w = global.map.width * (1/map_zoom)
-		map_camera_h = global.map.height * (1/map_zoom)
-		map_camera_x += (_old_w - map_camera_w) / 2
-		map_camera_y += (_old_w - map_camera_h) / 2
-		map_camera_x = clamp(map_camera_x,0,global.map.width-map_camera_w)
-		map_camera_y = clamp(map_camera_y,0,global.map.height-map_camera_h)
+		zoom(-0.2)
 	}
 }
 

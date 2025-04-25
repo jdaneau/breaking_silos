@@ -40,18 +40,28 @@ switch(message_type) {
 	
 	case MESSAGE.ANNOUNCEMENT: //server announcement
 		_msg = buffer_read(packet,buffer_string);
-		with objSidebarGUIChat chat_add(_msg)
+		var ai_names = ["President","Finance Minister","Agricultural Representative","Citizen Representative","Engineer","Flood Coordinator","Housing Chief","International Aid Representative"];
+		var found_ai = "";
+		for(var i=0; i<array_length(ai_names); i++) {
+			if string_pos(ai_names[i],_msg) > 0 {
+				found_ai = ai_names[i];
+				_msg = string_copy(_msg,string_pos(ai_names[i],_msg)+string_length(found_ai)+2,string_length(_msg)-(string_length(found_ai)+2))
+				break;
+			}
+		}
+		if found_ai == "" with objSidebarGUIChat chat_add("Announcement",_msg)
+		else with objSidebarGUIChat chat_add(found_ai,_msg)
 	break;
 	
 	case MESSAGE.CHAT:
 		_name = buffer_read(packet,buffer_string);
 		_msg = buffer_read(packet,buffer_string);
-		with objSidebarGUIChat chat_add(string("{0}: {1}",_name,_msg))
+		with objSidebarGUIChat chat_add(_name,_msg)
 	break;
 	
 	case MESSAGE.DISCONNECT: //user disconnects
 		_name = buffer_read(packet,buffer_string);
-		with objSidebarGUIChat chat_add(string("{0} has disconnected.",_name))
+		with objSidebarGUIChat chat_add("Server",string("{0} has disconnected.",_name))
 		if ds_map_exists(players,_name) {
 			ds_map_delete(players,_name)	
 		}
@@ -243,7 +253,7 @@ switch(message_type) {
 		//other player joins 
 		else {
 			var player_name = buffer_read(packet,buffer_string);
-			with objSidebarGUIChat chat_add(string("{0} has joined the game.",player_name))
+			with objSidebarGUIChat chat_add("Server",string("{0} has joined the game.",player_name))
 			ds_map_add(players, player_name, ROLE.NONE)
 		}
 	break;
@@ -251,7 +261,7 @@ switch(message_type) {
 	case MESSAGE.LEAVE_GAME:
 		var player_name = buffer_read(packet,buffer_string);
 		if ds_map_exists(players, player_name) ds_map_delete(players, player_name)
-		with objSidebarGUIChat chat_add(string("{0} has left the game.",player_name))
+		with objSidebarGUIChat chat_add("Server",string("{0} has left the game.",player_name))
 	break;
 	
 	case MESSAGE.JOIN_ROLE:
@@ -292,7 +302,7 @@ switch(message_type) {
 	case MESSAGE.SET_NAME:
 		var old_name = buffer_read(packet, buffer_string);
 		var new_name = buffer_read(packet, buffer_string);
-		with objSidebarGUIChat chat_add(string("{0} has changed their name to {1}.",old_name,new_name))
+		with objSidebarGUIChat chat_add("Server",string("{0} has changed their name to {1}.",old_name,new_name))
 	break;
 	
 	case MESSAGE.START_GAME:

@@ -282,7 +282,7 @@ if instance_number(objMarker) > 0 {
 		} else {
 			if !_mark.announced {
 				_mark.announced = true
-				objSidebarGUIChat.chat_add(string("{0} has highlighted square {1}!",_mark.caption,coords_to_grid(_mark.x,_mark.y,false)))
+				objSidebarGUIChat.chat_add(_mark.caption,string("Highlighting cell {0}.",coords_to_grid(_mark.x,_mark.y,false)))
 			}
 		}
 	}
