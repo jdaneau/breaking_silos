@@ -14,3 +14,4 @@ inverted = false
 dialog = noone
 dialog_mode = "question"
 dialog_status = ""
+sprite = noone

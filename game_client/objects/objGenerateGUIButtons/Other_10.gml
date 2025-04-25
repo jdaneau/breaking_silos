@@ -62,35 +62,40 @@ switch(global.state.role) {
 	break;
 }
 
+var button_width = 75;
+
 var n_buttons = array_length(buttons);
 if n_buttons <= 5 {
-	var button_width = (sprite_width/n_buttons) - 16;
-	if button_width > (sprite_width/3) { button_width = sprite_width/3 }
+	var button_space = sprite_width / n_buttons;
+	var button_left_padding = (button_space - button_width) / 2;
 	for(var i=0; i<n_buttons; i++) {
-		var btn = instance_create_depth(x+(button_width*i)+(16*i), y, 0, objGUIButton);
+		var btn = instance_create_depth(x+(button_space*i)+button_left_padding, y+8, depth-25, objGUIButton);
 		btn.text = buttons[i].text
-		if n_buttons > 4 {
-			btn.font = fTooltipBold	
-		}
 		btn.toggle = buttons[i].toggle
 		btn.on_click = buttons[i].on_click
 		btn.image_xscale = button_width / sprite_get_width(object_get_sprite(objGUIButton))
-		btn.image_yscale = sprite_height / sprite_get_height(object_get_sprite(objGUIButton))
+		btn.image_yscale = (sprite_height-16) / sprite_get_height(object_get_sprite(objGUIButton))
+		btn.sprite = buttons[i].sprite
+		btn.font = fMyriad14
 	}
 } else {
-	var button_width = sprite_width/3;
-	var dropdown = instance_create_depth(x,y,0,objDropdownButton);
-	dropdown.image_xscale = button_width / sprite_get_width(object_get_sprite(objGUIButton))
-	dropdown.image_yscale = sprite_height / sprite_get_height(object_get_sprite(objGUIButton))
+	var button_space = sprite_width / 2;
+	var dropdown_left_padding = (button_space - (button_width * 1.5)) / 2;
+	var button_left_padding = (button_space - button_width) / 2;
+	var dropdown = instance_create_depth(x+dropdown_left_padding,y+8,depth-25,objDropdownButton);
+	dropdown.image_xscale = (button_width * 1.5) / sprite_get_width(object_get_sprite(objGUIButton))
+	dropdown.image_yscale = (sprite_height-16) / sprite_get_height(object_get_sprite(objGUIButton))
 	for(var i=0; i<n_buttons; i++) {
-		if !struct_equals(buttons[i],btn_finalize_decision) {
+		if !struct_equals(buttons[i],btn_finalize_decision) and !struct_equals(buttons[i],btn_open_calculator) {
 			array_push(dropdown.buttons,buttons[i])	
 		} else {
-			var btn = instance_create_depth(x+button_width+16, y, 0, objGUIButton);	
+			var btn = instance_create_depth(x+button_space+button_left_padding, y+8, depth-25, objGUIButton);	
 			btn.text = buttons[i].text
 			btn.on_click = buttons[i].on_click
 			btn.image_xscale = button_width / sprite_get_width(object_get_sprite(objGUIButton))
-			btn.image_yscale = sprite_height / sprite_get_height(object_get_sprite(objGUIButton))
+			btn.image_yscale = (sprite_height-16) / sprite_get_height(object_get_sprite(objGUIButton))
+			btn.sprite = buttons[i].sprite
+			btn.font = fMyriad14
 		}
 	}
 }

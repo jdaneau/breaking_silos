@@ -1,18 +1,18 @@
-var light = make_color_hsv(0,0,220);
+var subimg = 0;
+var caption_color = global.colors.light_blue;
 
 if show {
-	draw_set_color(c_gray)
-	draw_button(x,y,x+sprite_width,y+sprite_height,false)
-} else {
-	if hover {
-		draw_set_color(light)
-	} else draw_set_color(c_ltgray)
-	draw_button(x,y,x+sprite_width,y+sprite_height,true)
+	caption_color = c_ltgray
+	subimg = 2
+} else if hover {
+	subimg = 1
+	caption_color = global.colors.light_blue_50 
 }
 
-draw_set_font(fSidebar)
-draw_set_color(c_black)
+draw_sprite(sprite,subimg,x,y)
+draw_set_color(caption_color)
+draw_set_font(font)
 draw_set_halign(fa_center)
-draw_set_valign(fa_middle)
-draw_text_ext(x+(sprite_width/2),y+(sprite_height/2),text,16,sprite_width-4)
+draw_set_valign(fa_top)
+draw_text(x+(sprite_width/2),y+75+8,text)
 draw_set_color(c_white)

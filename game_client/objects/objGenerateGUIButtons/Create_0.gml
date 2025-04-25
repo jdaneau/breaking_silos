@@ -1,6 +1,7 @@
 ///define buttons
 
 btn_show_drought_risk = {
+			sprite : sprShowDrought,
 			text : "Show Drought Hazard",
 			toggle : true,
 			on_click : function(on) {
@@ -12,6 +13,7 @@ btn_show_drought_risk = {
 		}
 		
 btn_show_flood_risk = {
+			sprite : sprShowFlood,
 			text : "Show Flood Hazard",
 			toggle : true,
 			on_click : function(on) {
@@ -23,6 +25,7 @@ btn_show_flood_risk = {
 		}
 		
 btn_show_cyclone_risk = {
+			sprite : sprShowCyclone,
 			text : "Show Cyclone Hazard",
 			toggle : true,
 			on_click : function(on) {
@@ -34,6 +37,7 @@ btn_show_cyclone_risk = {
 		}
 		
 btn_show_population_map = {
+			sprite : sprShowPopulation,
 			text : "Show Population Map",
 			toggle : true,
 			on_click : function(on) {
@@ -53,6 +57,7 @@ btn_show_population_map = {
 		}
 
 btn_show_agricultural_areas = {
+			sprite : sprShowAgriculture,
 			text : "Show Agricultural Areas",
 			toggle : true,
 			on_click : function(on) {
@@ -64,6 +69,7 @@ btn_show_agricultural_areas = {
 		}
 		
 btn_finalize_decision = {
+	sprite: sprFinalizeDecision,
 	text : "Finalize Decision",
 	toggle : false,
 	on_click : function(on) {
@@ -76,6 +82,7 @@ btn_finalize_decision = {
 		}
 
 btn_open_calculator = {
+			sprite : sprOpenCalculator,
 			text : "Open Calculator",
 			toggle : false,
 			on_click : function(on) {
@@ -90,6 +97,7 @@ btn_open_calculator = {
 		}
 		
 btn_show_flood_history = {
+			sprite : sprShowFloodHistory,
 			text : "Show Flood History",
 			toggle : true,
 			on_click : function(on) {
@@ -101,6 +109,7 @@ btn_show_flood_history = {
 		}
 		
 btn_show_drought_history = {
+			sprite : sprShowDroughtHistory,
 			text : "Show Drought History",
 			toggle : true,
 			on_click : function(on) {
@@ -112,6 +121,7 @@ btn_show_drought_history = {
 		}
 		
 btn_show_watersheds = {
+			sprite : sprShowWatersheds,
 			text : "Show Watersheds",
 			toggle : true,
 			on_click : function(on) {

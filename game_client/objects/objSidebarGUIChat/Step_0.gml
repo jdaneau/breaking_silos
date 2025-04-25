@@ -10,13 +10,17 @@ if coords_in(mouse_x,mouse_y,x,y,x+sprite_width,y+sprite_height) {
 
 var current_max_scroll = clamp(current_chat_height - chat_window_height,0,chat_surface_h-chat_window_height);
 
+var scroll_amt = sep;
+if current_chat_height > (chat_window_height * 2) {
+	scroll_amt = sep*2	
+}
 
 if global.mouse_depth >= depth and mouse_wheel_up() and mouse_on {
 	//show_debug_message(string("chat_scroll = {0}, current_max_scroll = {1}, current_chat_height = {2}, chat_window_height = {3}",chat_scroll,current_max_scroll,current_chat_height,chat_window_height))
-	chat_scroll = clamp(chat_scroll + sep, 0, current_max_scroll) 
+	chat_scroll = clamp(chat_scroll + scroll_amt, 0, current_max_scroll) 
 }
 if global.mouse_depth >= depth and mouse_wheel_down() and mouse_on {
-	chat_scroll = clamp(chat_scroll - sep, 0, current_max_scroll) 
+	chat_scroll = clamp(chat_scroll - scroll_amt, 0, current_max_scroll) 
 }
 
 if chat_typing {
@@ -45,6 +49,5 @@ if chat_typing {
 	if chat_message != "" and  keyboard_check_pressed(vk_enter) {
 		send_string(MESSAGE.CHAT,chat_message)
 		chat_message=""
-		chat_typing=false
 	}
 }

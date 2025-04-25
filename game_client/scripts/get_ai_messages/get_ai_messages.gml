@@ -171,7 +171,7 @@ function get_ai_messages(){
 					}
 				}
 				else {
-					array_push(messages, string("Housing chief: There are some cells like {0} with damaged housing. We need to repair them fast!",damaged_tile))
+					array_push(messages, string("Housing Chief: There are some cells like {0} with damaged housing. We need to repair them fast!",damaged_tile))
 				}
 			break;
 			case ROLE.INTERNATIONAL:

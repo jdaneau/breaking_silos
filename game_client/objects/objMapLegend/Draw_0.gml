@@ -8,7 +8,8 @@ draw_set_valign(fa_middle)
 draw_text(tab_x+(tab_w/2),tab_y-h+(tab_h/2),"v")
 
 draw_set_halign(fa_left)
-draw_set_font(fMyriadBold14)
-draw_text(label_x,tab_y-h+(tab_h/2),"Map Legend")
+draw_set_valign(fa_bottom)
+draw_set_font(fMyriadBold18)
+draw_text(label_x,tab_y-h+tab_h-4,"Map Legend")
 
 draw_sprite_part(sprite_index,0,0,0,sprite_width,h,x,y-h)
