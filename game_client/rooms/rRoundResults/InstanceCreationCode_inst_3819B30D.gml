@@ -1,13 +1,16 @@
-font = fSidebar
+font = fMyriad16
 color = c_white
-h_align = fa_right
+h_align = fa_left
 v_align = fa_top
 
-if aid_conditions_met() {
-	text = "International aid received!"
-}
-else {
-	h_align = fa_center
-	text = "No international aid :("	
+manual_update = function() {
+	if aid_conditions_met() {
+		text = "International aid received!"
+	}
+	else {
+		text = "No international aid :("	
+	}
 }
 scale=1
+
+manual_update()

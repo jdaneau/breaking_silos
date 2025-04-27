@@ -1,4 +1,4 @@
-font = fChat
+font = fMyriad16
 color = c_white
 
 update = function() {

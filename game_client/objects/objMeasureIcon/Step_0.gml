@@ -7,7 +7,7 @@ if room != home_room {
 draw_set_halign(fa_left)
 draw_set_valign(fa_top)
 
-if mouse_on {
+if mouse_on and global.mouse_depth >= depth {
 	w = lerp(w,max_w,0.1)
 	h = lerp(h,max_h,0.1)
 } else {

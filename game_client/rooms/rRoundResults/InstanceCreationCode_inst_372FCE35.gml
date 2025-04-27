@@ -1,5 +1,9 @@
-font = fChat
+font = fMyriad14
 color = c_white
+h_align = fa_left
+v_align = fa_top
+
+color = global.colors.dark_blue_25
 
 text = "Measures implemented:\n\n"
 implemented_something = false;
@@ -15,10 +19,4 @@ for(var i=0; i<global.N_MEASURES; i++) {
 if !implemented_something {
 	text += "\nNothing :(\n"	
 }
-text +=  "\n\nDirectly following the meeting:\n\n"
-for(var i=0; i<array_length(global.state.round_reports); i++) {
-	text += global.state.round_reports[i] + "\n"
-}
 
-scale=1
-h_align = fa_left

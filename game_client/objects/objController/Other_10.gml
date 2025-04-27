@@ -16,15 +16,15 @@ if global.state.current_round == 1 {
 	open_dialog("Would you like to enable tutorial popups?",function(resp){ 
 		if resp == "Yes" {
 			global.tutorial_enabled = true 
-			array_push(global.tutorial_queue,{x:288,y:96,tutorial_id:TUTORIAL.CHARACTER_INFO})
-			array_push(global.tutorial_queue,{x:368,y:272,tutorial_id:TUTORIAL.BUDGET})
-			array_push(global.tutorial_queue,{x:528,y:480,tutorial_id:TUTORIAL.CHAT})
+			array_push(global.tutorial_queue,{x:150,y:96,tutorial_id:TUTORIAL.CHARACTER_INFO})
+			array_push(global.tutorial_queue,{x:1056,y:96,tutorial_id:TUTORIAL.BUDGET})
+			array_push(global.tutorial_queue,{x:450,y:480,tutorial_id:TUTORIAL.CHAT})
 			array_push(global.tutorial_queue,{x:704,y:288,tutorial_id:TUTORIAL.MAP_CONTROLS})
-			array_push(global.tutorial_queue,{x:640,y:48,tutorial_id:TUTORIAL.MAP_LEGEND})
-			array_push(global.tutorial_queue,{x:704,y:528,tutorial_id:TUTORIAL.MAP_LAYERS})
+			array_push(global.tutorial_queue,{x:1056,y:528,tutorial_id:TUTORIAL.MAP_LEGEND})
+			array_push(global.tutorial_queue,{x:600,y:528,tutorial_id:TUTORIAL.MAP_LAYERS})
 			array_push(global.tutorial_queue,{x:1056,y:240,tutorial_id:TUTORIAL.PLACE_MEASURES})
 			array_push(global.tutorial_queue,{x:room_width/2-200,y:room_height/2-100,tutorial_id:TUTORIAL.MULTI_HAZARD})
-			array_push(global.tutorial_queue,{x:1040,y:528,tutorial_id:TUTORIAL.TIME_LIMIT})
+			array_push(global.tutorial_queue,{x:1056,y:96,tutorial_id:TUTORIAL.TIME_LIMIT})
 			
 			if global.state.role == ROLE.FINANCE array_push(global.tutorial_queue,{x:704,y:528,tutorial_id:TUTORIAL.OPEN_CALCULATOR})
 			else array_push(global.tutorial_queue,{x:room_width/2-200,y:room_height/2-100,tutorial_id:TUTORIAL.COLLABORATION})

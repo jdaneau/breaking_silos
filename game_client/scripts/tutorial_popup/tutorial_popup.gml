@@ -15,13 +15,13 @@ function tutorial_popup(_x,_y,tutorial_id){
 			tut.text = "The national budget represents the amount of money available to spend on projects. This can be replenished in future rounds via tax income or international aid funding. Note that tax income is only applied when the in-game calendar passes a new year. If not enough time passes between disasters, then you won't have any tax money for the next round! Spend your money carefully :)"
 		break;
 		case TUTORIAL.CHAT:
-			tut.text = "The chat window contains briefing information for the current situation and your role. Make sure to read it! You can scroll the chat up/down with the mouse wheel. You can also send a chat message to the rest of the players via the ENTER key."
+			tut.text = "The chat window contains a short briefing summary, and can be used for text communication between players. You can scroll the chat up/down with the mouse wheel, and send a chat message to the rest of the players using the text area on the bottom."
 		break;
 		case TUTORIAL.MAP_CONTROLS:
-			tut.text = "In the center of the screen is a map of the country. Here you can see where the hospitals, airports, shorelines, and damaged areas are located. Hovering your mouse over a cell will display its coordinates. To pan the map, use the mouse's left click button. To zoom in/out, scroll the mouse wheel while hovering over the map. Right clicking a cell will highlight it for other players, allowing for quick spatial communication."
+			tut.text = "In the center of the screen is a map of the country. Here you can see where the hospitals, airports, shorelines, and damaged areas are located. Hovering your mouse over a cell will display its coordinates. To pan the map, use the mouse's left click button. To zoom in/out, scroll the mouse wheel while hovering over the map, or use the zoom controls in the corner. Right clicking a cell will highlight it for other players, allowing for quick spatial communication."
 		break;
 		case TUTORIAL.MAP_LEGEND:
-			tut.text = "Hovering over this question mark box will display the map legend. This will illustrate the meaning behind all the symbols you can see on the map."
+			tut.text = "Hovering over this arrow tab will display the map legend. This will illustrate the meaning behind all the symbols you can see on the map."
 		break;
 		case TUTORIAL.MAP_LAYERS:
 			tut.text = "With these buttons on the bottom, you can toggle different info layers for the map. These layers will give you crucial information for deciding on where to place your measures! Note that not all roles have access to the same information. Communication is key!"
@@ -30,7 +30,7 @@ function tutorial_popup(_x,_y,tutorial_id){
 			tut.text = "The icons on the right-hand side of the screen are the measures you can implement. The president is the only role with access to all the measures. Hover over an icon to view information about that measure, including price, implementation time, use cases and restrictions. To select a measure, left click the icon and a square will appear around it. Left click a selected measure to deselect it. Once a measure icon is selected, that measure can be placed on the map by left clicking a cell. Right clicking a cell that already has the selected measure will remove it."
 		break;
 		case TUTORIAL.TIME_LIMIT:
-			tut.text = "Take note of the time limit in the bottom right! Once the time is up, the discussion is over and no more action can be taken."
+			tut.text = "Take note of the time limit in the top right! Once the time is up, the discussion is over and no more action can be taken."
 		break;
 		case TUTORIAL.MULTI_HAZARD:
 			tut.text = "One thing to keep in mind: sometimes a multi-hazard scenario can occur, where the next disaster occurs only days after the first. This happens most often with flooding following a cyclone. Be aware of this interaction and always keep some money leftover, and try to meet the requirements for international aid!"

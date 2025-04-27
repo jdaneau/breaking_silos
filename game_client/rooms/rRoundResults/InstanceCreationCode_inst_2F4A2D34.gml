@@ -22,4 +22,4 @@ update = function() {
 }
 
 color = c_white
-font = fHeader
+font = fMyriadBold32

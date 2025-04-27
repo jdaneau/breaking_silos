@@ -19,3 +19,9 @@ outline_color = c_black
 
 update = noone
 manual_update = noone
+
+fill = false
+fill_color = c_black
+
+sep = 20
+text = ""
