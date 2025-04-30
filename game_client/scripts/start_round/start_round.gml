@@ -45,7 +45,7 @@ function do_map_damages(){
 		switch(global.state.disaster) {
 			case "flood":
 				if global.map.buildings_grid[tx,ty] != 2 && !has_implemented(tile,MEASURE.DIKE,[]) && !tile.dammed{
-					global.map.buildings_grid[tx,ty] = -1
+					global.map.buildings_grid[tx,ty] *= -1
 					global.state.n_tiles_damaged++
 				}
 				if global.state.disaster_intensity != "low" {
@@ -71,7 +71,7 @@ function do_map_damages(){
 			
 			case "cyclone":
 				if global.map.buildings_grid[tx,ty] != 3 && !has_implemented(tile,MEASURE.SEAWALL,[]){
-					global.map.buildings_grid[tx,ty] = -1
+					global.map.buildings_grid[tx,ty] *= -1
 					global.state.n_tiles_damaged++
 				}
 				if global.state.disaster_intensity != "low" {

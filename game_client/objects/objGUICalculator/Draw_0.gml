@@ -85,4 +85,6 @@ draw_set_color(c_white)
 surface_reset_target()
 
 draw_surface_part(calc_surface,0,0,calc_cur_w,calc_cur_h,calc_x,calc_y)
-draw_gui_border(calc_x,calc_y,calc_x+calc_cur_w,calc_y+calc_cur_h)
+draw_color_rectangle(calc_x,calc_y,calc_x+calc_cur_w,calc_y+calc_cur_h,c_black,true)
+draw_color_rectangle(calc_x-1,calc_y-1,calc_x+calc_cur_w+1,calc_y+calc_cur_h+1,c_white,true)
+draw_color_rectangle(calc_x-2,calc_y-2,calc_x+calc_cur_w+2,calc_y+calc_cur_h+2,c_black,true)

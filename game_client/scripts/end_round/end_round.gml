@@ -196,13 +196,16 @@ function update_buildings(finished_projects) {
 
 		//repairing buildings that were damaged before
 		if just_completed(_tile, MEASURE.BUILDINGS, finished_projects) {
-			global.map.buildings_grid[tx, ty] = 1
+			if global.map.buildings_grid[tx, ty] < 0
+				global.map.buildings_grid[tx, ty] *= -1
 		}
 		if just_completed(_tile, MEASURE.FLOOD_BUILDINGS, finished_projects) {
 			global.map.buildings_grid[tx, ty] = 2
+			array_push(_tile.implemented, MEASURE.FLOOD_BUILDINGS)
 		}
 		if just_completed(_tile, MEASURE.CYCLONE_BUILDINGS, finished_projects) {
 			global.map.buildings_grid[tx, ty] = 3
+			array_push(_tile.implemented, MEASURE.CYCLONE_BUILDINGS)
 		}
 		if just_completed(_tile, MEASURE.HOSPITAL, finished_projects) {
 			global.map.hospital_grid[tx, ty] = 1
@@ -360,8 +363,11 @@ function update_population_loss(finished_projects) {
 	var total_population_lost = 0;
 	var potential_population_lost = 0;
 	var number_tiles_pop_lost = 0;
+	var number_tiles_mitigated = 0;
+	var number_measures_mitigating = 0;
 	for(var i=0; i<array_length(global.state.affected_tiles); i++) {
 		var tile = tile_from_square(global.state.affected_tiles[i]);
+		var n_mitigating = 0;
 		
 		//dont know where else to put this
 		if global.state.disaster == "flood" {
@@ -392,12 +398,16 @@ function update_population_loss(finished_projects) {
 				if global.map.buildings_grid[tile.x div 64, tile.y div 64] == 2 {
 					var mitigation_rate = random_range(20,30);
 					loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-					add_report(string("The flood-resistant buildings on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					//add_report(string("The flood-resistant buildings on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					number_measures_mitigating++
+					n_mitigating++
 				}
 				if has_implemented(tile,MEASURE.EWS_FLOOD,finished_projects) {
 					var mitigation_rate = random_range(40,50);
 					loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-					add_report(string("The flood EWS on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					//add_report(string("The flood EWS on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					number_measures_mitigating++
+					n_mitigating++
 				}
 				if has_implemented(tile,MEASURE.DIKE,finished_projects) {
 					var mitigation_rate = 0;
@@ -413,12 +423,16 @@ function update_population_loss(finished_projects) {
 							break;
 					}
 					loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-					add_report(string("The dike on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					//add_report(string("The dike on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					number_measures_mitigating++
+					n_mitigating++
 				}
 				if tile.dammed {
 					var mitigation_rate = random_range(60,80);
 					loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-					add_report(string("Population loss on cell {0} was mitigated by {1}% due to a dam!",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					//add_report(string("Population loss on cell {0} was mitigated by {1}% due to a dam!",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					number_measures_mitigating++
+					n_mitigating++
 				}
 				break;
 				
@@ -445,27 +459,37 @@ function update_population_loss(finished_projects) {
 				if global.map.buildings_grid[tile.x div 64, tile.y div 64] == 3 {
 					var mitigation_rate = random_range(20,30);
 					loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-					add_report(string("The cyclone-resistant buildings on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					//add_report(string("The cyclone-resistant buildings on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					number_measures_mitigating++
+					n_mitigating++
 				}
 				if has_implemented(tile,MEASURE.EWS_CYCLONE,finished_projects) {
 					var mitigation_rate = random_range(40,50);
 					loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-					add_report(string("The cyclone EWS on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					//add_report(string("The cyclone EWS on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					number_measures_mitigating++
+					n_mitigating++
 				}
 				if has_implemented(tile,MEASURE.SEAWALL,finished_projects) {
 					var mitigation_rate = random_range(40,50);
 					loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-					add_report(string("The seawall on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					//add_report(string("The seawall on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+					number_measures_mitigating++
+					n_mitigating++
 				}
 				if has_implemented(tile,MEASURE.NBS,finished_projects) {
 					if tile.metrics.population > 500 {
 						var mitigation_rate = random_range(10,20);
 						loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-						add_report(string("The NBS on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+						//add_report(string("The NBS on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+						number_measures_mitigating++
+						n_mitigating++
 					} else {
 						var mitigation_rate = random_range(30,40);
 						loss_rate = decrease_loss_rate(loss_rate, mitigation_rate)
-						add_report(string("The NBS on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+						//add_report(string("The NBS on cell {0} mitigated population loss by {1}% !",coords_to_grid(tile.x,tile.y),round(mitigation_rate)))
+						number_measures_mitigating++
+						n_mitigating++
 					}
 				}
 				
@@ -519,6 +543,9 @@ function update_population_loss(finished_projects) {
 			total_population_lost += lost_population + lost_evacuated
 			number_tiles_pop_lost += 1
 		}
+		if n_mitigating > 0 {
+			number_tiles_mitigated++	
+		}
 	}
 	total_population_lost *= 1000
 	potential_population_lost *= 1000
@@ -527,6 +554,11 @@ function update_population_loss(finished_projects) {
 	var pop_string = string_format(total_population_lost, floor(log10(total_population_lost)), 0);
 	add_report(string("A population of {0} people was lost over {1} cells due to the disaster.",pop_string,number_tiles_pop_lost))
 	ds_map_destroy(starting_populations)
+	
+	if number_tiles_mitigated > 0 {
+		var mitigation_rate = (potential_population_lost - total_population_lost) / potential_population_lost;
+		add_report(string("{0} measure(s) across {1} tile(s) mitigated population loss by {2}%!",number_measures_mitigating,number_tiles_mitigated,mitigation_rate*100))
+	}
 	
 	var lost_population = 0;
 	var lost_population_tiles = 0;

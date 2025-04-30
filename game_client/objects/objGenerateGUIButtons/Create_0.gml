@@ -86,7 +86,6 @@ btn_open_calculator = {
 			text : "Open Calculator",
 			toggle : false,
 			on_click : function(on) {
-				tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.USE_CALCULATOR)
 				if !instance_exists(objGUICalculator) {
 					instance_create_depth(0,0,-100,objGUICalculator)
 				} else if !objGUICalculator.open {

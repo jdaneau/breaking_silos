@@ -51,10 +51,11 @@ for(var i=0; i<n; i++) {
 		case "Coastal": landscape_sprite = sprIconCoastal; break;
 		case "Continental" : landscape_sprite = sprIconContinental; break;
 	}
-	draw_color_rectangle(row_x+row_draw_offset, footer_y,row_x+row_draw_offset+icon_size,footer_y+icon_size, global.colors.dark_blue_75,false)
-	draw_color_rectangle(row_x+row_draw_offset+icon_size+16, footer_y,row_x+row_draw_offset+icon_size+16+icon_size,footer_y+icon_size, global.colors.dark_blue_75,false)
-	draw_sprite_ext(climate_sprite,0,row_x+row_draw_offset,footer_y,icon_scale,icon_scale,0,c_white,1)
-	draw_sprite_ext(landscape_sprite,0,row_x+row_draw_offset+icon_size+16,footer_y,icon_scale,icon_scale,0,c_white,1)
+	var icon_y = row_y + footer_y;
+	draw_color_rectangle(row_x+row_draw_offset, icon_y,row_x+row_draw_offset+icon_size,icon_y+icon_size, global.colors.dark_blue_75,false)
+	draw_color_rectangle(row_x+row_draw_offset+icon_size+16, icon_y,row_x+row_draw_offset+icon_size+16+icon_size,icon_y+icon_size, global.colors.dark_blue_75,false)
+	draw_sprite_ext(climate_sprite,0,row_x+row_draw_offset,icon_y,icon_scale,icon_scale,0,c_white,1)
+	draw_sprite_ext(landscape_sprite,0,row_x+row_draw_offset+icon_size+16,icon_y,icon_scale,icon_scale,0,c_white,1)
 	
 	//settings text
 	draw_set_font(fMyriadBold10)

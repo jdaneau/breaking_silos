@@ -85,7 +85,7 @@ w=0
 h=0
 mouse_on = false
 
-max_h=32
+max_h=48
 for(var i=0; i<array_length(text); i++) {
 	max_h += string_height_ext(text[i],sep,max_w-32)
 	if i > 0 { max_h += sep }

@@ -36,5 +36,5 @@ if h > 1 and w > 1 and surface_exists(surf) {
 }
 
 if selected {
-	draw_gui_border(x,y,x+sprite_width,y+sprite_height)
+	draw_gui_border(x,y,x+sprite_width,y+sprite_height,c_ltgray,true)
 }

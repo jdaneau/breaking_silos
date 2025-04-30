@@ -40,7 +40,7 @@ switch(message_type) {
 	
 	case MESSAGE.ANNOUNCEMENT: //server announcement
 		_msg = buffer_read(packet,buffer_string);
-		var ai_names = ["President","Finance Minister","Agricultural Representative","Citizen Representative","Engineer","Flood Coordinator","Housing Chief","International Aid Representative"];
+		var ai_names = ["Finance Minister","Agricultural Representative","Citizen Representative","Engineer","Flood Coordinator","Housing Chief","International Aid Representative"];
 		var found_ai = "";
 		for(var i=0; i<array_length(ai_names); i++) {
 			if string_pos(ai_names[i],_msg) > 0 {

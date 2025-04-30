@@ -22,10 +22,12 @@ mouse_calc_y = -1
 row_height = calc_height / (ds_map_size(global.measures) + 5)
 // column details for drawing calculator
 column_headers = ["Measure","Cost","Unit","# Selected","Subtotal","Timespan"]
-column_widths_relative = [0.25, 0.15, 0.125, 0.15, 0.125, 0.15]
+column_widths_relative = [0.3, 0.15, 0.125, 0.15, 0.125, 0.1]
 for(var i=0; i<array_length(column_widths_relative); i++) {
 	column_widths[i] = 	column_widths_relative[i] * calc_width
 }
 
 old_depth = global.mouse_depth
 global.mouse_depth = depth
+
+tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.USE_CALCULATOR)

@@ -57,6 +57,9 @@ function check_map_placement(measure,tile) {
 			if global.map.buildings_grid[tx,ty] > 1 {
 				return "The buildings in this cell are already upgraded."
 			}
+			if global.map.buildings_grid[tx,ty] < -1 {
+				return "The buildings in this cell are already upgraded. To repair them, use the \"Repair Buildings\" measure instead." 	
+			}
 		break;
 		
 		case MEASURE.CYCLONE_BUILDINGS:

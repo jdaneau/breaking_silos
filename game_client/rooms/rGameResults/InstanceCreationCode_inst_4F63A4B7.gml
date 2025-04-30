@@ -1,3 +1,4 @@
-font = fHeader
+font = fMyriadBold32
+color = c_white
 text = "Game over!"
-scale = 2
+scale = 1

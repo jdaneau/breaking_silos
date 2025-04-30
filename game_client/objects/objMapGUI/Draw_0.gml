@@ -194,6 +194,8 @@ for(i=0; i<array_length(global.map.airports); i++) {
 	}
 }
 
+var tooltip_projects = [];
+
 //don't do this stuff in the end-of-round map preview
 if room != rRoundResults {
 
@@ -240,7 +242,7 @@ if room != rRoundResults {
 				tutorial_popup(room_width/2-200,room_height/2-100,TUTORIAL.IN_PROGRESS_PROJECTS)	
 			}
 			for(var p=0; p<array_length(projects); p++) {
-				tooltip += "\n" + projects[p];
+				array_push(tooltip_projects, projects[p])
 			}
 		}
 	}
@@ -294,4 +296,35 @@ if tooltip != "" {
 	draw_set_halign(fa_center)
 	draw_set_valign(fa_bottom)
 	draw_text_outline(mouse_x,mouse_y-8,tooltip,c_white,c_black)
+}
+if array_length(tooltip_projects) > 0 {
+	var box_w = (48+32) * 3 + 16; //icon width 48, sep 32, left/right padding of 8 pixels
+	if array_length(tooltip_projects) < 3 {
+		box_w = (48+32) * array_length(tooltip_projects)	+ 16
+	}
+	var box_h = (48+12) * ((array_length(tooltip_projects) div 3) + 1) + 16; //icon height 48, sep 12, max 4 per row, vertical padding 8 pixels
+	var box_x = mouse_x - (box_w/2);
+	var box_y = (mouse_y-32) - box_h;
+	draw_gui_border(box_x,box_y,box_x+box_w,box_y+box_h,c_white,false)
+	var _y = box_y + box_h - 8 - 48 - 12;
+	for(i=0; i<array_length(tooltip_projects); i++) {
+		var prj = tooltip_projects[i];
+		var icon = global.measures[? prj.measure].icon;
+		var _x = box_x + 8 + ((48+32) * (i mod 3)) + 16;
+		var scale = 48 / sprite_get_width(icon);
+		draw_sprite_ext(icon, 0,_x,_y,scale,scale,0,c_white,1)
+		if prj.days_remaining > 0 {
+			draw_sprite_ext(sprMeasure_blank,0,_x,_y,scale,scale,0,c_white,0.4)
+			draw_sprite(sprUnfinishedProject,0,_x+24,_y+20)
+			var amt = (prj.original_days_remaining - prj.days_remaining) / prj.original_days_remaining;
+			draw_healthbar(_x+10,_y+32,_x+48-10,_y+32+4,amt*100,c_black,c_white,c_white,0,true,true)
+			draw_set_font(fMyriad9)
+			draw_set_halign(fa_center)
+			draw_set_valign(fa_top)
+			draw_set_color(c_black)
+			draw_text(_x+24,_y+48, prj.time_string)
+			draw_set_color(c_white)
+		}
+		if i mod 3 == 2 { _y -= (48 + 12) }
+	}
 }

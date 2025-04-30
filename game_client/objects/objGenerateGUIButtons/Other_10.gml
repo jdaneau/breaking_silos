@@ -65,7 +65,7 @@ switch(global.state.role) {
 var button_width = 75;
 
 var n_buttons = array_length(buttons);
-if n_buttons <= 5 {
+if n_buttons < 5 {
 	var button_space = sprite_width / n_buttons;
 	var button_left_padding = (button_space - button_width) / 2;
 	for(var i=0; i<n_buttons; i++) {

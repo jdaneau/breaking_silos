@@ -111,3 +111,4 @@ switch(global.state.role) {
 }
 
 icons = []
+y = ystart

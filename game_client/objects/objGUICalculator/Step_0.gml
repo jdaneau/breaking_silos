@@ -8,7 +8,7 @@ if open {
 	}
 
 	//calculator buttons
-	if mouse_check_pressed(mb_left) {
+	if mouse_check_pressed(mb_left) and global.mouse_depth >= depth {
 		//check for x button
 		if coords_in(mouse_calc_x,mouse_calc_y,calc_width-row_height,0,calc_width,row_height) {
 			open = false

@@ -64,12 +64,15 @@ for(var i=0; i<array_length(global.map.land_tiles); i++) {
 	var projects = [];
 	for(var n=0; n<array_length(tile.implemented); n++) {
 		var measure = tile.implemented[n];
-		var name = global.measures[? measure].name;
-		array_push(projects, name)
+		array_push(projects, {
+			measure:measure, 
+			days_remaining:0, 
+			original_days_remaining:1, 
+			time_string:""
+		})
 	}
 	for(var n=0; n<array_length(tile.in_progress); n++) {
 		var struct = tile.in_progress[n];
-		var name = global.measures[? struct.measure].name;
 		var time = struct.days_remaining;
 		var amount = "";
 		if time > 730 { 
@@ -83,7 +86,13 @@ for(var i=0; i<array_length(global.map.land_tiles); i++) {
 		} else {
 			amount = "days"
 		}
-		array_push(projects, string("{0}: {1} {2} remaining",name,time,amount))
+		var time_string = string("{0} {1}",time,amount);
+		array_push(projects, {
+			measure:struct.measure, 
+			days_remaining:struct.days_remaining, 
+			original_days_remaining:struct.original_days_remaining, 
+			time_string:time_string
+		})
 	}
 	tile_projects [$ coords_to_grid(tx,ty,false)] = projects
 }

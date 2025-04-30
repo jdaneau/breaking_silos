@@ -35,8 +35,10 @@ enum MESSAGE {
 }
 
 var socket_type = network_socket_ws;
-var server_url = "wss://game-server.myriadproject.eu";
-port = 443
+//var server_url = "wss://game-server.myriadproject.eu";
+//port = 443
+var server_url = "ws://game-server.myriadproject.eu";
+port = 20002
 
 if os_browser == browser_not_a_browser {
 	socket_type = network_socket_tcp
