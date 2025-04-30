@@ -1,6 +1,6 @@
 if hover {
 	draw_set_font(fDescription)
-	var w = 512;
+	var w = 480;
 	var sep = 16;
 	var h = string_height_ext(text,sep,w);
 	draw_color_rectangle(mouse_x+8,mouse_y,mouse_x+8+512+8+2,mouse_y+h+8+2,c_black,false)

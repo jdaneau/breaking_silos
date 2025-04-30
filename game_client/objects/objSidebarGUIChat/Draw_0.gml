@@ -17,7 +17,7 @@ for(var _i=array_length(chat)-1; _i>=0; _i--) {
 		_y -= (sep/2)
 		if _y <= 0 { break }
 		draw_set_alpha(0.6)
-		draw_line(0,_y,chat_surface_w,_y)
+		draw_line_width(0,_y,chat_surface_w,_y,2)
 		draw_set_alpha(1)
 		_y -= (sep/2)
 		if _y <= 0 { break }
@@ -39,7 +39,7 @@ current_chat_height = clamp(chat_surface_h - _y,0,chat_surface_h);
 var chat_window_x = x + 16;
 var chat_window_y = y + 16;
 
-draw_set_color(c_ltgray)
+draw_set_color(make_color_hsv(0,0,220))
 draw_roundrect_ext(x,y,x+sprite_width,y+sprite_height,12,12,false)
 draw_surface_part(chat_surface,0,chat_surface_h-chat_window_height-chat_scroll,chat_surface_w,chat_window_height,chat_window_x,chat_window_y)
 
@@ -81,10 +81,10 @@ if mouse_check_pressed(mb_left) {
 	} else chat_typing = false
 }
 
-draw_set_font(font_chat)
+draw_set_font(font_typing)
 draw_set_halign(fa_left)
 draw_set_valign(fa_top)
-draw_set_color(c_gray)
+draw_set_color(c_dkgray)
 var text_str = chat_message;
 while string_width(text_str) > (text_area_w - 16) {
 	text_str = string_copy(text_str,2,string_length(text_str)-1)	
@@ -106,6 +106,7 @@ else if text_str != "" {
 }
 else {
 	line_t = 0;	
+	draw_set_font(font_chat)
 	draw_text(chat_window_x,text_area_y,"Write a message...")
 }
 

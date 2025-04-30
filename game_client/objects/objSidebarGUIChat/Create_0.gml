@@ -4,6 +4,7 @@ sep = 24
 home_room =room
 font_author = fMyriadBold12
 font_chat = fMyriad12
+font_typing = fInput
 chat_surface_w = sprite_width - 48;
 chat_surface_h = sprite_height * 10;
 current_chat_height = 0;
