@@ -1,1 +1,1 @@
-text = "The President is the main decision maker who implements all the measures and controls the discussion. This is a leadership role and requires a strong speaker!"
+text = "The President is the main decision maker who implements all the measures and controls the discussion. This is a leadership role and requires a strong chairperson!"

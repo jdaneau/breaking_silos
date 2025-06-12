@@ -1,1 +1,1 @@
-text = "Generally, countries that are closer to the equator are more threatened by natural hazards. For example, tropical climates are highly susceptible to cyclones due to the warm weather, whereas cyclones rarely strike boreal climates."
+text = "The landscape type can have an influence on the kind of hazards that a region faces. For example, proximity to a coastline may increase the chance of a coastal flood occurring."

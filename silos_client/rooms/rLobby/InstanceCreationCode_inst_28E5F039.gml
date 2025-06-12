@@ -1,1 +1,1 @@
-text = "The Flood Coordinator is mainly concerned with reducing nationwide flood risk and mitigating possible damages from flooding events."
+text = "The Flood Coordinator is mainly concerned with reducing nationwide flood risk and reducing possible damages from flooding events."

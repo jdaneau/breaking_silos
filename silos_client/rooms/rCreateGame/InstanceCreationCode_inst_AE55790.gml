@@ -1,1 +1,1 @@
-text = "The proximity of land to water has a large impact on its vulnerability to different natural hazards. Coastline exposes a nation to cyclone risk, but also decreases the chance of droughts happening."
+text = "The types of natural hazards that a region faces are influenced by the climate type of the region. For example, tropical cyclones (TCs) are much more common in tropical climate zones."

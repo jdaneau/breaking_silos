@@ -223,7 +223,7 @@ ds_map_add(global.measures, MEASURE.SEAWALL, {
 	unit:"cell",
 	time: "weeks",
 	icon: sprMeasure_seawall,
-	key_use: "Place on coastal cells to add protection against storm surges from cyclones",
+	key_use: "Place on coastal cells to add protection against storm surges from tropical cyclones",
 	description: "Seawalls are hard engineered structures with a primary function to prevent further erosion of the shoreline. They are built parallel to the shore to aim to hold or prevent sliding of the soil, while providing protection from wave action. Although their primary function is erosion reduction, they have a secondary function as coastal storm surge defences. There are a variety of construction  methods that can be used to create sea wall protection for a coastal city. They are generally expensive to construct."
 })
 ds_map_add(global.measures, MEASURE.NBS, {
@@ -249,7 +249,7 @@ ds_map_add(global.measures, MEASURE.NORMAL_CROPS, {
 	description: "The regular crop thrives under your country's normal climatic conditions.\n\nYou cannot have normal crops and drought-resistant crops in the same cell."
 })
 ds_map_add(global.measures, MEASURE.RESISTANT_CROPS, {
-	name:"Plant Drought-resistant Crops", 
+	name:"Plant Drought-Resistant Crops", 
 	alias:"resistant_crops",
 	key: MEASURE.RESISTANT_CROPS,
 	cost:500,
@@ -267,8 +267,8 @@ ds_map_add(global.measures, MEASURE.EWS_FLOOD, {
 	unit:"cell",
 	time: "months",
 	icon: sprMeasure_ews_flood,
-	key_use: "Place on cells to install a warning system that mitigates damages from floods",
-	description: "Early warning systems for floods can be useful in slower-onset floods but are not effective against torrential rains such as those from tropical cyclones. The implementation of a flood early system requires the development of a system that is understood across the board, also by the large number of illiterate people. This involves the training of local communities, which can be a time consuming process. Especially in places with a high illiteracy rate, radio broadcasts play an important role in raising community awareness of approaching floods."
+	key_use: "Place on cells to install a warning system that can help people to reduce damages from floods",
+	description: "Early warning systems for floods can be useful in slower-onset floods but are less effective against torrential rains such as those from tropical cyclones. The implementation of a flood early system requires the development of a system that is understood across the board, by all members of society. This involves the training of local communities, which can be a time consuming process. Especially in places with a high illiteracy rate, radio broadcasts play an important role in raising community awareness of approaching floods."
 })
 ds_map_add(global.measures, MEASURE.EWS_CYCLONE, {
 	name:"EWS: Tropical Cyclone",
@@ -278,8 +278,8 @@ ds_map_add(global.measures, MEASURE.EWS_CYCLONE, {
 	unit:"cell",
 	time: "months",
 	icon: sprMeasure_ews_cyclone,
-	key_use: "Place on cells to install a warning system that mitigates damages from cyclones",
-	description: "The implementation of a tropical cyclone (TC) warning system requires the development of a system that is understood by all the different stakeholders, most importantly by the large number of illiterate people. It therefore requires careful training of local communities, which can be a time consuming process. Especially in places with a high illiteracy rate, radio broadcasts play an important role in raising community awareness of approaching TCs. Rather than provide communities with difficult to understand information about wind speeds, each Numerical Category (from 1-5) is related to the type of destruction likely to occur to locally made houses, common crops and trees. One of the main challenges is that a false warning can also lead to scepticism and reluctance of communities to follow up on the warnings."
+	key_use: "Place on cells to install a warning system that helps people to reduce damages from tropical cyclones",
+	description: "The implementation of a tropical cyclone (TC) warning system requires the development of a system that is understood by all the different stakeholders, including all members of society. It therefore requires careful training of local communities, which can be a time consuming process. Especially in places with a high illiteracy rate, radio broadcasts play an important role in raising community awareness of approaching TCs. Rather than provide communities with difficult to understand information about wind speeds, each Numerical Category (from 1-5) is related to the type of destruction likely to occur to locally made houses, common crops and trees. One of the main challenges is that a false warning can also lead to scepticism and reluctance of communities to follow up on the warnings."
 })
 ds_map_add(global.measures, MEASURE.DIKE, {
 	name:"Build Dikes", 
@@ -300,7 +300,7 @@ ds_map_add(global.measures, MEASURE.RELOCATION, {
 	unit:"cell",
 	time: "years",
 	icon: sprMeasure_relocation,
-	key_use: "Place this measure on the cell(s) you want to move population AWAY from. Useful for depopulating cells that are especially disaster-prone.",
+	key_use: "Place this measure on the cell(s) you want to move population AWAY from. Useful for depopulating cells that are especially hazard-prone.",
 	description: "The World Bank defines planned population relocation as \"a process whereby a community's housing, assets and public infrastructure are rebuilt in another location.\" This disaster risk reduction measure provides financial incentives to move the targeted community to a new, lower-risk location.\n\nTo implement this measure, put the symbol on the cells from which you wish to move the population. This will create incentives to move 30% of the population from these cells to the rest of the country."
 })
 ds_map_add(global.measures, MEASURE.DAM, {
@@ -312,7 +312,7 @@ ds_map_add(global.measures, MEASURE.DAM, {
 	time: "years",
 	icon: sprMeasure_dam,
 	key_use: "Place on a river-containing cell where you want to construct a dam. Protects itself and five downstream cells against floods",
-	description: "Dams can be very useful in mitigating flood impacts and can be used as a reservoir during drought periods. They can, however, also lead to lower water availability downstream and therefore increase drought impacts. Dams will affect the cell you build them on, as well as five cells downstream. Only one dam can be built per watershed."
+	description: "Dams can be very useful in reducing flood impacts and can be used as a reservoir during drought periods. They can, however, also lead to lower water availability downstream and therefore can increase drought impacts. Dams will affect the cell you build them on, as well as five cells downstream. Only one dam can be built per watershed."
 })
 ds_map_add(global.measures, MEASURE.EVACUATE, {
 	name:"Evacuate Impacted Population", 
@@ -337,15 +337,15 @@ ds_map_add(global.measures, MEASURE.FLOOD_BUILDINGS, {
 	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Flood-proofing can be achieved through elevation of structures above the flood line, using flood-resistant building materials, and making drainage systems more efficient.\n\nThis measure can be placed on both damaged or undamaged cells. Future floods will no longer damage the buildings on this cell."
 })
 ds_map_add(global.measures, MEASURE.CYCLONE_BUILDINGS, {
-	name:"Buildings Upgrade: Cyclone Resistance", 
+	name:"Buildings Upgrade: Tropical Cyclone Resistance", 
 	alias:"cyclone_buildings",
 	key: MEASURE.CYCLONE_BUILDINGS,
 	cost:1200,
 	unit:"cell",
 	time: "months",
 	icon: sprMeasure_cyclonebuildings,
-	key_use: "Place on cells that have damaged or un-upgraded buildings to repair and make them more cyclone resistant",
-	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Cyclone-proofing can be achieved through wind-resistant roof designs, using strong and durable building materials, and reinforcing infrastructure (such as streetlamps and poles) in the area.\n\nThis measure can be placed on both damaged or undamaged cells. Future cyclones will no longer damage the buildings on this cell."
+	key_use: "Place on cells that have damaged or un-upgraded buildings to repair and make them more tropical cyclone resistant",
+	description: "Building Back Better (BBB) is a strategy that aims to reduce future risk of damage following a hazard event. Tropical cyclone-proofing can be achieved through wind-resistant roof designs, using strong and durable building materials, and reinforcing infrastructure (such as streetlamps and poles) in the area.\n\nThis measure can be placed on both damaged or undamaged cells. Future tropical cyclones will no longer damage the buildings on this cell."
 })
 
 global.ai_messages = []

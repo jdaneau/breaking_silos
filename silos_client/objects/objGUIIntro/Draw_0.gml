@@ -11,13 +11,13 @@ else if global.state.disaster_intensity == "medium" qualifier = "major"
 else if global.state.disaster_intensity == "high" qualifier = "massive"
 switch(global.state.disaster) {
 	case "flood":
-		opening_line = string("A {0} flood is about to happen in our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event.",qualifier);
+		opening_line = string("A {0} flood is about to happen in our country. We need to implement Disaster Risk Reduction (DRR) measures to reduce the impact of this event.",qualifier);
 	break;
 	case "drought":
-		opening_line = string("A {0} drought is happening in our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event.",qualifier);
+		opening_line = string("A {0} drought is happening in our country. We need to implement Disaster Risk Reduction (DRR) measures to reduce the impact of this event.",qualifier);
 	break;
 	case "cyclone":
-		opening_line = string("A {0} tropical cyclone is about to pass through our country. We need to implement Disaster Risk Reduction (DRR) measures to mitigate the impact of this event.",qualifier);
+		opening_line = string("A {0} tropical cyclone is about to pass through our country. We need to implement Disaster Risk Reduction (DRR) measures to reduce the impact of this event.",qualifier);
 	break;
 }
 
@@ -30,7 +30,7 @@ var icon;
 switch(global.state.role) {
 	case ROLE.PRESIDENT:
 		icon = sprPresident
-		role_specific_text = "As the President, you need to lead the discussion with your representatives in order to decide which measures to implement. Your associates' suggested implementations will show up on the map.\n\nThe finance minister should report the cost of your planned measures. If there is no finance minister, the budget will automatically update for you.\n\nYou are mainly in charge of selecting measures and placing them on the map before the time limit is over. Good luck!"
+		role_specific_text = "As the President, you need to lead the discussion with your representatives in order to decide which measures to implement. Your associates' suggested implementations will show up on the map.\n\nThe Finance Minister should report the cost of your planned measures. If there is no Finance Minister, the budget will automatically update for you.\n\nYou are mainly in charge of selecting measures and placing them on the map before the time limit is over. Good luck!"
 	break;
 	case ROLE.FINANCE:
 		icon = sprFinanceMinister
@@ -38,11 +38,11 @@ switch(global.state.role) {
 	break;
 	case ROLE.AGRICULTURE:
 		icon = sprAgriculturalRep
-		role_specific_text = "As the Agricultural Representative, you need to inform the President on the will and the needs of the farmers with regards to the current disaster and future disasters.\n\nAdd markers to the map to show where you think certain agricultural measures should be implemented!"
+		role_specific_text = "As the Agricultural Representative, you need to inform the President on the will and the needs of the farmers with regards to the current hazard and future hazards.\n\nAdd markers to the map to show where you think certain agricultural measures should be implemented!"
 	break;
 	case ROLE.CITIZEN:
 		icon = sprCitizenRep
-		role_specific_text = "As the Representative of Citizens, you act on behalf of the locals to inform the president of indigenous flood/drought knowledge.\n\nYou should be critical of ideas that may disrupt the lifestyle of the local communities.\n\nAdd markers to the map to show where you think certain measures should be implemented!"
+		role_specific_text = "As the Representative of Citizens, you act on behalf of the locals to inform the President of indigenous flood/drought knowledge.\n\nYou should be critical of ideas that may disrupt the lifestyle of the local communities.\n\nAdd markers to the map to show where you think certain measures should be implemented!"
 	break;
 	case ROLE.ENGINEER:
 		icon = sprEngineer
@@ -58,7 +58,7 @@ switch(global.state.role) {
 	break;
 	case ROLE.INTERNATIONAL:
 		icon = sprInternationalRep
-		role_specific_text = "As the Representative of International Aid and Emergency Responder, your job is to ensure mitigation of the population harm and infrastructural damage caused by the disaster.\n\nYou should push to meet the goal of reconstructing all hospitals and airports, replanting all crops, and providing aid to impacted population. This ensures a bonus of 5000 coins in the next round from international donors!\n\nAdd markers to the map to indicate where you think certain measures should be implemented."
+		role_specific_text = "As the Representative of International Aid and Emergency Responder, your job is to ensure mitigation of the population harm and infrastructural damage caused by the hazard.\n\nYou should push to meet the goal of reconstructing all hospitals and airports, replanting all crops, and providing aid to impacted population. This ensures a bonus of 5000 coins in the next round from international donors!\n\nAdd markers to the map to indicate where you think certain measures should be implemented."
 		if global.state.disaster == "drought" and global.state.disaster_intensity == "low" {
 			role_specific_text += "\n\nNOTE: As we are currently facing a low-intensity drought, evacuation will not be necessary to secure international aid."
 		}

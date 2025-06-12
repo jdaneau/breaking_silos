@@ -29,14 +29,14 @@ function get_ai_messages(){
 				}
 				if lost_crops {
 					if n_resistant > n_normal {
-						array_push(messages, "Agricultural Representative: 'Looks like some crops were damaged by the disaster. This area is pretty drought-prone, so maybe we should plant some drought-resistant crops.'")
+						array_push(messages, "Agricultural Representative: Looks like some crops were damaged by the hazard. This area is pretty drought-prone, so maybe we should plant some drought-resistant crops.")
 					} else {
-						array_push(messages, "Agricultural Representative: 'Looks like some crops were damaged by the disaster. We should plant some normal crops to replenish the country's agriculture needs.'")
+						array_push(messages, "Agricultural Representative: Looks like some crops were damaged by the hazard. We should plant some normal crops to replenish the country's agriculture needs.")
 					}
 				} else {
 					var diff = global.map.starting_agriculture - get_total_agriculture();
 					if diff > 0 {
-						array_push(messages, "Agricultural Representative: 'There weren't any crops damaged by this disaster, but we still have an agricultural deficit in the country. We need to plant more crops.'")	
+						array_push(messages, "Agricultural Representative: There weren't any crops damaged by this hazard, but we still have an agricultural deficit in the country. We need to plant more crops.")	
 					}
 				}
 			break;
@@ -56,11 +56,11 @@ function get_ai_messages(){
 							}
 							if msg {
 								var square = coords_to_grid(tile.x,tile.y);
-								array_push(messages, string("Citizen Representative: 'The people around cell {0} are complaining that nothing has been done to protect them against floods. I recommend implementing NBS to help them out.'",square))
+								array_push(messages, string("Citizen Representative: The people around cell {0} are complaining that nothing has been done to protect them against floods. I recommend implementing NBS to help them out.",square))
 								break;
 							}
 							else if t == array_length(tiles)-1 {
-								array_push(messages, "Citizen Representative: 'You've done a good job protecting the flood-vulnerable population. I would still recommend implementing NBS on some cells for more flood protection.'")
+								array_push(messages, "Citizen Representative: You've done a good job protecting the flood-vulnerable population. I would still recommend implementing NBS on some cells for more flood protection.")
 							}
 						}
 					}
@@ -71,11 +71,11 @@ function get_ai_messages(){
 						if tile.metrics.observed_drought {
 							if tile.metrics.agriculture <= 0 and !is_implementing(tile,MEASURE.NORMAL_CROPS) and !is_implementing(tile,MEASURE.RESISTANT_CROPS) {
 								var square = coords_to_grid(tile.x,tile.y);
-								array_push(messages, string("Citizen Representative: 'The people around cell {0} are complaining that nothing has been done to protect them against droughts. I recommend planting drought-resistant crops in the area.'",square))
+								array_push(messages, string("Citizen Representative: The people around cell {0} are complaining that nothing has been done to protect them against droughts. I recommend planting drought-resistant crops in the area.",square))
 								break;
 							}
 							else if t == array_length(tiles)-1 {
-								array_push(messages, "Citizen Representative: 'You've done a good job protecting the drought-vulnerable population. I would still recommend planting drought-resistant crops to protect people in vulnerable areas.'")
+								array_push(messages, "Citizen Representative: You've done a good job protecting the drought-vulnerable population. I would still recommend planting drought-resistant crops to protect people in vulnerable areas.")
 							}
 						}
 					}
@@ -91,9 +91,9 @@ function get_ai_messages(){
 						if is_implementing(tiles[t],MEASURE.DAM) building_dam = true	
 					}
 					if !building_dam {
-						array_push(messages, "Engineer: 'I recommend building a dam along one of the bigger rivers to protect against floods. This will help us control the amount of water in our rivers and harness energy for our population.'")
+						array_push(messages, "Engineer: I recommend building a dam along one of the bigger rivers to protect against floods. This will help us control the amount of water in our rivers and harness energy for our population.")
 					} else {
-						array_push(messages, "Engineer: 'Nice to see we're building a dam. Make sure that area is protected from hazards so we can avoid losing out on construction time!'")
+						array_push(messages, "Engineer: Nice to see we're building a dam. Make sure that area is protected from hazards so we can avoid losing out on construction time!")
 					}
 				}
 				else {
@@ -103,14 +103,14 @@ function get_ai_messages(){
 						if is_coastal(tile.x div 64, tile.y div 64) and !is_implementing(tile,MEASURE.SEAWALL) and !array_contains(tile.implemented,MEASURE.SEAWALL) {
 							if tile.metrics.flood_risk == 3 || (tile.metrics.flood_risk == 2 and tile.metrics.population >= 700) {
 								var square = coords_to_grid(tile.x,tile.y);
-								array_push(messages, string("Engineer: 'The coastal region around cell {0} seems to be quite flood-prone. I recommend building seawalls to help prevent major damages.'",square))
+								array_push(messages, string("Engineer: The coastal region around cell {0} seems to be quite flood-prone. I recommend building seawalls to help prevent major damages.",square))
 								msg = true
 								break;
 							}
 						}
 					}
 					if !msg {
-						array_push(messages, "Engineer: 'All our coastal regions seem to be well protected with seawalls.'")
+						array_push(messages, "Engineer: All our coastal regions seem to be well protected with seawalls.")
 					}
 				}
 			break;
@@ -136,7 +136,7 @@ function get_ai_messages(){
 						airport = true
 					}
 				}
-				array_push(messages, string("Finance Minister: 'I estimate that we would have to spend at least {0} coins this round to properly address the disaster.'",money))
+				array_push(messages, string("Finance Minister: I estimate that we would have to spend at least {0} coins this round to properly address the hazard.",money))
 			break;
 			case ROLE.FLOOD:
 				problem_tile = ""
@@ -151,7 +151,7 @@ function get_ai_messages(){
 				if problem_tile != "" {
 					array_push(messages, string("Flood Coordinator: The area around cell {0} is unprotected from floods, despite its high population. We should add an early warning system or a dike in the area.",problem_tile))
 				} else {
-					array_push(messages, "Flood Coordinator: All our high-population cells with high flood hazard appear to be protected. Make sure to also protect the low-population tiles too!")
+					array_push(messages, "Flood Coordinator: All our high-population cells with high flood hazard appear to be protected. Make sure to also protect the low-population cells too!")
 				}
 			break;
 			case ROLE.HOUSING:
@@ -165,7 +165,7 @@ function get_ai_messages(){
 				if damaged_tile == "" {
 					var mode = choose("upgrade","relocate");
 					if mode == "upgrade" {
-						array_push(messages, "Housing Chief: Looks like all our housing is still intact. Perhaps we could focus on upgrading the homes in some cells to be flood or cyclone resistant?")
+						array_push(messages, "Housing Chief: Looks like all our housing is still intact. Perhaps we could focus on upgrading the homes in some cells to be flood or tropical cyclone resistant?")
 					}else{
 						array_push(messages, "Housing Chief: Looks like all our housing is still intact. Perhaps we could try to initiate a relocation incentive to move some groups away from high risk areas?")
 					}

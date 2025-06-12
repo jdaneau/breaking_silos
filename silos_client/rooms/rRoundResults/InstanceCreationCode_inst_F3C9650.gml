@@ -10,6 +10,7 @@ update = function() {
 	}
 	if global.state.disaster == "cyclone" {
 		color = global.colors.magenta	
+		text = "Tropical Cyclone"
 	}
 }
 
